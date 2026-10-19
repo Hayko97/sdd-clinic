@@ -1,0 +1,327 @@
+{
+  "scope": "Read-only replay of the earlier 131-file audit source manifest plus README, excluding dependency lockfile. No project files changed or provider called.",
+  "files": 131,
+  "selectedFiles": 48,
+  "sourceCharacters": 35999,
+  "selected": [
+    {
+      "id": "1",
+      "path": "README.md",
+      "startLine": 1,
+      "endLine": 15
+    },
+    {
+      "id": "2",
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 42
+    },
+    {
+      "id": "3",
+      "path": "tests/admin-ai-translate.test.ts",
+      "startLine": 25,
+      "endLine": 82
+    },
+    {
+      "id": "4",
+      "path": "supabase/sql/001_init_ecommerce.sql",
+      "startLine": 1,
+      "endLine": 57
+    },
+    {
+      "id": "5",
+      "path": "App.tsx",
+      "startLine": 62,
+      "endLine": 102
+    },
+    {
+      "id": "6",
+      "path": "src/admin/ai/translate.ts",
+      "startLine": 5,
+      "endLine": 59
+    },
+    {
+      "id": "7",
+      "path": "app.json",
+      "startLine": 1,
+      "endLine": 42
+    },
+    {
+      "id": "8",
+      "path": "tests/admin-db.test.ts",
+      "startLine": 18,
+      "endLine": 77
+    },
+    {
+      "id": "9",
+      "path": "supabase/sql/002_add_liked_products.sql",
+      "startLine": 1,
+      "endLine": 15
+    },
+    {
+      "id": "10",
+      "path": "src/admin/AdminLogin.tsx",
+      "startLine": 7,
+      "endLine": 65
+    },
+    {
+      "id": "11",
+      "path": "src/admin/imageProcessing.ts",
+      "startLine": 1,
+      "endLine": 56
+    },
+    {
+      "id": "12",
+      "path": "src/admin/README.md",
+      "startLine": 1,
+      "endLine": 37
+    },
+    {
+      "id": "13",
+      "path": "tests/admin-panel-state.test.ts",
+      "startLine": 31,
+      "endLine": 97
+    },
+    {
+      "id": "14",
+      "path": "supabase/sql/003_localization.sql",
+      "startLine": 1,
+      "endLine": 43
+    },
+    {
+      "id": "15",
+      "path": "src/admin/AdminPanel.tsx",
+      "startLine": 97,
+      "endLine": 146
+    },
+    {
+      "id": "16",
+      "path": "src/admin/panelState.ts",
+      "startLine": 19,
+      "endLine": 83
+    },
+    {
+      "id": "17",
+      "path": "supabase/functions/remove-background/README.md",
+      "startLine": 1,
+      "endLine": 65
+    },
+    {
+      "id": "18",
+      "path": "tests/admin-utils.test.ts",
+      "startLine": 18,
+      "endLine": 60
+    },
+    {
+      "id": "19",
+      "path": "supabase/sql/004_product_images_ordering.sql",
+      "startLine": 1,
+      "endLine": 50
+    },
+    {
+      "id": "20",
+      "path": "src/admin/components/AdminLayout.tsx",
+      "startLine": 6,
+      "endLine": 66
+    },
+    {
+      "id": "21",
+      "path": "src/admin/productReadyImageProcessor.ts",
+      "startLine": 7,
+      "endLine": 54
+    },
+    {
+      "id": "22",
+      "path": "supabase/README.md",
+      "startLine": 1,
+      "endLine": 39
+    },
+    {
+      "id": "23",
+      "path": "tests/auth-callback.test.ts",
+      "startLine": 5,
+      "endLine": 24
+    },
+    {
+      "id": "24",
+      "path": "supabase/sql/005_product_images_processing.sql",
+      "startLine": 1,
+      "endLine": 54
+    },
+    {
+      "id": "25",
+      "path": "src/admin/components/adminStyles.ts",
+      "startLine": 4,
+      "endLine": 16
+    },
+    {
+      "id": "26",
+      "path": "src/supabase/supabaseService.ts",
+      "startLine": 1,
+      "endLine": 1
+    },
+    {
+      "id": "27",
+      "path": "src/admin/ai/translate.ts",
+      "startLine": 230,
+      "endLine": 230
+    },
+    {
+      "id": "28",
+      "path": "tests/admin-db.test.ts",
+      "startLine": 331,
+      "endLine": 331
+    },
+    {
+      "id": "29",
+      "path": "src/admin/productReadyImageProcessor.ts",
+      "startLine": 101,
+      "endLine": 101
+    },
+    {
+      "id": "30",
+      "path": "tests/categories-utils.test.ts",
+      "startLine": 90,
+      "endLine": 91
+    },
+    {
+      "id": "31",
+      "path": "src/localization/utils.ts",
+      "startLine": 21,
+      "endLine": 21
+    },
+    {
+      "id": "32",
+      "path": "src/components/BuyModal.tsx",
+      "startLine": 423,
+      "endLine": 423
+    },
+    {
+      "id": "33",
+      "path": "src/services/productMapping.ts",
+      "startLine": 2,
+      "endLine": 2
+    },
+    {
+      "id": "34",
+      "path": "src/supabase/auth-utils.ts",
+      "startLine": 30,
+      "endLine": 30
+    },
+    {
+      "id": "35",
+      "path": "src/components/Header.tsx",
+      "startLine": 198,
+      "endLine": 198
+    },
+    {
+      "id": "36",
+      "path": "tests/likes-utils.test.ts",
+      "startLine": 22,
+      "endLine": 22
+    },
+    {
+      "id": "37",
+      "path": "src/components/NativeAppleLogin.tsx",
+      "startLine": 2,
+      "endLine": 2
+    },
+    {
+      "id": "38",
+      "path": "src/supabase/env.ts",
+      "startLine": 9,
+      "endLine": 9
+    },
+    {
+      "id": "39",
+      "path": "src/supabase/error-utils.ts",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "40",
+      "path": "src/localization/LanguageProvider.tsx",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "id": "41",
+      "path": "src/utils/responsive.ts",
+      "startLine": 8,
+      "endLine": 8
+    },
+    {
+      "id": "42",
+      "path": "README.md",
+      "startLine": 198,
+      "endLine": 198
+    },
+    {
+      "id": "43",
+      "path": "src/admin/imageProcessing.ts",
+      "startLine": 269,
+      "endLine": 269
+    },
+    {
+      "id": "44",
+      "path": "src/admin/components/CategoryEditorSectioned.tsx",
+      "startLine": 160,
+      "endLine": 160
+    },
+    {
+      "id": "45",
+      "path": "supabase/sql/007_security_hardening.sql",
+      "startLine": 115,
+      "endLine": 115
+    },
+    {
+      "id": "46",
+      "path": "supabase/sql/008_pickup_orders.sql",
+      "startLine": 123,
+      "endLine": 123
+    },
+    {
+      "id": "47",
+      "path": "src/image-processing/backgroundRemovalClient.ts",
+      "startLine": 19,
+      "endLine": 19
+    },
+    {
+      "id": "48",
+      "path": "src/admin/components/ProductProcessingSection.tsx",
+      "startLine": 89,
+      "endLine": 89
+    },
+    {
+      "id": "49",
+      "path": "src/supabase/auth.ts",
+      "startLine": 52,
+      "endLine": 52
+    },
+    {
+      "id": "50",
+      "path": "tests/responsive-utils.test.ts",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "id": "51",
+      "path": "src/supabase/db/profiles.ts",
+      "startLine": 60,
+      "endLine": 60
+    },
+    {
+      "id": "52",
+      "path": "tests/supabase-setup.test.ts",
+      "startLine": 261,
+      "endLine": 261
+    },
+    {
+      "id": "53",
+      "path": "tests/translations.test.ts",
+      "startLine": 390,
+      "endLine": 390
+    }
+  ],
+  "coverage": "Initial specification setup: 48 selected files from 131 eligible files; 35999 source characters (limit 36000). No exhaustive source audit was performed. Coverage is PARTIAL. Use --deep for complete eligible-source analysis.\n\nSelected evidence: README.md:1-15, package.json:1-42, tests/admin-ai-translate.test.ts:25-82, supabase/sql/001_init_ecommerce.sql:1-57, App.tsx:62-102, src/admin/ai/translate.ts:5-59, app.json:1-42, tests/admin-db.test.ts:18-77, supabase/sql/002_add_liked_products.sql:1-15, src/admin/AdminLogin.tsx:7-65, src/admin/imageProcessing.ts:1-56, src/admin/README.md:1-37, tests/admin-panel-state.test.ts:31-97, supabase/sql/003_localization.sql:1-43, src/admin/AdminPanel.tsx:97-146, src/admin/panelState.ts:19-83, supabase/functions/remove-background/README.md:1-65, tests/admin-utils.test.ts:18-60, supabase/sql/004_product_images_ordering.sql:1-50, src/admin/components/AdminLayout.tsx:6-66, src/admin/productReadyImageProcessor.ts:7-54, supabase/README.md:1-39, tests/auth-callback.test.ts:5-24, supabase/sql/005_product_images_processing.sql:1-54, src/admin/components/adminStyles.ts:4-16, src/supabase/supabaseService.ts:1-1, src/admin/ai/translate.ts:230-230, tests/admin-db.test.ts:331-331, src/admin/productReadyImageProcessor.ts:101-101, tests/categories-utils.test.ts:90-91, src/localization/utils.ts:21-21, src/components/BuyModal.tsx:423-423, src/services/productMapping.ts:2-2, src/supabase/auth-utils.ts:30-30, src/components/Header.tsx:198-198, tests/likes-utils.test.ts:22-22, src/components/NativeAppleLogin.tsx:2-2, src/supabase/env.ts:9-9, src/supabase/error-utils.ts:15-15, src/localization/LanguageProvider.tsx:38-38, src/utils/responsive.ts:8-8, README.md:198-198, src/admin/imageProcessing.ts:269-269, src/admin/components/CategoryEditorSectioned.tsx:160-160, supabase/sql/007_security_hardening.sql:115-115, supabase/sql/008_pickup_orders.sql:123-123, src/image-processing/backgroundRemovalClient.ts:19-19, src/admin/components/ProductProcessingSection.tsx:89-89, src/supabase/auth.ts:52-52, tests/responsive-utils.test.ts:43-43, src/supabase/db/profiles.ts:60-60, tests/supabase-setup.test.ts:261-261, tests/translations.test.ts:390-390.\n\nOmitted line ranges (not analyzed):\n- App.tsx:1-61,103-1115\n- package.json:43-61\n- src/admin/AdminLogin.tsx:1-6,66-173\n- src/admin/AdminPanel.tsx:1-96,147-2708\n- src/admin/README.md:38-40\n- src/admin/ai/translate.ts:1-4,60-229,231-459\n- src/admin/components/AdminLayout.tsx:1-5,67-106\n- src/admin/components/CategoryEditorSectioned.tsx:1-159,161-189\n- src/admin/components/EntityListPane.tsx:1-86\n- src/admin/components/LocalizedFieldsSection.tsx:1-349\n- src/admin/components/ProductEditorSectioned.tsx:1-477\n- src/admin/components/ProductMediaSection.tsx:1-420\n- src/admin/components/ProductProcessingSection.tsx:1-88,90-118\n- src/admin/components/adminStyles.ts:1-3,17-522\n- src/admin/components/types.ts:1-49\n- src/admin/imageProcessing.ts:57-268,270-298\n- src/admin/panelState.ts:1-18,84-464\n- src/admin/productReadyImageProcessor.ts:1-6,55-100,102-201\n- src/admin/utils.ts:1-214\n- src/components/BuyModal.tsx:1-422,424-844\n- src/components/CategoryTabs.tsx:1-126\n- src/components/DetailsModal.tsx:1-732\n- src/components/Header.tsx:1-197,199-395\n- src/components/LikedItemsModal.tsx:1-260\n- src/components/LoadingAnimation.tsx:1-34\n- src/components/LoginModal.tsx:1-438\n- src/components/NativeAppleLogin.native.tsx:1-13\n- src/components/NativeAppleLogin.tsx:1-1\n- src/components/OrdersModal.tsx:1-569\n- src/components/ProductGrid.tsx:1-339\n- src/components/ProductImage.tsx:1-10\n- src/components/SwipeableCard.tsx:1-683\n- src/components/UserProfileModal.tsx:1-718\n- src/constants/Colors.ts:1-39\n- src/constants/Icons.tsx:1-532\n- src/constants/layering.ts:1-3\n- src/image-processing/backgroundRemoval.ts:1-344\n- src/image-processing/backgroundRemovalClient.ts:1-18,20-48\n- src/localization/LanguageProvider.tsx:1-37,39-75\n- src/localization/languages.ts:1-14\n- src/localization/translations.ts:1-1508\n- src/localization/utils.ts:1-20,22-40\n- src/services/productMapping.ts:1-1\n- src/supabase/SessionProvider.tsx:1-119\n- src/supabase/auth-callback.ts:1-23\n- src/supabase/auth-utils.ts:1-29,31-59\n- src/supabase/auth.ts:1-51,53-81\n- src/supabase/backgroundRemoval.ts:1-110\n- src/supabase/client.ts:1-14\n- src/supabase/db/categories.ts:1-94\n- src/supabase/db/likes.ts:1-67\n- src/supabase/db/orders.ts:1-67\n- src/supabase/db/productImages.ts:1-192\n- src/supabase/db/products.ts:1-188\n- src/supabase/db/profiles.ts:1-59,61-89\n- src/supabase/env.ts:1-8,10-17\n- src/supabase/error-utils.ts:1-14,16-29\n- src/supabase/index.ts:1-14\n- src/supabase/product-mapping.ts:1-105\n- src/supabase/profile-utils.ts:1-15\n- src/supabase/runtime-auth.native.ts:1-16\n- src/supabase/runtime-auth.ts:1-9\n- src/supabase/social-auth.native.ts:1-46\n- src/supabase/social-auth.ts:1-20\n- src/supabase/storage.ts:1-117\n- src/supabase/supabaseService.ts:2-76\n- src/supabase/types.ts:1-687\n- src/types/index.ts:1-32\n- src/utils/buttonStyles.ts:1-204\n- src/utils/categories.ts:1-49\n- src/utils/categoryTabStyles.ts:1-53\n- src/utils/checkoutDraft.ts:1-32\n- src/utils/image.ts:1-27\n- src/utils/likes.ts:1-22\n- src/utils/orders.ts:1-34\n- src/utils/responsive.ts:1-7,9-14\n- src/utils/typography.ts:1-12\n- supabase/README.md:40-157\n- supabase/functions/remove-background/README.md:66-89\n- supabase/functions/remove-background/index.ts:1-706\n- supabase/functions/translate/index.ts:1-258\n- supabase/functions/translate/validate.ts:1-159\n- supabase/seed-data.ts:1-333\n- supabase/seed.ts:1-460\n- supabase/setup/index.ts:1-470\n- supabase/setup/migrate.ts:1-130\n- supabase/setup/utils.ts:1-144\n- supabase/sql/001_init_ecommerce.sql:58-382\n- supabase/sql/003_localization.sql:44-47\n- supabase/sql/004_product_images_ordering.sql:51-76\n- supabase/sql/006_product_images_processed_variants.sql:1-17\n- supabase/sql/007_security_hardening.sql:1-114,116-144\n- supabase/sql/008_pickup_orders.sql:1-122,124-152\n- tests/admin-ai-translate.test.ts:1-24,83-881\n- tests/admin-db.test.ts:1-17,78-330,332-660\n- tests/admin-panel-state.test.ts:1-30,98-849\n- tests/admin-utils.test.ts:1-17,61-253\n- tests/auth-callback.test.ts:1-4\n- tests/auth-utils.test.ts:1-70\n- tests/background-removal-runtime.test.ts:1-497\n- tests/button-styles.test.ts:1-158\n- tests/buy-button-font.test.ts:1-10\n- tests/categories-utils.test.ts:1-89,92-179\n- tests/category-tab-styles.test.ts:1-331\n- tests/checkout-draft.test.ts:1-20\n- tests/env-bootstrap.cjs:1-5\n- tests/header-layering.test.ts:1-8\n- tests/image-processing-utils.test.ts:1-1105\n- tests/image-utils.test.ts:1-46\n- tests/integration/pickup-orders.integration.ts:1-118\n- tests/language-provider-defaults.test.ts:1-108\n- tests/likes-utils.test.ts:1-21,23-43\n- tests/orders-db.test.ts:1-43\n- tests/orders-utils.test.ts:1-25\n- tests/product-images-db.test.ts:1-624\n- tests/product-mapping.test.ts:1-218\n- tests/profiles-db.test.ts:1-100\n- tests/profiles-utils.test.ts:1-23\n- tests/responsive-utils.test.ts:1-42,44-72\n- tests/security-config.test.ts:1-18\n- tests/storefront-responsive-layout.test.ts:1-994\n- tests/supabase-env.test.ts:1-14\n- tests/supabase-service.test.ts:1-79\n- tests/supabase-setup.test.ts:1-260,262-290\n- tests/supabase-storage.test.ts:1-328\n- tests/translate-function-validation.test.ts:1-196\n- tests/translations.test.ts:1-389,391-419\n- README.md:16-197,199-227"
+}

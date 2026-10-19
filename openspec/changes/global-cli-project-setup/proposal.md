@@ -37,3 +37,6 @@ Clarification: owner means rebuilding from an empty codebase. Add explicit --reb
 
 ## 2026-10-20: Complete documentation and repair correction
 Owner reports capability folders containing only spec.md after setup and requests validation, supporting SDD documents and a changelog, plus update instructions. Extend the existing companion requirement to prompt/document setup; add deterministic missing-document repair and preserve existing project content. Deliver a patch release and verified upgrade/new-project commands after approval and verification.
+
+## 2026-10-20: Evidence quality correction
+The owner approved fixing the setup process using the kpcru audit and CLINIC-SETUP-HANDOFF.md. Repair evidence selection, substantive project guidance, concrete validation, semantic coverage review and portable provenance across initial/deep/rebuild/product setup. Provider-free repair remains a clearly incomplete scaffold. Preserve application code and custom files. No release, install, merge, push or deployment is part of this correction.

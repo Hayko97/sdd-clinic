@@ -78,3 +78,16 @@ Native regression also verifies ignored oversized exports under Git different-ow
 | Review documentation before applying | Decline/cancel snapshots | No new files or success claim |
 
 Run pnpm check then pnpm test:e2e, independent QA, actual packed CLI repair against a disposable project and public package/image checks. No live inference or reconstruction equivalence claim.
+
+## Evidence quality correction
+These checks supersede the earlier one-call/generic-plan expectations for inferred setup.
+
+- Select representative implementation evidence: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+- Reject generic validation plans: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+- Review all applicable quality areas: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+- Preserve required intent despite implementation gaps: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+- Generate substantive project guidance: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+- Record portable setup provenance: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+- Label provider-free repair scaffolds: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
+
+Repeat terminal setup / Review all applicable quality areas: rerun after applying a baseline; assert the quality review is invoked for reused accepted specs, custom companions are unchanged, missing companions receive concrete checks, and follow-up plans appear in the quality report.

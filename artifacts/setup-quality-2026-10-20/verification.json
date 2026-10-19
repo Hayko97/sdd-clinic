@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-20",
+  "branch": "codex/setup-evidence-quality",
+  "base_commit": "3d12f4f321f8340e577d8a72adec595a280957e2",
+  "scope": "Unmerged implementation; exact changed-file hashes below plus base commit identify code and spec revision. Task checkboxes are normalized by Clinic approval snapshots.",
+  "checks": {
+    "pnpm check": {
+      "status": "passed",
+      "tests_passed": 199,
+      "live_tests_skipped": 2,
+      "strict_openspec_items_passed": 12,
+      "typecheck": "passed",
+      "production_build": "passed"
+    },
+    "pnpm typecheck": "passed after final browser assertion update",
+    "pnpm test:e2e": {
+      "status": "passed",
+      "tests_passed": 8
+    },
+    "docker_browser_smoke": "passed, including reuse-only review",
+    "git diff --check": "passed"
+  },
+  "docker_image": "sha256:c3da1a5c6c5efb208482f14924016a8524db8d9f48fd2aaf0628fa9ef3858169",
+  "live_inference": "not run",
+  "independent_qa": "not run",
+  "integration": "not performed",
+  "changed_files_sha256": {
+    "CHANGELOG.md": "15bafe46dc2e8b222c4078d2d9c4f3a1dc5392b08518263bb4e2350cf54223f0",
+    "README.md": "2c142bb9bf4539d621ef195cc47727a6ffe77d2e4951189d77fed770b5970413",
+    "docs/installation-and-cli.md": "39d62fa4b61e0b89b027b1192f23aafc27c7541805071378296e7eec65982e36",
+    "openspec/changes/global-cli-project-setup/design.md": "270719ba61be4556cc249308c3f953260cfd3dc88df108cbaf0c1c821da9a17f",
+    "openspec/changes/global-cli-project-setup/proposal.md": "21e2f8dea371fcd0c7ce1341a19543bfe5e5ff9b29b40e5766c565e17b162a3a",
+    "openspec/changes/global-cli-project-setup/research.md": "93fdde1f31085c491535c299c3c5ebcc8108596743198e360f74bc1bc3e1d91d",
+    "openspec/changes/global-cli-project-setup/specs/spec-workspace/spec.md": "95a4367188ad7eb8b9edacbed34ed6c4cc7dd5c61e2f1a6445d24483b26337d9",
+    "openspec/changes/global-cli-project-setup/tasks.md": "ad74e90ca4343e16e7d20293f4212f15b26dcb6e2b4c0f81d884ce1a582e8f0b",
+    "openspec/changes/global-cli-project-setup/validation.md": "c5058986ee710ee856265a469acdb4a9c1c8ac4068f8ee92ae3ac2f7cdd1d7ab",
+    "openspec/changes/global-cli-project-setup/verification.md": "e6bf15acfaa7376fe5439742631037de58b9c14f60f858fe94a9842a0b4b0cf4",
+    "src/server/documentation.ts": "6749e71444f9af6ebad2e3806ef5eed7f760a398055db72ef9c904c87a704562",
+    "src/server/project-inventory.ts": "f38d54d35d6acd218234b6c50c762233e7ed4de1be2c8df85318e79ee0147a58",
+    "src/server/projects.ts": "3b286ef40e92d3d2b48806d15f20867a8177aa42a89757aac876f7c7236861b0",
+    "src/server/setup-analysis.ts": "9fb22da774145032c6557d4a196cc8393ea40d9f2f3ad14044e581a50e1e5bee",
+    "src/server/setup-documents.ts": "c31820defaf20559ff3d12f629305327d5436650d845b2c6d6d8edf432e27bb4",
+    "src/server/setup-drafts.ts": "09f93112ea7d1d3baac15a584e7fd176bc36b4e2978a07babf9679fc3db7abc6",
+    "src/server/setup-overview.ts": "8a67343ae7c80153734d6e141b4e7e3a3b99cb56b510a6de58bea509c19f2966",
+    "src/server/setup-quality.ts": "8b5ae8a85651cda080c5f8a431f8a500b4f13cc3bbb04b3844149a80ef345f1f",
+    "src/server/specs.ts": "27c417f0351fa40e088c361ab6f0f1961d02bb62de661859419faf2332ebbfe4",
+    "src/server/terminal-setup.ts": "6992bd44f2f6372d737edbe629ce953046c41195ce51ef3db893da711bf061cb",
+    "tests/documentation.test.ts": "f2c3008c0feec05a42c0251f0bd1ba561519e82a7a3e9cb16b456190b2f2f9cf",
+    "tests/e2e/workspace.spec.ts": "eaa84187026e8f4f3a0ffb1ec1080dad10211f804ec3b0e3e6a82f859dce0f51",
+    "tests/fixtures/engine.cjs": "d87dc7a65c3a1b6888fef2efb026a3e278446601f2f919cedfd8d59080fd076b",
+    "tests/fixtures/setup-quality.cjs": "dd7381f1fa1f2f2000e1d60dc70e891fcc166986f507b892bc5f011855a5214b",
+    "tests/helpers.ts": "d3ed7619ac8aaefece5cad337d3e3994c60f6971d7742767eb3e1514c4afc4cf",
+    "tests/reconstruction.test.ts": "35650a8d7f932876e5005cba70057e248fefb365287cbcf8b6b48dba66952a90",
+    "tests/setup-analysis.test.ts": "5847796b645b22a441d81e994e11be6694814e1bcbb429b0aae8648d4fac1d10",
+    "tests/setup-drafts.test.ts": "3883e7be1fdde20553434231279fa1f6095ea731a7079e6712d76d453d63fe47",
+    "tests/setup-overview.test.ts": "e399a278da8b8bdb59095a5b18b1f7171c0d2d83e1ed34a4912175497e9b74ea",
+    "tests/setup-quality-fixture.ts": "790555439f83fd97c4a3c2c7f383f60b49f07be274902da09eba77b644cb9268",
+    "tests/setup-quality.test.ts": "abb1626314742dc6a018efebe15ad64a1fe52efe538a5b3382228ff8ef3ee31b",
+    "tests/terminal-setup.test.ts": "e8cfca9c83f340e1d7cbf8b11003900298643230a4f2198474c593b20dc0d203"
+  }
+}

@@ -1,0 +1,86 @@
+ Image clinic-setup-quality-clinic Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 590B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 684B done
+#2 DONE 0.0s
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#4 DONE 0.9s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 125B done
+#5 DONE 0.0s
+
+#6 [1/9] FROM docker.io/library/node:24-bookworm-slim@sha256:a5f4366e834695d5f363b920c104953a535d3a9864d1bdf74566a0ebe01daee5
+#6 resolve docker.io/library/node:24-bookworm-slim@sha256:a5f4366e834695d5f363b920c104953a535d3a9864d1bdf74566a0ebe01daee5 done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 657.28kB 0.0s done
+#7 DONE 0.0s
+
+#8 [2/9] RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client python3 ca-certificates && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [5/9] COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+#9 CACHED
+
+#10 [3/9] RUN npm install -g pnpm@11.25.0 @openai/codex@0.163.0 @anthropic-ai/claude-code@2.1.302
+#10 CACHED
+
+#11 [4/9] WORKDIR /app
+#11 CACHED
+
+#12 [6/9] RUN pnpm install --frozen-lockfile
+#12 CACHED
+
+#13 [7/9] COPY . .
+#13 DONE 0.1s
+
+#14 [8/9] RUN pnpm build
+#14 0.346 $ tsc -p tsconfig.server.json && vite build
+#14 1.847 vite v7.3.7 building client environment for production...
+#14 1.877 transforming...
+#14 2.641 ✓ 1749 modules transformed.
+#14 2.735 rendering chunks...
+#14 2.740 computing gzip size...
+#14 2.748 dist/web/index.html                   0.40 kB │ gzip:   0.28 kB
+#14 2.748 dist/web/assets/index-CHA72i-t.css   47.85 kB │ gzip:  11.02 kB
+#14 2.748 dist/web/assets/index-DhVAb3go.js   438.03 kB │ gzip: 134.54 kB
+#14 2.748 ✓ built in 889ms
+#14 DONE 2.8s
+
+#15 [9/9] RUN mkdir -p /home/node/.sdd-clinic /home/node/.codex /home/node/.claude && chown -R node:node /home/node
+#15 DONE 0.1s
+
+#16 exporting to image
+#16 exporting layers 0.1s done
+#16 exporting manifest sha256:2a51e03aafbf03f8e19312e36aa975727f27257948dc286fd4d6357531481da6 done
+#16 exporting config sha256:cf05cc7e40912cfb521d3964a129e595d3ea03fa0354adeb2f23bafc4cd8e024 done
+#16 exporting attestation manifest sha256:5ad3346e925e263a8a908f73bf8f89735add5f9189e7a7a9caa7d958434f08d6 done
+#16 exporting manifest list sha256:c3da1a5c6c5efb208482f14924016a8524db8d9f48fd2aaf0628fa9ef3858169 done
+#16 naming to docker.io/library/clinic-setup-quality-clinic:latest done
+#16 unpacking to docker.io/library/clinic-setup-quality-clinic:latest 0.1s done
+#16 DONE 0.2s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ Image clinic-setup-quality-clinic Built 
+ Network clinic-setup-quality_default Creating 
+ Volume clinic-setup-quality_quality-home Creating 
+ Volume clinic-setup-quality_quality-home Creating 
+ Network clinic-setup-quality_default Creating 
+ Volume clinic-setup-quality_quality-home Created 
+ Volume clinic-setup-quality_quality-home Created 
+ Network clinic-setup-quality_default Created 
+ Network clinic-setup-quality_default Created 
+ Container clinic-setup-quality-clinic-1 Creating 
+ Container clinic-setup-quality-clinic-1 Created 
+ Container clinic-setup-quality-clinic-1 Starting 
+ Container clinic-setup-quality-clinic-1 Started 

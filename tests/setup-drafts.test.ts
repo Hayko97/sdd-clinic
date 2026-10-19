@@ -1,3 +1,4 @@
+import { qualityFixture } from "./setup-quality-fixture.js";
 import { afterEach, expect, it } from "vitest";
 import { join } from "node:path";
 import {
@@ -38,6 +39,11 @@ async function fixture(engine: EngineKind = "codex") {
     probe: adapters.codex.probe,
     async run(_p, r) {
       calls.push(r);
+      if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
+        return {
+          sessionId: "quality-fixture",
+          text: JSON.stringify(qualityFixture(r.prompt)),
+        };
       if (hang)
         await new Promise((_, reject) =>
           r.signal.addEventListener(

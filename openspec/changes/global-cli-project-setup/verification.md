@@ -91,3 +91,15 @@ Owner explicitly requested initial SDD setup without exhaustive analysis, and co
 README and installation guide distinguish initial generation, explicit --deep and guidance-only. Existing task4.3 owner review/integration remains separate.
 
 Installed global packed artifact: ~/.local/share/sddclinic/0.1.0-9515bb3e8445. Fresh zsh help confirms initial specification default and explicit --deep. Installation log: /tmp/clinic-initial-install.log.
+
+## 2026-10-20: Setup evidence-quality correction
+
+Implemented in isolated branch `codex/setup-evidence-quality`, based on `3d12f4f321f8340e577d8a72adec595a280957e2`, using the owner-approved kpcru audit handoff. Full evidence and all 36 finding dispositions: `artifacts/setup-quality-2026-10-20/REPORT.md`; exact source/spec SHA256 values: `verification.json` in that directory.
+
+- `pnpm check`: passed; 199 tests passed, 2 opt-in live tests skipped; typecheck, 12 strict OpenSpec validation items, and production build passed.
+- Final `pnpm typecheck` and `pnpm test:e2e`: passed; all 8 browser tests passed. The browser guidance assertion now checks the newly required named documents rather than the obsolete five-button count.
+- Actual isolated Docker Compose/browser smoke: passed review/apply, no early writes, source preservation, concrete validation, architecture guidance, mobile viewport and reuse-only quality review without replacing accepted specs/companions. Scripted provider protocol, not live inference.
+- Read-only kpcru source-manifest selection: 48/131 source files and 35,999 characters, with omitted ranges recorded; no generated client specs or application files changed.
+- `git diff --check`: passed. The current agent reviewed the diff. No separate independent QA, target-branch integration, global installation, publication or deployment is claimed. The active change remains unarchived.
+
+Live semantic completeness, exact application reconstruction and customer cancellation implementation remain unverified. Source hashes identify inspected bytes, not committed customer code. See the report for limitations and preserved custom-document behavior.

@@ -7,6 +7,7 @@ import {
 import {
   clinicSchema,
   projectDocuments,
+  previousArtifactTemplates,
   schemaFiles,
 } from "./documentation.js";
 import { readdir, realpath, stat } from "node:fs/promises";
@@ -339,11 +340,23 @@ export class Projects {
       docs,
       schemaFiles,
       testFiles,
-      questions: commands.some((command) => command.phase === "check")
-        ? []
-        : [
-            "No test commands were discovered. Configure commands before implementation.",
-          ],
+      questions: [
+        ...(commands.some((command) => command.phase === "check")
+          ? []
+          : [
+              "No test commands were discovered. Configure commands before implementation.",
+            ]),
+        ...Object.keys(pkg.scripts ?? {})
+          .filter(
+            (name) =>
+              /^(?:test|check|verify|e2e)(?:[:_-]|$)/.test(name) &&
+              !commands.some((c) => c.name === name),
+          )
+          .map(
+            (name) =>
+              `Additional validation script ${name} was discovered in package.json. Review its fixtures, local database/browser/service prerequisites and external effects before configuring it as a check; it is currently UNVERIFIED.`,
+          ),
+      ],
     };
   }
   async setupFiles(project: Project, documentsOnly = false) {
@@ -380,8 +393,22 @@ export class Projects {
     for (const file of [
       ...projectDocuments(project.name, inspection),
       ...schemaFiles,
-    ])
-      await addMissing(file.path, file.after);
+    ]) {
+      const previous =
+        previousArtifactTemplates[
+          file.path.replace("openspec/schemas/clinic-sdd/templates/", "")
+        ];
+      const existing = await readOptional(
+        await safePath(project.path, file.path),
+      );
+      if (previous && existing === previous)
+        additions.push({
+          path: file.path,
+          after: file.after,
+          beforeHash: hash(existing),
+        });
+      else await addMissing(file.path, file.after);
+    }
     for (const skill of defaultSkills) {
       const path = `.clinic/skills/${skill.name}/SKILL.md`;
       const existing = await readOptional(await safePath(project.path, path));

@@ -551,7 +551,23 @@ test("project guidance and complete feature folders include related archived doc
     .getByRole("button", { name: "Open workspace" })
     .click();
   const guidance = page.getByRole("region", { name: "Project guidance" });
-  await expect(guidance.getByRole("button")).toHaveCount(5);
+  for (const name of [
+    "mission.md",
+    "tech-stack.md",
+    "roadmap.md",
+    "workflow.md",
+    "architecture.md",
+    "contracts.md",
+    "ui-ux.md",
+    "operations.md",
+    "setup-review.md",
+    "baseline-analysis.md",
+  ])
+    await expect(
+      guidance.getByRole("button", {
+        name: new RegExp(name.replace(".", "\\.")),
+      }),
+    ).toBeVisible();
   await guidance.getByRole("button", { name: /mission.md/ }).click();
   await page
     .getByRole("button", { name: "Edit document", exact: true })

@@ -1,3 +1,4 @@
+import { qualityFixture } from "./setup-quality-fixture.js";
 import { afterEach, expect, it, vi } from "vitest";
 import {
   mkdtemp,
@@ -64,6 +65,11 @@ async function fixture() {
     ],
     run: async (_path, r) => {
       calls.push(r);
+      if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
+        return {
+          sessionId: "quality-fixture",
+          text: JSON.stringify(qualityFixture(r.prompt)),
+        };
       if (r.prompt.includes("CLINIC_BASELINE_ANALYZE")) {
         const chunks = JSON.parse(r.prompt.split("SOURCE_CHUNKS\n").at(-1)!);
         hasSpec ||= chunks.some(
@@ -343,6 +349,11 @@ it("keeps the selected effort through consolidation as well as analysis and synt
   const f = await fixture();
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
+    if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
+      return {
+        sessionId: "quality-fixture",
+        text: JSON.stringify(qualityFixture(r.prompt)),
+      };
     if (r.prompt.includes("CLINIC_BASELINE_ANALYZE")) {
       const chunks = JSON.parse(r.prompt.split("SOURCE_CHUNKS\n").at(-1)!);
       return {
@@ -478,6 +489,11 @@ it("full setup writes source-backed nested catalog specs after review", async ()
   await rm(join(f.path, "app.ts"));
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
+    if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
+      return {
+        sessionId: "quality-fixture",
+        text: JSON.stringify(qualityFixture(r.prompt)),
+      };
     const sources = [{ path: source, startLine: 1, endLine: 1 }];
     return {
       sessionId: "catalog",
@@ -620,6 +636,11 @@ it("fails explicitly when full setup produces no specifications and writes no gu
   const f = await fixture();
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
+    if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
+      return {
+        sessionId: "quality-fixture",
+        text: JSON.stringify(qualityFixture(r.prompt)),
+      };
     return {
       sessionId: "empty",
       text: JSON.stringify(

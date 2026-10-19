@@ -36,6 +36,8 @@ const walk = (root) =>
         )
     : [];
 function response(prompt) {
+  if (prompt.includes("CLINIC_SETUP_QUALITY"))
+    return JSON.stringify(require("./setup-quality.cjs")(prompt));
   if (prompt.includes("IMAGE_PROTOCOL")) return "Image content received";
   if (prompt.includes("CLINIC_PRODUCT_SOURCES")) {
     const chunks = JSON.parse(prompt.split("SOURCES\n").at(-1));
@@ -246,7 +248,7 @@ if (args.includes("-p")) {
       console.log("invalid JSON");
       return;
     }
-    if (input.includes("HANG")) return setInterval(() => {}, 1000);
+    if (/\bHANG\b/.test(input)) return setInterval(() => {}, 1000);
     send({
       type: "system",
       subtype: "init",
@@ -364,7 +366,7 @@ if (args.includes("-p")) {
       }
       send({ id: message.id, result: { turn: { id: "turn-fixture" } } });
       if (prompt.includes("MALFORMED")) return console.log("invalid JSON");
-      if (prompt.includes("HANG")) return;
+      if (/\bHANG\b/.test(prompt)) return;
       if (prompt.includes("ASK_QUESTION"))
         return send({
           id: 900,

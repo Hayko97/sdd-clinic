@@ -1,0 +1,254 @@
+[
+  {
+    "id": "SDD-01",
+    "original_title": "Customer cancellation is an unmet requirement",
+    "upstream_change": "Review explicitly retains required behavior and separates implementation gaps, open questions and owner decisions. Cancellation fixture preserves the requirement and records missing UI/authorization.",
+    "evidence": "setup-quality.test.ts; setup-analysis.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-02",
+    "original_title": "Every generated validation procedure is non-executable",
+    "upstream_change": "Every qualified scenario must have prerequisites, fixtures, actions, assertions, evidence and an existing/proposed/manual classification. Generic and missing checks reject the proposal.",
+    "evidence": "setup-quality.test.ts; setup-analysis.test.ts; setup-drafts.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-03",
+    "original_title": "The baseline was generated from insufficient implementation evidence",
+    "upstream_change": "Stratified complete-line windows cover docs, manifests, UI, SQL, services and tests; imports are skipped without losing semicolon-free code. Omitted ranges are explicit. Import-only inferred citations are rejected.",
+    "evidence": "setup-overview.test.ts; setup-quality.test.ts; setup-analysis.test.ts; kpcru-selection.json",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-04",
+    "original_title": "Baseline approval and verification status cannot be reconstructed from the repository",
+    "upstream_change": "Report records source and generated OpenSpec hashes, managed CLI version, no-approval and no-test-execution state. Existing change approval and invalidation remain authoritative.",
+    "evidence": "setup-quality.test.ts; documentation.test.ts; clarification.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-05",
+    "original_title": "Project mission remains an instruction to write a mission",
+    "upstream_change": "Missing mission comes from reviewed purpose evidence; an unsupported purpose or scaffold is rejected. Existing customized mission is preserved for reconciliation.",
+    "evidence": "setup-quality.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-06",
+    "original_title": "Technology guidance does not describe the architecture",
+    "upstream_change": "Architecture is mandatory in quality review and rendered in missing architecture.md and tech-stack.md with evidence or explicit gaps.",
+    "evidence": "setup-quality.test.ts; Docker smoke",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-07",
+    "original_title": "Data and interface contracts are absent from generated guidance",
+    "upstream_change": "Interfaces, data, workflows, auth and security render into contracts.md. Inputs/outputs, constraints and errors are explicit review criteria.",
+    "evidence": "setup-quality.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-08",
+    "original_title": "Entire implemented capabilities are absent from the specification set",
+    "upstream_change": "Separate semantic review compares distinct supported features with proposed specs and rejects reported omissions; synthesis prompts preserve full feature coverage.",
+    "evidence": "setup-analysis.test.ts semantic-blocker fixture",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-09",
+    "original_title": "Screen navigation and interaction contracts are unspecified",
+    "upstream_change": "Mandatory navigation review includes screens, entry/exit actions, forms, dialogs, profile/media and administration.",
+    "evidence": "setup-quality.test.ts; qualityAreas.navigation",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-10",
+    "original_title": "Responsive behavior is implemented but not specified",
+    "upstream_change": "Mandatory responsive review requires platform/breakpoint/long-content evidence, or an explicit gap; it does not invent viewport values.",
+    "evidence": "setup-quality.test.ts; qualityAreas.responsive",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-11",
+    "original_title": "Loading empty error and recovery states are missing",
+    "upstream_change": "Loading/empty/error/retry/success/disabled/validation states are review criteria. Missing supported UI states can block proposal creation.",
+    "evidence": "setup-analysis.test.ts semantic-blocker fixture",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-12",
+    "original_title": "Accessibility expectations and acceptance checks are absent",
+    "upstream_change": "Mandatory semantics, names, keyboard, focus, escape/return, announcements and error review; no conformance claim from source inspection.",
+    "evidence": "setup-quality.test.ts; qualityAreas.accessibility",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-13",
+    "original_title": "Visual language has no approved reference or acceptance boundary",
+    "upstream_change": "Review distinguishes actual visual references from missing evidence. Product fixture retains an evidenced green-action requirement.",
+    "evidence": "setup-drafts.test.ts; workspace.spec.ts; qualityAreas.visual",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-14",
+    "original_title": "Localization specifies language choice but not persistence or fallback",
+    "upstream_change": "Review requires supported languages, guest/account persistence, null/empty fallbacks, date/number formatting and long text.",
+    "evidence": "setup-quality.test.ts; qualityAreas.localization",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-15",
+    "original_title": "Authentication covers successful paths but omits failure UX",
+    "upstream_change": "Review requires sign-in/out, guest gating, validation and error/recovery behavior.",
+    "evidence": "setup-quality.test.ts; qualityAreas.authentication",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-16",
+    "original_title": "Platform authentication and session lifecycle coverage is underspecified",
+    "upstream_change": "Architecture/authentication review requires provider, callback, session and web/native distinctions.",
+    "evidence": "setup-quality.test.ts; qualityAreas.architecture and authentication",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-17",
+    "original_title": "Checkout lacks authentication and customer input contracts",
+    "upstream_change": "Interface/authentication/security review covers roles, input validation and trusted authority rather than a success-only checkout.",
+    "evidence": "setup-quality.test.ts; qualityAreas.interfaces and authentication",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-18",
+    "original_title": "Reservation integrity and rejection rules are incomplete",
+    "upstream_change": "Data/workflow review explicitly covers constraints, transaction authority, rollback and state effects.",
+    "evidence": "setup-quality.test.ts; qualityAreas.data and workflows",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-19",
+    "original_title": "The concurrency scenario permits an unusable implementation",
+    "upstream_change": "Review calls out one valid success versus allowing both concurrent attempts to fail; fixtures/prerequisites must state the environment.",
+    "evidence": "qualityAreas.workflows; validateQuality scenario-plan checks",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-20",
+    "original_title": "Idempotency and uncertain submission recovery are unspecified",
+    "upstream_change": "Workflow review explicitly covers repeated requests and uncertain outcomes; cancellation check demonstrates stock restoration once across retry.",
+    "evidence": "setup-quality.test.ts cancellation fixture",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-21",
+    "original_title": "Checkout restoration is too broad to be correct for every saved draft",
+    "upstream_change": "Workflow review requires draft expiry, account recovery and failure conditions rather than unconditional restoration.",
+    "evidence": "setup-quality.test.ts semantic-blocker fixture",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-22",
+    "original_title": "Administrator order state and stock/payment effects are undefined",
+    "upstream_change": "Workflow review calls for permissions, transitions and stock/payment effects; contract guidance keeps these distinct from architecture.",
+    "evidence": "qualityAreas.workflows; qualityDocuments contracts rendering",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-23",
+    "original_title": "Customer order history has no presentation or lifecycle contract",
+    "upstream_change": "Navigation and state review includes history entry/exit/display behavior. Data/interface checks address output snapshots and relationships.",
+    "evidence": "qualityAreas.navigation, states, data and interfaces",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-24",
+    "original_title": "Catalog availability is tied to one release dataset",
+    "upstream_change": "Source-based review exposes hard-coded behavior as observed evidence or a question; it must not generalize a special case into approved product policy.",
+    "evidence": "reviewSetup prompt and decision schema",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-25",
+    "original_title": "Catalog completeness and scale behavior are unspecified",
+    "upstream_change": "Nonfunctional review explicitly calls out scale/pagination and unknown targets, without inventing a product policy.",
+    "evidence": "qualityAreas.nonfunctional",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-26",
+    "original_title": "Product information lacks semantic accuracy rules",
+    "upstream_change": "Visual review explicitly treats contradictory badges as gaps, not endorsed intent; user decisions remain separate.",
+    "evidence": "qualityAreas.visual; decision schema",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-27",
+    "original_title": "Translation success tests a prompt instruction rather than a useful result",
+    "upstream_change": "Workflow review explicitly requires usable output, not merely sending a model prompt.",
+    "evidence": "qualityAreas.workflows",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-28",
+    "original_title": "Translation input rules and editor behavior are omitted",
+    "upstream_change": "Workflow review includes allowlists, limits, preserve/overwrite semantics and failures.",
+    "evidence": "qualityAreas.workflows",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-29",
+    "original_title": "Security invariants are represented only in a few happy-path-adjacent scenarios",
+    "upstream_change": "Mandatory security review covers authorization, ownership, SQL policies, input limits, privacy and abuse constraints without inventing assurances.",
+    "evidence": "qualityAreas.security; setup-quality.test.ts unknown-area guard",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-30",
+    "original_title": "Configured checks omit the database suite and UI validation requirements",
+    "upstream_change": "Extra package test/check/e2e scripts are surfaced with prerequisite review rather than silently omitted or blindly run. Plans require safe environment/fixture details.",
+    "evidence": "documentation.test.ts additional check discovery",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-31",
+    "original_title": "Validation files invite planned checks and results to be edited together",
+    "upstream_change": "Generated plans contain proposed checks and unverified status; execution outcomes belong in a separate revision-linked report.",
+    "evidence": "setup-quality.test.ts; setup-repair.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-32",
+    "original_title": "The required OpenSpec CLI version and invocation are not reproducible",
+    "upstream_change": "Report resolves the actual managed OpenSpec package and records exact version 1.14.2; existing validation uses that package, with no latest download or fake pass.",
+    "evidence": "setup-quality.test.ts; pnpm spec:validate; Docker smoke",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-33",
+    "original_title": "Roadmap and open-question handling remain generic",
+    "upstream_change": "Report assigns D1\u2026 entries to implementation gaps, open questions and owner decisions; roadmap remains evidence-based and unverified.",
+    "evidence": "setup-quality.test.ts; qualityDocuments",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-34",
+    "original_title": "Generator templates lack explicit UI and nonfunctional applicability prompts",
+    "upstream_change": "Templates now ask for UI/UX/nonfunctional applicability and concrete test plans. Exact previous defaults upgrade; custom templates remain intact. Provider-free companions are explicit incomplete drafts.",
+    "evidence": "documentation.test.ts; setup-quality.test.ts; setup-repair.test.ts",
+    "status": "Implementation and fixture coverage"
+  },
+  {
+    "id": "SDD-35",
+    "original_title": "Nonfunctional and operational behavior has no measurable acceptance contract",
+    "upstream_change": "Mandatory nonfunctional and operations topics require evidence or explicit owner questions; no arbitrary latency, scale or reliability targets are fabricated.",
+    "evidence": "setup-quality.test.ts; qualityAreas.nonfunctional and operations",
+    "status": "Mandatory semantic-review criterion; live semantic accuracy unverified"
+  },
+  {
+    "id": "SDD-36",
+    "original_title": "Auditability depends on working-tree state that is not versioned",
+    "upstream_change": "Source hashes identify inspected bytes and report explicitly states they are not a Git commit or source backup. No forced commit of customer app files.",
+    "evidence": "setup-quality.test.ts; inventory/stale-source regression tests",
+    "status": "Implementation and fixture coverage"
+  }
+]

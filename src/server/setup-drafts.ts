@@ -1,3 +1,4 @@
+import { qualityDocuments, reviewSetup } from "./setup-quality.js";
 import {
   mkdir,
   readFile,
@@ -415,6 +416,10 @@ export class SetupDrafts {
               })),
             );
             const findings: string[] = [];
+            const imageEvidence: {
+              text: string;
+              sources: { path: string; startLine: number; endLine: number }[];
+            }[] = [];
             const answers = answerContext(
               this.store,
               project.id,
@@ -457,6 +462,10 @@ export class SetupDrafts {
                 ],
               );
               findings.push(result);
+              imageEvidence.push({
+                text: result,
+                sources: [{ path: a.id, startLine: 1, endLine: 1 }],
+              });
             }
             assert(
               findings.join("\n").length <= 180000,
@@ -470,7 +479,7 @@ export class SetupDrafts {
             const result = outputSchema.parse(
               parseJsonOutput(
                 await invoke(
-                  `CLINIC_PRODUCT_SYNTHESIZE\n${clarificationInstruction}\nCreate a new project's intended SDD baseline, not code. Return {"summary":"...","questions":[],"files":[{"path":"...","content":"complete Markdown","sourceIds":["supporting source IDs"]}]}. If product decisions block a reliable specification, return questions and no final files. Generate native openspec/specs/<capability>/spec.md with # title, ## Purpose, ## Requirements, ### Requirement: titles, SHALL behavior and #### Scenario: WHEN/THEN cases. Label intended behavior unimplemented/unverified. Only create missing project guidance; preserve existing customized documents. Include missing openspec/project/mission.md, tech-stack.md (leave unstated choices open), roadmap.md and ui-ux.md. Do not invent product decisions or tests. Preserve existing files. Overlapping existing intent must be refined in openspec/changes/product-${d.id.slice(0, 8)}/ with proposal/design/research/validation/tasks/.openspec.yaml and native delta specs; never overwrite accepted specs or duplicate intent. Cite source IDs in every spec. Clinic deterministically creates a validation.md companion beside each new capability spec from its scenarios; do not emit these companion files. For change bundles, include all generated scenarios in the change validation plan.\nExisting paths: ${JSON.stringify(inventory.files.map((f) => f.path))}\nAllowed source IDs: ${JSON.stringify(sourceIds)}\nClarification answers: ${answers}\nFindings:\n${findings.join("\n\n")}`,
+                  `CLINIC_PRODUCT_SYNTHESIZE\n${clarificationInstruction}\nCreate a new project's intended SDD baseline, not code. Return {"summary":"...","questions":[],"files":[{"path":"...","content":"complete Markdown","sourceIds":["supporting source IDs"]}]}. If product decisions block a reliable specification, return questions and no final files. Generate native openspec/specs/<capability>/spec.md with # title, ## Purpose, ## Requirements, ### Requirement: titles, SHALL behavior and #### Scenario: WHEN/THEN cases. Label intended behavior unimplemented/unverified. Only create missing project guidance; preserve existing customized documents. Include missing openspec/project/mission.md, tech-stack.md (leave unstated choices open), roadmap.md and ui-ux.md. Do not invent product decisions or tests. Preserve existing files. Overlapping existing intent must be refined in openspec/changes/product-${d.id.slice(0, 8)}/ with proposal/design/research/validation/tasks/.openspec.yaml and native delta specs; never overwrite accepted specs or duplicate intent. Cite source IDs in every spec. A separate quality review creates concrete scenario validation plans beside each new capability spec; do not emit these companion files. Include every supported UI state, accessibility/localization/auth flow and domain invariant; missing features or success-only intent will fail review. For change bundles, include all generated scenarios in the change validation plan.\nExisting paths: ${JSON.stringify(inventory.files.map((f) => f.path))}\nAllowed source IDs: ${JSON.stringify(sourceIds)}\nClarification answers: ${answers}\nFindings:\n${findings.join("\n\n")}`,
                 ),
               ),
             );
@@ -492,7 +501,7 @@ export class SetupDrafts {
               "No project specifications were generated.",
             );
             const setup = await this.runs.projects.setupFiles(project);
-            const files: {
+            let files: {
               path: string;
               after: string;
               encoding?: "base64";
@@ -546,6 +555,60 @@ export class SetupDrafts {
               path: `openspec/project/sources/brief-${d.id}.md`,
               after: `# Product source record\n\n## Prompt\n${d.prompt}\n\n## Decisions\n${answers}\n\n## Attachments\n${d.attachments.map((a) => `- ${a.id}: ${a.name}; SHA256 ${a.hash}`).join("\n")}\n\n## Review\n${result.summary}\nIntended behavior; no application implementation or tests were performed.\n`,
             });
+            const coverage = `Product source setup: ${chunks.length} text chunks and ${d.attachments.filter((a) => a.image).length} interpreted images. No application execution or visual conformance verification. Existing application source outside supplied product/OpenSpec sources was not analyzed.`;
+            const quality = await reviewSetup({
+              files: files.filter((f) =>
+                /\/specs\/[^/]+\/spec\.md$/.test(f.path),
+              ),
+              evidence: [
+                ...chunks.map((c) => ({
+                  text: c.content,
+                  sources: [
+                    {
+                      path: c.path,
+                      startLine: c.startLine,
+                      endLine: c.endLine,
+                    },
+                  ],
+                })),
+                ...imageEvidence,
+                ...(answers
+                  ? [
+                      {
+                        text: answers,
+                        sources: [
+                          {
+                            path: "owner-answers",
+                            startLine: 1,
+                            endLine: answers.split("\n").length,
+                          },
+                        ],
+                      },
+                    ]
+                  : []),
+              ],
+              coverage,
+              signal,
+              invoke,
+              progress: (message) =>
+                this.store.append(run.id, "progress", { message }),
+            });
+            const reviewed = await qualityDocuments({
+              root: project.path,
+              files: files.filter((f) => !f.encoding),
+              quality,
+              coverage,
+              sources: [
+                ...inventory.files.map(({ path, hash }) => ({ path, hash })),
+                ...allSources
+                  .filter((s) => !s.path.startsWith("openspec/"))
+                  .map((s) => ({ path: s.path, hash: hash(s.content) })),
+                ...d.attachments
+                  .filter((a) => a.image)
+                  .map((a) => ({ path: a.id, hash: a.hash })),
+              ],
+            });
+            files = [...reviewed, ...files.filter((f) => f.encoding)];
             const validation = join(this.directory(d), "validation");
             await rm(validation, { recursive: true, force: true });
             await mkdir(validation, { recursive: true });

@@ -1,3 +1,4 @@
+import { setupReviewPath, setupReviewMarker } from "./setup-quality.js";
 import { completeSetupDocuments } from "./setup-documents.js";
 import { reconstructionPath, reconstructionMarker } from "./reconstruction.js";
 import { requireClearIntent } from "./clarification.js";
@@ -182,6 +183,7 @@ export class SpecRepository {
           path,
         ) ||
         path === baselineReportPath ||
+        path === setupReviewPath ||
         path === reconstructionPath ||
         this.allowed(path, "setup")
       );
@@ -310,7 +312,11 @@ export class SpecRepository {
         await safePath(project.path, f.path),
         f.encoding,
       );
-      if (source === "product" && !this.allowed(f.path, "setup"))
+      if (
+        source === "product" &&
+        f.path !== setupReviewPath &&
+        !this.allowed(f.path, "setup")
+      )
         assert(
           before === null,
           `Preserve existing ${f.path}; use a refinement change.`,
@@ -319,6 +325,14 @@ export class SpecRepository {
         assert(
           before === null,
           `Baseline setup cannot overwrite ${f.path}. Refine the existing specification instead.`,
+        );
+      if (
+        ["baseline", "product"].includes(source) &&
+        f.path === setupReviewPath
+      )
+        assert(
+          before === null || before.startsWith(setupReviewMarker),
+          "Preserve the customized setup quality report.",
         );
       if (source === "baseline" && f.path === reconstructionPath)
         assert(

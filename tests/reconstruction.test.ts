@@ -1,3 +1,4 @@
+import { qualityFixture } from "./setup-quality-fixture.js";
 import { afterEach, expect, it } from "vitest";
 import { mkdtemp, mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -37,6 +38,11 @@ async function fixture(invalid?: "missing" | "citation") {
     ],
     run: async (_path, request) => {
       prompts.push(request.prompt);
+      if (request.prompt.includes("CLINIC_SETUP_QUALITY"))
+        return {
+          sessionId: "quality-fixture",
+          text: JSON.stringify(qualityFixture(request.prompt)),
+        };
       expect(request.reasoning).toBe("medium");
       let result: unknown;
       if (request.prompt.includes("CLINIC_RECONSTRUCTION_SYNTHESIZE")) {

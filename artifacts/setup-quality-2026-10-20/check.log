@@ -1,0 +1,105 @@
+$ pnpm typecheck && pnpm test && pnpm spec:validate && pnpm build
+$ tsc --noEmit
+$ vitest run
+
+ RUN  v3.2.7 /Users/ashugh/Documents/ChatGPT/sdd-clinic-setup-quality
+
+ ✓ tests/provider-install.test.ts (2 tests) 10062ms
+   ✓ installs the pinned provider once and forwards arguments, preserving failures  1250ms
+   ✓ allows cold public-image provider preparation to exceed the normal eight-second probe timeout  8812ms
+ ✓ tests/clarification.test.ts (7 tests) 5715ms
+   ✓ pauses and resumes analysis with the same workflow identity and durable decisions  1045ms
+   ✓ pauses and resumes specification with the same workflow identity and durable decisions  888ms
+   ✓ pauses and resumes implementation with the same workflow identity and durable decisions  1071ms
+   ✓ pauses and resumes qa with the same workflow identity and durable decisions  984ms
+   ✓ revises changed intent, invalidates approval and preserves partial implementation until reapproval  1078ms
+   ✓ rejects stale revision answers and cancels waiting runs without deleting partial work  326ms
+   ✓ can stop a durable waiting run and retains its partial work  323ms
+ ✓ tests/delivery.test.ts (5 tests) 4236ms
+   ✓ spec-to-delivery acceptance > implements and verifies an isolated typescript project, then tracks integration  1514ms
+   ✓ spec-to-delivery acceptance > implements and verifies an isolated python project, then tracks integration  1305ms
+   ✓ spec-to-delivery acceptance > keeps failed QA distinct and records a linked finding  717ms
+   ✓ spec-to-delivery acceptance > keeps unverified QA distinct and records a linked finding  697ms
+ ✓ tests/setup-analysis.test.ts (24 tests) 3123ms
+   ✓ reuses existing specs on repeated setup and preserves customized agent guidance  340ms
+ ✓ tests/workflows.test.ts (8 tests) 2783ms
+   ✓ analyzes, refines, waits for review, then implements and runs QA with project skills  906ms
+   ✓ uses an approved unchanged change without another authoring request  845ms
+ ✓ tests/auth.test.ts (4 tests) 2790ms
+   ✓ authenticates through provider device login, confirms connection and never persists the code  1187ms
+   ✓ rejects duplicate attempts/path changes, cancels login and handles provider rejection  1249ms
+   ✓ gives container-specific authentication guidance  305ms
+ ✓ tests/engines.test.ts (10 tests) 2690ms
+   ✓ provider protocol contracts > Codex probes and completes a structured streamed conversation  355ms
+   ✓ provider protocol contracts > Codex reports malformed output and can interrupt a hanging process  397ms
+   ✓ provider protocol contracts > Claude probes and completes a structured streamed conversation  337ms
+   ✓ provider protocol contracts > Claude reports malformed output and can interrupt a hanging process  389ms
+stderr | tests/setup-drafts.test.ts > handles image and text-only attachment input and exposes unsupported or unreadable uploads
+Warning: Indexing all PDF objects
+
+stderr | tests/setup-drafts.test.ts > extracts real PDF and DOCX documents with page evidence and rejects scanned PDF pages
+Warning: UnknownErrorException: Ensure that the `standardFontDataUrl` API parameter is provided.
+
+ ✓ tests/setup-drafts.test.ts (10 tests) 2201ms
+   ✓ preserves drafts offline and rejects omitted chunks, malformed specs and unexpected destinations  405ms
+   ✓ handles image and text-only attachment input and exposes unsupported or unreadable uploads  340ms
+ ✓ tests/terminal-setup.test.ts (18 tests) 2021ms
+   ✓ automatically signs in when needed and verifies authentication before analysis  331ms
+ ✓ tests/cli-launcher.test.ts (6 tests) 2066ms
+   ✓ starts the managed GUI from another cwd with requested port and data directory  564ms
+   ✓ public package runtime selection: pull  450ms
+   ✓ public package runtime selection: build  435ms
+   ✓ public package runtime selection: failed-pull  429ms
+ ✓ tests/documentation.test.ts (6 tests) 1785ms
+   ✓ requires planned coverage and invalidates approval when shared guidance changes  433ms
+   ✓ implements and independently verifies a Clinic bundle with its exact project guidance and schema  832ms
+ ✓ tests/terminal-login.test.ts (5 tests) 643ms
+   ✓ uses standard login, relays its URL and cancels the subprocess and listener  362ms
+ ✓ tests/specs.test.ts (6 tests) 532ms
+ ✓ tests/agent-instructions.test.ts (11 tests) 474ms
+ ✓ tests/setup-overview.test.ts (3 tests) 446ms
+   ✓ default setup creates real specs with bounded synthesis and a separate quality review without source batches  310ms
+ ✓ tests/connection-input.test.ts (9 tests) 389ms
+ ✓ tests/reconstruction.test.ts (4 tests) 310ms
+ ✓ tests/project-inventory.test.ts (3 tests) 225ms
+ ✓ tests/setup-repair.test.ts (12 tests) 205ms
+ ✓ tests/data.test.ts (14 tests) 193ms
+ ✓ tests/skills.test.ts (1 test) 182ms
+ ✓ tests/mcp.test.ts (1 test) 136ms
+ ✓ tests/api.test.ts (5 tests) 107ms
+ ✓ tests/setup-quality.test.ts (19 tests) 34ms
+ ✓ tests/ssh.test.ts (1 test) 21ms
+ ✓ tests/connectors.test.ts (3 tests) 3ms
+ ✓ tests/workspace.test.ts (2 tests) 2ms
+ ↓ tests/live.test.ts (2 tests | 2 skipped)
+
+ Test Files  27 passed | 1 skipped (28)
+      Tests  199 passed | 2 skipped (201)
+   Start at  03:48:11
+   Duration  48.62s (transform 295ms, setup 0ms, collect 3.01s, tests 43.38s, environment 1ms, prepare 576ms)
+
+$ openspec validate --all --strict
+- Validating...
+✓ spec/agent-delivery
+✓ spec/agent-scheduling
+✓ spec/clinic-api
+✓ spec/clinic-interface
+✓ spec/developer-workflow
+✓ spec/engine-connections
+✓ change/global-cli-project-setup
+✓ spec/local-runtime
+✓ spec/product-analysis
+✓ spec/project-skills
+✓ change/public-distribution
+✓ spec/spec-workspace
+Totals: 12 passed, 0 failed (12 items)
+$ tsc -p tsconfig.server.json && vite build
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1749 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/web/index.html                   0.40 kB │ gzip:   0.28 kB
+dist/web/assets/index-CHA72i-t.css   47.85 kB │ gzip:  11.02 kB
+dist/web/assets/index-DhVAb3go.js   438.03 kB │ gzip: 134.54 kB
+✓ built in 762ms

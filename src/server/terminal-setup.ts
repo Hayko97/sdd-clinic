@@ -271,6 +271,9 @@ export async function terminalSetup(
           : "Guidance-only setup: semantic code analysis was not performed; no model is used.\n",
       );
       const setup = await projects.setupFiles(project, !!options.repair);
+      io.write(
+        "Provider-free companions are INCOMPLETE drafts: refine concrete fixtures, actions, assertions and prerequisites before implementation approval.\n",
+      );
       if (options.repair) {
         assert(
           setup.specCount > 0,

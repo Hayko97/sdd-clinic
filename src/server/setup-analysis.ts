@@ -5,7 +5,12 @@ import {
   reconstructionInstructions,
   renderReconstruction,
 } from "./reconstruction.js";
-import { setupOverview } from "./setup-overview.js";
+import { qualityDocuments, reviewSetup } from "./setup-quality.js";
+import {
+  setupOverview,
+  overviewCoverage,
+  modulePreambleLines,
+} from "./setup-overview.js";
 import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
@@ -209,7 +214,7 @@ export async function analyzeSetup(options: {
   const questions: string[] = [];
   progress(
     initial
-      ? `Creating initial specifications directly from ${chunks.length} selected files (${chunks.reduce((n, c) => n + c.content.length, 0)} source characters). Full source audit is available with --deep.`
+      ? `Creating initial specifications directly from ${new Set(chunks.map((c) => c.path)).size} selected files in ${chunks.length} line ranges (${chunks.reduce((n, c) => n + c.content.length, 0)} source characters). Full source audit is available with --deep.`
       : "Inventory complete. Analyzing all eligible text batches.",
     {
       files: inventory.files.length,
@@ -224,7 +229,7 @@ export async function analyzeSetup(options: {
       `Analyzing batch ${index + 1} of ${batches.length} (${batch.length} source chunks).`,
       { batch: index + 1, batches: batches.length },
     );
-    const prompt = `CLINIC_BASELINE_ANALYZE\n${readOnlyContext}\n${rebuilding ? "Capture reconstruction details precisely: interface input/output contracts, data fields/defaults/constraints, state transitions, permissions, error cases, screen interactions/assets, dependency versions, configuration names (never values of secrets), and evidenced install/build/run commands. Preserve literal externally observable values and record unavailable details. Summaries must be usable without reading implementation code." : ""} Analyze every supplied chunk including inline documentation, tests, interfaces, data models and failure paths. Return {"reviewedChunks":[all supplied chunk ids exactly once],"notes":[{"text":"behavior, intent, boundaries or relevant overlap", "sources":[{"path":"source path","startLine":1,"endLine":2}]}],"questions":["uncertainty or conflict"]}. Use at most 80 concise notes; cite only lines in this batch. Use absolute file line numbers within each chunk's startLine/endLine (not chunk-relative offsets). No capability is required when files contain no behavior.\nSOURCE_CHUNKS\n${JSON.stringify(batch)}`;
+    const prompt = `CLINIC_BASELINE_ANALYZE\n${readOnlyContext}\n${rebuilding ? "Capture reconstruction details precisely: interface input/output contracts, data fields/defaults/constraints, state transitions, permissions, error cases, screen interactions/assets, dependency versions, configuration names (never values of secrets), and evidenced install/build/run commands. Preserve literal externally observable values and record unavailable details. Summaries must be usable without reading implementation code." : ""} Analyze every supplied chunk including inline documentation, tests, interfaces, data models and failure paths. Retain specific UI states, navigation, responsive/accessibility/localization rules, auth provider/platform flows, security policies, transactional/concurrency/idempotency constraints, draft recovery, translation result rules, all check commands and their prerequisites. Separate observed behavior from intended requirements and implementation gaps. Do not discard distinct features or edge cases. Return {"reviewedChunks":[all supplied chunk ids exactly once],"notes":[{"text":"behavior, intent, boundaries or relevant overlap", "sources":[{"path":"source path","startLine":1,"endLine":2}]}],"questions":["uncertainty or conflict"]}. Use at most 80 concise notes; cite only lines in this batch. Use absolute file line numbers within each chunk's startLine/endLine (not chunk-relative offsets). No capability is required when files contain no behavior.\nSOURCE_CHUNKS\n${JSON.stringify(batch)}`;
     const parsed = await validated("analyze-request", prompt, (value) => {
       const parsed = analysisOutput.parse(value);
       assert(
@@ -301,7 +306,7 @@ export async function analyzeSetup(options: {
   );
   const parsed = await validated(
     "create-spec",
-    `CLINIC_BASELINE_SYNTHESIZE\n${readOnlyContext}\n${initial ? "Create an initial SDD specification set from the selected project context below. Infer high-level supported user-facing capabilities for future spec-driven development. This is a bounded overview, not an exhaustive implementation audit; identify gaps and questions. Do not describe coverage as complete." : "This is a reviewed import of existing behavior, not a new-feature change."} Return {"summary":"baseline findings", "capabilities":[{"name":"capability-slug","purpose":"user outcome","requirements":[{"name":"Requirement title","statement":"The system SHALL ...","basis":"documented or inferred","sources":[{"path":"...","startLine":1,"endLine":2}],"scenarios":[{"name":"Scenario title","when":"trigger","then":"observable outcome"}]}]}],"reused":[{"path":"existing spec or active change path","reason":"matching intent or gap"}],"questions":["contradictions or uncertainty"]}. Create only missing capabilities, never duplicate accepted or pending intent. Use a meaningful purpose of at least 50 characters, coherent observable requirements and success/failure scenarios supported by the evidence. Existing bugs are questions, not intended requirements. Empty capabilities is correct if there is no inferable behavior or everything is already specified. All candidates remain inferred and unverified until human review. At most 60 capabilities.\nEXISTING_SPEC_PATHS\n${JSON.stringify(existing)}\nFINDINGS\n${JSON.stringify(notes)}`,
+    `CLINIC_BASELINE_SYNTHESIZE\n${readOnlyContext}\n${initial ? "Create an initial SDD specification set from the selected project context below. Infer high-level supported user-facing capabilities for future spec-driven development. This is a bounded overview, not an exhaustive implementation audit; identify gaps and questions. Do not describe coverage as complete." : "This is a reviewed import of existing behavior, not a new-feature change."} Return {"summary":"baseline findings", "capabilities":[{"name":"capability-slug","purpose":"user outcome","requirements":[{"name":"Requirement title","statement":"The system SHALL ...","basis":"documented or inferred","sources":[{"path":"...","startLine":1,"endLine":2}],"scenarios":[{"name":"Scenario title","when":"trigger","then":"observable outcome"}]}]}],"reused":[{"path":"existing spec or active change path","reason":"matching intent or gap"}],"questions":["contradictions or uncertainty"]}. Create only missing capabilities, never duplicate accepted or pending intent. Use a meaningful purpose of at least 50 characters, coherent observable requirements and success/failure scenarios supported by the evidence. Existing bugs are questions, not intended requirements. Empty capabilities is correct if there is no inferable behavior or everything is already specified. All candidates remain inferred and unverified until human review. Cover supported UI/UX and domain invariants including errors, roles, transaction rollback, concurrency, retries and recovery; do not reduce behavior to a success-only overview. Preserve documented requirements even if unimplemented; flag implementation gaps separately from open product questions. An independent quality review will reject missing supported features, generic scenarios and import-only evidence. At most 60 capabilities.\nEXISTING_SPEC_PATHS\n${JSON.stringify(existing)}\nFINDINGS\n${JSON.stringify(notes)}`,
     (value) => {
       const parsed = baselineOutput.parse(value);
       assert(
@@ -329,6 +334,30 @@ export async function analyzeSetup(options: {
               ),
               `Synthesis cited evidence outside its supplied findings: ${source.path}:${source.startLine}-${source.endLine}. Cite only the supplied finding ranges.`,
             );
+          if (requirement.basis === "inferred") {
+            const substantive = requirement.sources.some((source) => {
+              if (!/\.[jt]sx?$/.test(source.path)) return true;
+              const text = inventory.files
+                .find((f) => f.path === source.path)!
+                .content.split("\n")
+                .slice(source.startLine - 1, source.endLine)
+                .join("\n");
+              const uncommented = text
+                .replace(/\/\*[\s\S]*?\*\//g, "")
+                .replace(/\/\/[^\n]*/g, "");
+              return (
+                uncommented
+                  .split("\n")
+                  .slice(modulePreambleLines(uncommented))
+                  .join("\n")
+                  .trim().length > 0
+              );
+            });
+            assert(
+              substantive,
+              `Inferred requirement ${requirement.name} cites only imports or re-exports. Supply implementation or test evidence.`,
+            );
+          }
         }
       assert(
         !notes.length ||
@@ -377,11 +406,6 @@ export async function analyzeSetup(options: {
         beforeHash: null,
         after: `# ${capability.name} Specification\n\n> Inferred baseline from project code and documentation. Review intent and resolve questions before development. Implementation and test results are unverified.\n\n## Purpose\n${capability.purpose}\n\n## Requirements\n\n${capability.requirements.map((r) => `### Requirement: ${r.name}\n${r.statement}\n\nEvidence (${r.basis}): ${refs(r.sources)}.\n\n${r.scenarios.map((s) => `#### Scenario: ${s.name}\n- **WHEN** ${s.when}\n- **THEN** ${s.then}\n`).join("\n")}`).join("\n")}`,
       },
-      {
-        path: `openspec/specs/${capability.name}/validation.md`,
-        beforeHash: null,
-        after: `# ${capability.name} validation plan\n\nSpecification: [spec.md](./spec.md)\n\nStatus: UNVERIFIED. Setup has not executed application tests or changed application code. This inferred baseline is not proof of complete coverage or exact reconstruction of the existing application. Review requirements and missing behavior before implementing from these documents.\n\n## Procedure\nRun each check against the application in an appropriate test environment. Arrange the stated conditions, exercise the behavior, compare the observations with the expected result, and record actual evidence. Adapt the procedure to the project's interfaces; no test command or environment is assumed.\n\n${capability.requirements.map((r, ri) => r.scenarios.map((s, si) => `## Check ${ri + 1}.${si + 1}: ${s.name}\n\nRequirement: ${r.name}\n\nRequired behavior: ${r.statement}\n\nScenario: ${s.name}\n\n1. Arrange and exercise (WHEN): ${s.when}\n2. Verify the observation (THEN): ${s.then}\n3. Record the fixture/input, action taken, actual output, comparison with the expected observation, and relevant test log or screenshot.\n\nBasis (${r.basis}): ${refs(r.sources)}.\n\n- Status: UNVERIFIED\n- Execution command or manual steps: Not recorded\n- Environment and application revision: Not recorded\n- Actual result and evidence location: Not recorded\n`).join("\n")).join("\n")}`,
-      },
     ];
   });
   for (const file of generated)
@@ -389,6 +413,49 @@ export async function analyzeSetup(options: {
       (await readOptional(await safePath(project.path, file.path))) === null,
       `Baseline analysis cannot overwrite ${file.path}. Refine the existing specification instead.`,
     );
+  const coverage = initial
+    ? overviewCoverage(inventory, chunks)
+    : `${inventory.files.length} eligible text files; ${chunks.length} complete chunks acknowledged across ${batches.length} analysis batches. Semantic completeness remains unverified.`;
+  const reviewSpecifications = [
+    ...generated,
+    ...inventory.files
+      .filter((f) => /^openspec\/specs\/[^/]+\/spec\.md$/.test(f.path))
+      .map((f) => ({ path: f.path, after: f.content })),
+  ];
+  const quality = reviewSpecifications.length
+    ? await reviewSetup({
+        files: reviewSpecifications,
+        evidence: [
+          ...notes,
+          // Accepted/pending intent remains evidence even when code analysis
+          // finds no inferable behavior (for example a specification-first repo).
+          ...chunks
+            .filter((c) =>
+              /^openspec\/(?:specs|project|changes)\//.test(c.path),
+            )
+            .map((c) => ({
+              text: c.content,
+              sources: [
+                { path: c.path, startLine: c.startLine, endLine: c.endLine },
+              ],
+            })),
+        ],
+        coverage,
+        signal,
+        invoke: (prompt) => invoke("analyze-request", prompt),
+        progress,
+      })
+    : null;
+  const reviewedFiles = quality
+    ? await qualityDocuments({
+        root: project.path,
+        files: [...setupFiles, ...generated],
+        specifications: reviewSpecifications,
+        quality,
+        coverage,
+        sources: inventory.files.map(({ path, hash }) => ({ path, hash })),
+      })
+    : [...setupFiles, ...generated];
   const scratch = await mkdtemp(join(tmpdir(), "clinic-baseline-validation-"));
   try {
     for (const file of generated) {
@@ -421,16 +488,12 @@ export async function analyzeSetup(options: {
     "Project sources changed during analysis. Reanalyze the current project before reviewing a baseline.",
   );
   const uniqueQuestions = [...new Set([...questions, ...parsed.questions])];
-  const coverage = initial
-    ? `Initial specification setup: ${chunks.length} selected files from ${inventory.files.length} eligible files. At most 36,000 source characters; ordinary files may be truncated. No exhaustive source audit was performed. Use --deep for a complete eligible-source analysis. Selected evidence: ${chunks.map((c) => `${c.path}:${c.startLine}-${c.endLine}`).join(", ")}.`
-    : `${inventory.files.length} eligible text files; ${chunks.length} complete chunks acknowledged across ${batches.length} analysis batches.`;
   const report = `${baselineReportMarker}\n# Existing project baseline analysis\n\n${parsed.summary}\n\n## Review status\nInferred from code and documentation; owner review is required. No implementation or tests were executed. Applying this proposal saves a reviewed baseline, not evidence of passing behavior. Existing accepted specs and active changes remain authoritative.\n\n## Coverage\n${coverage} ${inventory.excluded.length} paths or subtrees excluded. Source fingerprint: ${inventory.fingerprint}.\n\n${parsed.capabilities.length} new capability specs proposed.${parsed.capabilities.length ? "" : " No new supported capabilities were identified; no placeholder specs were created."}\n\n### Local inventory (initial setup sends only the selected evidence listed above)\n| File | Lines | SHA256 |\n| --- | --- | --- |\n${inventory.files.map((f) => `| ${cell(f.path)} | ${f.lines} | ${f.hash} |`).join("\n")}\n\n### Excluded paths and subtrees\n| Path | Reason |\n| --- | --- |\n${inventory.excluded.map((f) => `| ${cell(f.path)} | ${f.reason} |`).join("\n")}\n\n## Existing intent reused or requiring follow-up\n${parsed.reused.length ? parsed.reused.map((r) => `- ${cell(r.path)}: ${r.reason}`).join("\n") : "No existing specification matches were reported."}\n\n## Questions and contradictions\n${uniqueQuestions.length ? uniqueQuestions.map((q) => `- ${q}`).join("\n") : "No specific questions were reported; inferred intent still requires review."}\n`;
   const proposal = await specs.propose(
     project,
     "Review inferred project specs and agent setup",
     [
-      ...setupFiles,
-      ...generated,
+      ...reviewedFiles,
       ...(reconstruction
         ? [
             {

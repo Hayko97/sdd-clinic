@@ -1,3 +1,4 @@
+import { setupReviewMarker, setupReviewPath } from "./setup-quality.js";
 import { lstat, readFile, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import type { Project } from "../shared/types.js";
@@ -174,8 +175,9 @@ export async function inventoryProject(
           continue;
         }
         if (
-          path === baselineReportPath &&
-          content.startsWith(baselineReportMarker)
+          (path === baselineReportPath &&
+            content.startsWith(baselineReportMarker)) ||
+          (path === setupReviewPath && content.startsWith(setupReviewMarker))
         ) {
           exclude(path, "previous generated baseline report");
           continue;

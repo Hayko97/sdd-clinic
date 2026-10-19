@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Select representative source line ranges and report omitted evidence during initial setup.
+- Require a separate quality review, concrete scenario validation plans, substantive missing project guidance and portable provenance before applying inferred setup.
+- Preserve unmet requirements as implementation gaps, reject generic checks and unsupported citations, and expose additional database/browser check prerequisites.
+- Label provider-free repair plans as incomplete drafts and safely upgrade unchanged design/validation templates.
+
 ## 0.1.1
 
 ### Fixed

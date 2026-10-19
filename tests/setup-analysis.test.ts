@@ -1,3 +1,4 @@
+import { qualityFixture } from "./setup-quality-fixture.js";
 import { afterEach, expect, it } from "vitest";
 import {
   mkdir,
@@ -83,12 +84,25 @@ async function fixture(engine: EngineKind = "codex") {
     | "reuse"
     | "hang"
     | "bulk-notes"
-    | "overwrite" = "valid";
+    | "overwrite"
+    | "quality-blocker"
+    | "quality-generic" = "valid";
   let during: (() => Promise<void>) | undefined;
   const provider: EngineAdapter = {
     probe: adapters.codex.probe,
     async run(_path, request) {
       calls.push(request);
+      if (request.prompt.includes("CLINIC_SETUP_QUALITY")) {
+        const quality = qualityFixture(request.prompt);
+        if (behavior === "quality-blocker")
+          quality.blockingIssues = [
+            "Generated catalog requirements omit supported loading, error and retry behavior.",
+          ];
+        if (behavior === "quality-generic")
+          quality.checks[0].action =
+            "Arrange the stated preconditions and perform the WHEN action.";
+        return { sessionId: "quality-fixture", text: JSON.stringify(quality) };
+      }
       if (during) {
         const action = during;
         during = undefined;
@@ -437,6 +451,14 @@ it("reuses existing specs on repeated setup and preserves customized agent guida
   expect(await readFile(join(c.repo, "AGENTS.md"), "utf8")).toContain(
     "Custom owner rules",
   );
+  expect(
+    repeated.proposal!.files.find(
+      (f) => f.path === "openspec/project/setup-review.md",
+    )?.after,
+  ).toContain("Validation follow-up for preserved specifications");
+  expect(
+    c.calls.filter((r) => r.prompt.includes("CLINIC_SETUP_QUALITY")),
+  ).toHaveLength(2);
   c.setBehavior("overwrite");
   expect((await c.analyze()).done.error).toContain("cannot overwrite");
   await expect(
@@ -596,4 +618,67 @@ it("allows companions for the maximum baseline capability count", async () => {
   expect(
     proposal.files.filter((f) => f.path.startsWith("openspec/specs/")),
   ).toHaveLength(120);
+});
+
+it.each(["quality-blocker", "quality-generic"] as const)(
+  "rejects %s without a proposal or project writes",
+  async (behavior) => {
+    const c = await fixture();
+    c.setBehavior(behavior);
+    const { done, proposal } = await c.analyze();
+    expect(done.status).toBe("failed");
+    expect(done.error).toContain("No applicable setup proposal");
+    expect(proposal).toBeUndefined();
+    expect(c.store.list("proposal", c.project.id)).toHaveLength(0);
+    expect(
+      c.calls.filter((r) => r.prompt.includes("CLINIC_SETUP_QUALITY")),
+    ).toHaveLength(behavior === "quality-blocker" ? 1 : 3);
+    await expect(readFile(join(c.repo, "AGENTS.md"))).rejects.toThrow();
+  },
+);
+it("rejects inferred behavior supported only by import or barrel locations", async () => {
+  const c = await fixture();
+  await c.write(source, "export { active } from './implementation';\n");
+  const { done, proposal } = await c.analyze();
+  expect(done.status).toBe("failed");
+  expect(done.error).toContain("only imports or re-exports");
+  expect(proposal).toBeUndefined();
+});
+
+it("accepts actual implementation after semicolon-free imports", async () => {
+  const c = await fixture();
+  await c.write(
+    source,
+    "import { products } from './data'\nexport const active = products.filter(product => product.active);\n",
+  );
+  const { done, proposal } = await c.analyze();
+  expect(done.status, done.error).toBe("completed");
+  expect(
+    proposal?.files.some((f) => f.path === "openspec/specs/catalog/spec.md"),
+  ).toBe(true);
+});
+
+it("reviews reused specification intent even when no implementation findings exist", async () => {
+  const c = await fixture();
+  const first = await c.analyze();
+  await c.specs.apply(c.project, first.proposal!.id);
+  await rm(join(c.repo, source));
+  c.setBehavior("reuse");
+  const next = await c.analyze();
+  expect(next.done.status, next.done.error).toBe("completed");
+  expect(
+    next.proposal?.files.some((f) => f.path.startsWith("openspec/specs/")),
+  ).toBe(false);
+  const input = JSON.parse(
+    c.calls
+      .filter((r) => r.prompt.includes("CLINIC_SETUP_QUALITY"))
+      .at(-1)!
+      .prompt.split("REVIEW_INPUT\n")
+      .at(-1)!,
+  );
+  expect(
+    input.evidence.some((e: any) =>
+      e.sources.some((s: any) => s.path === "openspec/specs/catalog/spec.md"),
+    ),
+  ).toBe(true);
 });

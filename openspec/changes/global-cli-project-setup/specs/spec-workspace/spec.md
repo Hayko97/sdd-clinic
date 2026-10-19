@@ -151,3 +151,34 @@ Full setup SHALL include capability specs and validation companions, shared proj
 #### Scenario: Review documentation before applying
 - **WHEN** a user declines or cancels the setup or repair proposal
 - **THEN** no specification, validation document, guidance or changelog is written and the operation does not report successful application.
+
+### Requirement: Evidence-based setup quality
+Clinic SHALL evaluate setup artifacts against supplied evidence before proposing an applicable baseline, preserve required intent and expose limitations without claiming semantic completeness or test execution.
+
+#### Scenario: Select representative implementation evidence
+- **WHEN** initial setup inspects nested UI, services, SQL and tests with behavior below imports
+- **THEN** bounded line-aware selection includes representative implementation and test evidence and records every omitted range; existing intent is retained in full or setup requests deep analysis.
+
+#### Scenario: Reject generic validation plans
+- **WHEN** a generated scenario has only restated WHEN/THEN text, placeholders, missing prerequisites or unsupported existing-test references
+- **THEN** setup rejects the output before proposal creation and makes bounded correction attempts; accepted plans distinguish existing, proposed and manual checks and remain unverified.
+
+#### Scenario: Review all applicable quality areas
+- **WHEN** initial, deep, rebuild or product-source setup generates specifications
+- **THEN** a bounded semantic review covers project purpose, architecture, interfaces, data, workflows, UI/UX, authentication, security, operations, nonfunctional constraints and verification with evidence or explicit unknown/not-applicable reasons; blocking generation defects prevent application.
+
+#### Scenario: Preserve required intent despite implementation gaps
+- **WHEN** documented intent or a recorded owner decision conflicts with implementation
+- **THEN** the required behavior remains intact and the review records an implementation gap separately from unresolved product decisions, observations and test results.
+
+#### Scenario: Generate substantive project guidance
+- **WHEN** source-backed setup proposes missing project documents
+- **THEN** mission, architecture, contracts, UI applicability, operational prerequisites and roadmap are rendered from reviewed evidence and explicit gaps rather than generic scaffolding; existing customized guidance remains intact.
+
+#### Scenario: Record portable setup provenance
+- **WHEN** a generated package is ready for review
+- **THEN** its report records source hashes and selected ranges, generated artifact hashes, exact managed OpenSpec version and separate unverified review/execution state; dirty source is not treated as committed or tested.
+
+#### Scenario: Label provider-free repair scaffolds
+- **WHEN** guidance-only setup or repair derives a companion without implementation evidence
+- **THEN** the companion is explicitly an incomplete draft requiring concrete fixtures, actions and assertions before implementation approval, and does not present generic steps as an executable validation plan.

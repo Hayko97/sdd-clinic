@@ -28,11 +28,11 @@ export function validationFromSpec(path: string, content: string): string {
         `${path}: scenario ${name} needs WHEN and THEN conditions.`,
       );
       checks.push(
-        `## Check ${checks.length + 1}: ${name.trim()}\n\nRequirement: ${heading.trim()}\n\nRequired behavior: ${body.split(/^#### Scenario:/m)[0]!.trim()}\n\nScenario: ${name.trim()}\n\n${behavior}\n\n### Validation procedure\n1. Arrange the stated preconditions and perform the WHEN action.\n2. Compare the observed behavior with every THEN/AND expectation above.\n3. Record inputs, actual outputs, test command or manual steps, environment, application revision and logs/screenshots.\n\n- Status: UNVERIFIED\n- Execution command or manual steps: Not recorded\n- Environment and application revision: Not recorded\n- Actual result and evidence location: Not recorded\n`,
+        `## Check ${checks.length + 1}: ${name.trim()}\n\nRequirement: ${heading.trim()}\n\nRequired behavior: ${body.split(/^#### Scenario:/m)[0]!.trim()}\n\nScenario: ${name.trim()}\n\n${behavior}\n\n### Incomplete check design\n[CLINIC:DRAFT] Supply concrete fixtures, safe environment and role, numbered actions or an actual test reference, expected outputs/state assertions and evidence to capture. No executable procedure can be inferred from scenario text alone.\n\n- Status: UNVERIFIED / INCOMPLETE\n- Check type, prerequisites, fixtures, actions and assertions: require refinement\n- Execution results belong in a separate verification report at exact specification and application revisions\n`,
       );
     }
   }
-  return `# Validation plan\n\nSpecification: [spec.md](./spec.md)\n\nStatus: UNVERIFIED. Setup has not executed application tests or implemented product code. These checks are derived from the specification, not proof of tested behavior or reconstruction equivalence. Review missing behavior and adapt the procedure to the application's interfaces.\n\n${checks.join("\n")}`;
+  return `# Validation plan\n\nSpecification: [spec.md](./spec.md)\n\nStatus: UNVERIFIED / INCOMPLETE. [CLINIC:DRAFT] This provider-free companion is a coverage scaffold, not an implementation-ready validation plan. Setup has not executed application tests or implemented product code. These checks are derived from the specification, not proof of tested behavior or reconstruction equivalence. Refine every check before implementation approval; templates and scenario repetition do not prove validation readiness.\n\n${checks.join("\n")}`;
 }
 
 export async function completeSetupDocuments(

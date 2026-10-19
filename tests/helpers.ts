@@ -9,6 +9,10 @@ export const tempDir = () => mkdtemp(join(tmpdir(), "sdd-clinic-test-"));
 export async function fixtureEngine(root: string) {
   const file = join(root, "fixture-engine.cjs");
   await copyFile(resolve("tests/fixtures/engine.cjs"), file);
+  await copyFile(
+    resolve("tests/fixtures/setup-quality.cjs"),
+    join(root, "setup-quality.cjs"),
+  );
   await chmod(file, 0o755);
   return file;
 }

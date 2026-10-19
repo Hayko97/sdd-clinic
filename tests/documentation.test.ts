@@ -1,3 +1,7 @@
+import {
+  previousArtifactTemplates,
+  artifactTemplates,
+} from "../src/server/documentation.js";
 import { afterEach, expect, it } from "vitest";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -293,4 +297,39 @@ it("supports conflict-safe project edits and counts capabilities without their s
   await expect(c.specs.apply(foreign, edit.json().id)).rejects.toThrow(
     "not found",
   );
+});
+
+it("upgrades only exact old template defaults and exposes additional check prerequisites", async () => {
+  const c = await fixture();
+  const folder = join(c.repo, "openspec/schemas/clinic-sdd/templates");
+  await mkdir(folder, { recursive: true });
+  await writeFile(
+    join(folder, "validation.md"),
+    previousArtifactTemplates["validation.md"],
+  );
+  await writeFile(
+    join(folder, "design.md"),
+    previousArtifactTemplates["design.md"] + "\nCustom owner rules",
+  );
+  await writeFile(
+    join(c.repo, "package.json"),
+    JSON.stringify({
+      scripts: {
+        test: "vitest run",
+        "test:db": "node tests/db.mjs",
+        "test:e2e": "playwright test",
+      },
+    }),
+  );
+  const setup = await c.setup();
+  expect(await readFile(join(folder, "validation.md"), "utf8")).toBe(
+    artifactTemplates["validation.md"],
+  );
+  expect(await readFile(join(folder, "design.md"), "utf8")).toContain(
+    "Custom owner rules",
+  );
+  expect(setup.inspection.questions.join("\n")).toContain("test:db");
+  expect(setup.inspection.questions.join("\n")).toContain("test:e2e");
+  expect(setup.inspection.questions.join("\n")).toContain("prerequisites");
+  expect((await c.projects.setupFiles(c.project)).files).toHaveLength(0);
 });

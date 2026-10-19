@@ -1,3 +1,4 @@
+import { qualityFixture } from "./setup-quality-fixture.js";
 import { afterEach, expect, it } from "vitest";
 import { mkdtemp, mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
@@ -43,7 +44,7 @@ it("bounds selected source text, excludes dependencies and preserves current spe
   expect(
     overview.reduce((n, c) => n + c.content.length, 0),
   ).toBeLessThanOrEqual(36000);
-  expect(overview.length).toBeLessThanOrEqual(25);
+  expect(overview.length).toBeGreaterThan(20);
   expect(
     overview.find((c) => c.path === "openspec/specs/catalog/spec.md")?.content,
   ).toBe(intent);
@@ -67,7 +68,7 @@ it("requires deep analysis when current specification intent exceeds the context
     }),
   ).toThrow("--deep");
 });
-it("default setup creates real specs directly in one inference call without source batches", async () => {
+it("default setup creates real specs with bounded synthesis and a separate quality review without source batches", async () => {
   const { root, project } = await fixture();
   await writeFile(
     join(project, "README.md"),
@@ -94,6 +95,11 @@ it("default setup creates real specs directly in one inference call without sour
     ],
     run: async (_path, r) => {
       calls.push(r);
+      if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
+        return {
+          sessionId: "quality-fixture",
+          text: JSON.stringify(qualityFixture(r.prompt)),
+        };
       return {
         sessionId: "fixture",
         text: JSON.stringify({
@@ -159,7 +165,8 @@ it("default setup creates real specs directly in one inference call without sour
   expect(await readFile(join(project, "src/item0.ts"), "utf8")).toBe(
     "export const item=1;\n".repeat(1200),
   );
-  expect(calls).toHaveLength(1);
+  expect(calls).toHaveLength(2);
+  expect(calls[1].prompt).toContain("CLINIC_SETUP_QUALITY");
   expect(calls[0].prompt).toContain("CLINIC_BASELINE_SYNTHESIZE");
   expect(calls[0].prompt).not.toContain("CLINIC_BASELINE_ANALYZE");
   expect(output).not.toContain("Analyzing batch");

@@ -58,3 +58,10 @@
 - [x] 12.4 Expose --repair through CLI/runtime with honest summary and GUI registration; verify no provider calls or application-source audit.
 - [x] 12.5 Run required checks, independent QA and packaged Docker/CLI smoke. Record actual outcomes.
 - [ ] 12.6 Publish patch0.1.1 and verify clean install, existing-project repair and documented new-project commands.
+
+## 13. Evidence quality correction (owner requested 2026-10-20)
+- [x] 13.1 Replace head-only selection with bounded representative line ranges and omission reporting.
+- [x] 13.2 Add shared quality review, concrete scenario plans, evidence checks and preservation of required intent.
+- [x] 13.3 Generate substantive missing project guidance, decision records and portable tool/source/artifact provenance; label provider-free scaffolds honestly.
+- [x] 13.4 Cover baseline and product pipelines, preservation, bounded rejection and heterogeneous fixtures; run pnpm check and pnpm test:e2e plus isolated Docker smoke.
+- [x] 13.5 Record exact revision evidence, all audit dispositions and remaining semantic/live-provider limitations. Independent QA and owner integration remain pending.
