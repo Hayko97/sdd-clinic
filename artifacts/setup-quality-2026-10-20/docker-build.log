@@ -1,4 +1,4 @@
- Image clinic-setup-quality-clinic Building 
+ Image clinic-setup-quality-clinic Building
 #1 [internal] load local bake definitions
 #1 reading from stdin 590B done
 #1 DONE 0.0s
@@ -71,16 +71,16 @@
 
 #17 resolving provenance for metadata file
 #17 DONE 0.0s
- Image clinic-setup-quality-clinic Built 
- Network clinic-setup-quality_default Creating 
- Volume clinic-setup-quality_quality-home Creating 
- Volume clinic-setup-quality_quality-home Creating 
- Network clinic-setup-quality_default Creating 
- Volume clinic-setup-quality_quality-home Created 
- Volume clinic-setup-quality_quality-home Created 
- Network clinic-setup-quality_default Created 
- Network clinic-setup-quality_default Created 
- Container clinic-setup-quality-clinic-1 Creating 
- Container clinic-setup-quality-clinic-1 Created 
- Container clinic-setup-quality-clinic-1 Starting 
- Container clinic-setup-quality-clinic-1 Started 
+ Image clinic-setup-quality-clinic Built
+ Network clinic-setup-quality_default Creating
+ Volume clinic-setup-quality_quality-home Creating
+ Volume clinic-setup-quality_quality-home Creating
+ Network clinic-setup-quality_default Creating
+ Volume clinic-setup-quality_quality-home Created
+ Volume clinic-setup-quality_quality-home Created
+ Network clinic-setup-quality_default Created
+ Network clinic-setup-quality_default Created
+ Container clinic-setup-quality-clinic-1 Creating
+ Container clinic-setup-quality-clinic-1 Created
+ Container clinic-setup-quality-clinic-1 Starting
+ Container clinic-setup-quality-clinic-1 Started
