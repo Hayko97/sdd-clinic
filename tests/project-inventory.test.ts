@@ -82,7 +82,12 @@ it("honors ignored generated content when Git reports a different repository own
     .mockImplementation((cmd, args, options = {}) =>
       originalCommand(cmd, args, {
         ...options,
-        env: { ...cleanEnv(), GIT_TEST_ASSUME_DIFFERENT_OWNER: "1" },
+        env: {
+          ...cleanEnv(),
+          GIT_CONFIG_NOSYSTEM: "1",
+          GIT_CONFIG_GLOBAL: "/dev/null",
+          GIT_TEST_ASSUME_DIFFERENT_OWNER: "1",
+        },
       }),
     );
   try {
