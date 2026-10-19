@@ -14,7 +14,7 @@ sddclinic start
 sddclinic setup --rebuild --model gpt-6.1-sol --reasoning medium
 ```
 
-Node.js 24+ and Docker with Compose are required. The npm package includes the GUI assets and launcher. Runtime dependencies and provider CLIs run inside the matching Docker image; provider sign-in happens when required. `sddclinic start` opens the global GUI. The published launcher pulls the exact package version; it does not silently substitute latest. Use `SDDCLINIC_BUILD=1 sddclinic start` to explicitly build from the bundled runtime assets. Linux amd64 and arm64 images are intended; only published/verified platforms should be advertised in a release.
+Node.js 24+ and Docker with Compose are required. The npm package includes the GUI assets and launcher. Runtime dependencies and provider CLIs run inside the matching Docker image; provider sign-in happens when required. `sddclinic start` opens the global GUI. The published launcher pulls the exact package version; it does not silently substitute latest. Use `SDDCLINIC_BUILD=1 sddclinic start` to explicitly build from the bundled runtime assets. Release0.1.0 publishes verified Linux amd64 and arm64 image manifests.
 
 ## Prepare a release
 

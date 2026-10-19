@@ -233,3 +233,14 @@ Public distribution follow-up: the exact packaged image starts the authenticated
 
 
 Release packaging corrections: explicit `./releases/` npm archive paths prevent GitHub shorthand interpretation, and COPYFILE_DISABLE omits macOS metadata during repacking. Independent review found no blockers. Final pnpm check again passed (162 tests; two opt-in live tests skipped; 12 strict OpenSpec items; build/typecheck), followed by eight passing browser tests. Clean tarball contains83 entries and no AppleDouble metadata, application dependencies or lifecycle scripts in the host manifest; installation into an isolated npm prefix passed. SHA256: `733c5a65a3693b942aead9661aa4d644a39a60a17b2a7715f1be77206d779a77`. GitHub Linux CI passed at c4cc8d4; these packaging-only corrections have local validation. npm initially rejected the account without2FA; the owner enabled2FA and browser publication authorization is pending. Docker upload is in progress.
+
+
+## 2026-10-19: Public release0.1.0 verified
+
+Tagged source: `d1ccdd3` (`v0.1.0`), MIT. [GitHub release](https://github.com/Hayko97/sdd-clinic/releases/tag/v0.1.0) includes the exact tarball and SHA256SUMS. [Linux CI](https://github.com/Hayko97/sdd-clinic/actions/runs/39313928509) passed checks, browser acceptance and packaging at that revision. All five public-distribution task groups are verified; this record supersedes the pending publication states above.
+
+[npm sdd-clinic0.1.0](https://www.npmjs.com/package/sdd-clinic) is public and latest. Owner enabled2FA and completed browser authorization; npm subsequently processed the upload. Anonymous registry read and tarball download succeeded. Downloaded SHA256 matches the tested clean archive: `733c5a65a3693b942aead9661aa4d644a39a60a17b2a7715f1be77206d779a77`. Fresh-prefix npm installation from both GitHub release URL and public registry succeeded; installed help works.
+
+[Docker Hub](https://hub.docker.com/r/sintyoa/sdd-clinic) publishes0.1.0 and latest with linux/amd64 and linux/arm64. Anonymous registry manifest retrieval confirmed digest `sha256:b5d34ec66f5c67bb1cfeaeba1124c211bbefbc591fdf9131c85615248fd77c5f`. The installed release CLI pulled that image, started a disposable isolated GUI, and passed a real Playwright authenticated Projects-screen check with no browser errors. Persisted image selection matched0.1.0. Test container/volume cleaned; existing user GUI/setup processes were preserved.
+
+Provider version/cold-install smoke evidence is separate from model inference. Live inference, clean-room project reconstruction equivalence and future workflow publishing credentials remain unverified/unconfigured. Manual initial publication succeeded; future GitHub publishing still requires the documented Docker Hub secrets and npm trusted-publisher configuration.
