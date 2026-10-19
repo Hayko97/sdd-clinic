@@ -170,9 +170,12 @@ export async function analyzeSetup(options: {
   const setupFiles = await Promise.all(
     setup.files.map(async (f) => ({
       ...f,
-      beforeHash: await readOptional(await safePath(project.path, f.path)).then(
-        (s) => (s === null ? null : hash(s)),
-      ),
+      beforeHash:
+        f.beforeHash !== undefined
+          ? f.beforeHash
+          : await readOptional(await safePath(project.path, f.path)).then(
+              (s) => (s === null ? null : hash(s)),
+            ),
     })),
   );
   const oldReport = await readOptional(
@@ -459,6 +462,8 @@ export async function analyzeSetup(options: {
       },
     ],
     "baseline",
+    undefined,
+    setup.bases,
   );
   const fingerprinted = { ...proposal, inventoryHash: inventory.fingerprint };
   specs.store.put("proposal", fingerprinted);

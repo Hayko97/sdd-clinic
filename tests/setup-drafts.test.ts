@@ -165,6 +165,8 @@ for (const engine of ["codex", "claude"] as const)
       ".github/copilot-instructions.md",
       ".cursor/rules/sdd-clinic.mdc",
       "openspec/specs/catalog/spec.md",
+      "openspec/specs/catalog/validation.md",
+      "CHANGELOG.md",
       "openspec/project/ui-ux.md",
     ])
       expect(await readFile(join(project.path, path), "utf8")).toBeTruthy();

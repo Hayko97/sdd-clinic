@@ -11,7 +11,7 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const help = `SDD Clinic
 
   sddclinic setup [path] [--engine codex|claude] [--model MODEL]
-                  [--reasoning low|medium|high|xhigh|max] [--guidance-only | --deep | --rebuild]
+                  [--reasoning low|medium|high|xhigh|max] [--repair | --guidance-only | --deep | --rebuild]
   sddclinic start [--port 4310] [--data-dir PATH] [--no-open]
   sddclinic doctor
 
@@ -75,6 +75,7 @@ async function main() {
         "guidance-only": { type: "boolean" },
         deep: { type: "boolean" },
         rebuild: { type: "boolean" },
+        repair: { type: "boolean" },
         port: { type: "string" },
         "data-dir": { type: "string" },
         "no-open": { type: "boolean" },
@@ -100,6 +101,11 @@ async function main() {
     !["low", "medium", "high", "xhigh", "max"].includes(v.reasoning)
   )
     throw new Error("Choose --reasoning low, medium, high, xhigh or max.");
+  if (
+    v.repair &&
+    (v["guidance-only"] || v.model || v.reasoning || v.deep || v.rebuild)
+  )
+    throw new Error("--repair cannot be combined with analysis/model options.");
   if (v["guidance-only"] && (v.model || v.reasoning || v.deep || v.rebuild))
     throw new Error(
       "--guidance-only cannot be combined with --model, --reasoning or --deep/--rebuild.",
@@ -111,7 +117,8 @@ async function main() {
       v.reasoning ||
       v["guidance-only"] ||
       v.deep ||
-      v.rebuild)
+      v.rebuild ||
+      v.repair)
   )
     throw new Error("Model, engine and guidance options require setup.");
   if (action !== "start" && (v.port || v["no-open"] || v["data-dir"]))
@@ -215,7 +222,8 @@ async function main() {
   if (action !== "setup") args.push("-T");
   else {
     args.push("--name", container, "-t");
-    if (!v["guidance-only"]) args.push("--publish", "127.0.0.1::1456");
+    if (!v["guidance-only"] && !v.repair)
+      args.push("--publish", "127.0.0.1::1456");
   }
   args.push("clinic", "node", "dist/server/cli.js", action);
   if (action === "setup") {
@@ -225,10 +233,11 @@ async function main() {
     if (v["guidance-only"]) args.push("--guidance-only");
     if (v.deep) args.push("--deep");
     if (v.rebuild) args.push("--rebuild");
+    if (v.repair) args.push("--repair");
   }
   let bridge;
   let loginError;
-  if (action === "setup" && !v["guidance-only"]) {
+  if (action === "setup" && !v["guidance-only"] && !v.repair) {
     const { setupBrowser } = await import("./setup-browser.mjs");
     bridge = setupBrowser({
       nonce: env.CLINIC_SETUP_INVOCATION,

@@ -84,10 +84,10 @@ Clinic SHALL offer interactive sddclinic setup for the current directory or an e
 - **THEN** setup explains that deeper analysis is needed instead of ignoring existing intent or generating duplicate specifications.
 
 ### Requirement: Baseline validation companions
-Each newly generated baseline capability SHALL include a validation.md beside spec.md, mapping every requirement and scenario to a reproducible behavioral check and expected evidence. Checks SHALL initially be unverified. Setup SHALL preserve application code and existing specification documents, and SHALL not claim exact reconstruction or tested equivalence from source analysis.
+Each newly generated baseline capability, including prompt/document GUI setup, SHALL include a validation.md beside spec.md, mapping every requirement and scenario to a reproducible behavioral check and expected evidence. Checks SHALL initially be unverified. Setup SHALL preserve application code and existing specification documents, and SHALL not claim exact reconstruction or tested equivalence from source analysis.
 
 #### Scenario: Generate scenario validation plans
-- **WHEN** setup proposes a new capability baseline in initial or deep mode
+- **WHEN** setup proposes a new capability baseline in initial, deep, rebuild or prompt/document GUI mode
 - **THEN** its validation.md identifies every requirement and scenario, conditions, expected observations and evidence to record, with unverified status and no invented test execution results.
 
 #### Scenario: Preserve existing validation and application code
@@ -116,3 +116,38 @@ Clinic SHALL offer explicit --rebuild setup that reads all eligible project text
 #### Scenario: Report reconstruction readiness honestly
 - **WHEN** setup renders a reconstruction guide
 - **THEN** it lists unknowns and excluded evidence, labels all implementation/equivalence checks unverified, and describes comparison of a clean-room implementation against recorded behavior without executing application code.
+
+
+### Requirement: Repair incomplete SDD documentation
+Clinic SHALL offer `sddclinic setup --repair` for existing projects and SHALL include missing-document repair in ordinary setup. Repair SHALL derive missing capability validation plans from existing native specifications without model inference or application-source analysis. Repair SHALL present a complete diff before writes, preserve existing specifications and customized documents, and report written, preserved and unresolved files accurately.
+
+#### Scenario: Repair spec-only capability folders
+- **WHEN** an existing project contains native capability specs with requirements and scenarios but lacks companion validation plans
+- **THEN** repair proposes a validation.md beside every such spec with each scenario, its conditions and expected result, evidence to record and UNVERIFIED status, plus missing project workflow and agent setup documents, without provider sign-in or model calls.
+
+#### Scenario: Repeat repair without changing existing documents
+- **WHEN** repair is applied and run again without project changes
+- **THEN** it creates no duplicate files or history entries and preserves existing specs, validation plans, custom guidance and application code byte-for-byte.
+
+#### Scenario: Reject stale or unusable repair inputs
+- **WHEN** a specification cannot supply valid scenario checks, or a source specification or target changes after review
+- **THEN** repair identifies the problem and refuses to apply an incomplete or stale proposal without partial writes or claims of complete SDD readiness.
+
+#### Scenario: Repair does not invent product specifications
+- **WHEN** repair runs in a project without capability specifications
+- **THEN** it explains that repair cannot infer a product baseline and directs the user to initial source setup or prompt/document setup without claiming that a guidance scaffold is a complete specification set.
+
+### Requirement: Setup documentation contract and changelog
+Full setup SHALL include capability specs and validation companions, shared project guidance, agent instructions/skills, and native change templates. It SHALL create a root CHANGELOG.md with an honest Unreleased SDD initialization entry only when no case-insensitive equivalent exists. It SHALL NOT invent release history, implementation or test results, or fabricate change records to populate filenames.
+
+#### Scenario: Create a complete new-project documentation package
+- **WHEN** an owner applies source-based or prompt/document setup to a project lacking SDD files
+- **THEN** the reviewed package includes each capability's spec.md and validation.md, openspec/config.yaml, mission/tech-stack/roadmap/workflow guidance, native research/proposal/spec/design/validation/tasks templates, agent instructions and skills, and CHANGELOG.md, and reports any unresolved intent without claiming implementation exists.
+
+#### Scenario: Preserve an existing changelog
+- **WHEN** a project already has CHANGELOG.md, changelog.md or another case variant
+- **THEN** setup preserves its contents and does not create a competing changelog or invent entries for earlier work.
+
+#### Scenario: Review documentation before applying
+- **WHEN** a user declines or cancels the setup or repair proposal
+- **THEN** no specification, validation document, guidance or changelog is written and the operation does not report successful application.

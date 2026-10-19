@@ -22,12 +22,13 @@ async function main() {
       "guidance-only": { type: "boolean" },
       deep: { type: "boolean" },
       rebuild: { type: "boolean" },
+      repair: { type: "boolean" },
     },
   });
   const action = positionals[0] ?? "start";
   if (values.help) {
     process.stdout.write(
-      "SDD Clinic\n\n  sddclinic setup [path] [--engine codex|claude] [--model MODEL] [--reasoning medium] [--guidance-only | --deep | --rebuild]\n  sdd-clinic start [--port 4310] [--data-dir PATH] [--no-open]\n  sdd-clinic doctor\n\nRequires Node.js 24+, Git, and an installed Codex or Claude CLI.\n",
+      "SDD Clinic\n\n  sddclinic setup [path] [--engine codex|claude] [--model MODEL] [--reasoning medium] [--repair | --guidance-only | --deep | --rebuild]\n  sdd-clinic start [--port 4310] [--data-dir PATH] [--no-open]\n  sdd-clinic doctor\n\nRequires Node.js 24+, Git, and an installed Codex or Claude CLI.\n",
     );
     return;
   }
@@ -53,6 +54,7 @@ async function main() {
           guidanceOnly: values["guidance-only"],
           deep: values.deep,
           rebuild: values.rebuild,
+          repair: values.repair,
         },
         {
           dataDir: resolve(

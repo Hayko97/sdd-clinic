@@ -34,6 +34,7 @@ export interface SetupOptions {
   model?: string;
   reasoning?: string;
   guidanceOnly?: boolean;
+  repair?: boolean;
   deep?: boolean;
   rebuild?: boolean;
 }
@@ -156,6 +157,8 @@ export async function addSetupProfile(
       },
     ],
     proposal.source,
+    undefined,
+    proposal.contextBases,
   );
   const result = { ...edited, inventoryHash: proposal.inventoryHash };
   specs.store.put("proposal", result);
@@ -179,6 +182,15 @@ export async function terminalSetup(
         !options.deep &&
         !options.rebuild),
     "--guidance-only cannot use --model, --reasoning or --deep/--rebuild.",
+  );
+  assert(
+    !options.repair ||
+      (!options.guidanceOnly &&
+        !options.model &&
+        !options.reasoning &&
+        !options.deep &&
+        !options.rebuild),
+    "--repair cannot be combined with analysis/model options.",
   );
   const { dataDir, signal } = dependencies;
   const io: TerminalIO = {
@@ -215,6 +227,7 @@ export async function terminalSetup(
       options.engine ??
       (doc.getIn(["setup", "engine"]) as EngineKind | undefined) ??
       (doc.get("engine") as EngineKind | undefined);
+    if (!engine && options.repair) engine = "codex";
     if (!engine)
       engine = ((await io.ask("Provider [codex] (codex/claude): ")).trim() ||
         "codex") as EngineKind;
@@ -231,12 +244,14 @@ export async function terminalSetup(
       startedAt: now(),
     });
     io.write(
-      `Setup mode: ${options.guidanceOnly ? "guidance only (no specifications)" : options.rebuild ? "reconstruction blueprint (all eligible source)" : options.deep ? "deep source audit" : "initial specifications from selected project context"}.\n`,
+      `Setup mode: ${options.repair ? "repair missing SDD documents (no model analysis)" : options.guidanceOnly ? "guidance only (no specifications)" : options.rebuild ? "reconstruction blueprint (all eligible source)" : options.deep ? "deep source audit" : "initial specifications from selected project context"}.\n`,
     );
     io.write(
       `Project: ${options.path}\nInventorying existing specifications, agents, skills, source and documentation.\n`,
     );
-    const inventory = await inventoryProject(project, signal);
+    const inventory = options.repair
+      ? { files: [], excluded: [], fingerprint: "" }
+      : await inventoryProject(project, signal);
     const assets = inventory.files.filter((f) =>
       /^(openspec\/|\.clinic\/|\.agents\/|\.claude\/|\.cursor\/|\.github\/copilot-instructions|AGENTS\.md$|CLAUDE\.md$|GEMINI\.md$)/.test(
         f.path,
@@ -249,11 +264,22 @@ export async function terminalSetup(
       io.write(`Excluded ${excluded.path}: ${excluded.reason}\n`);
     let proposal: Proposal;
     let profile: SetupProfile | undefined;
-    if (options.guidanceOnly) {
+    if (options.guidanceOnly || options.repair) {
       io.write(
-        "Guidance-only setup: semantic code analysis was not performed; no model is used.\n",
+        options.repair
+          ? "Repair reads existing specifications; no provider or source analysis is used.\n"
+          : "Guidance-only setup: semantic code analysis was not performed; no model is used.\n",
       );
-      const setup = await projects.setupFiles(project);
+      const setup = await projects.setupFiles(project, !!options.repair);
+      if (options.repair) {
+        assert(
+          setup.specCount > 0,
+          "No capability specifications exist. Run initial sddclinic setup for a source project, or use the GUI project brief flow for a new product. Repair cannot infer product specifications. No files were applied.",
+        );
+        io.write(
+          `Preserved ${setup.specCount} existing specs and ${setup.preserved.length} existing validation plans. Missing documents will be reviewed below.\n`,
+        );
+      }
       if (!setup.files.length) {
         io.write("No setup changes are needed.\n");
         store.put("terminal-setup", {
@@ -269,6 +295,8 @@ export async function terminalSetup(
         "Review project guidance and skills",
         setup.files,
         "setup",
+        undefined,
+        setup.bases,
       );
     } else {
       const provider = (dependencies.providers ?? adapters)[engine];
@@ -428,11 +456,12 @@ export async function terminalSetup(
       return "declined" as const;
     }
     check();
-    assert(
-      (await inventoryProject(project, signal)).fingerprint ===
-        inventory.fingerprint,
-      "Project sources changed. Nothing was applied; rerun setup to reanalyze.",
-    );
+    if (!options.repair)
+      assert(
+        (await inventoryProject(project, signal)).fingerprint ===
+          inventory.fingerprint,
+        "Project sources changed. Nothing was applied; rerun setup to reanalyze.",
+      );
     // Application is an atomic reviewed unit: finish or roll back, never abort between replacements.
     await specs.apply(project, proposal.id);
     store.put("terminal-setup", {

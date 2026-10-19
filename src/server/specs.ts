@@ -1,3 +1,4 @@
+import { completeSetupDocuments } from "./setup-documents.js";
 import { reconstructionPath, reconstructionMarker } from "./reconstruction.js";
 import { requireClearIntent } from "./clarification.js";
 import { readFile, readdir, mkdir, rm, writeFile } from "node:fs/promises";
@@ -186,8 +187,12 @@ export class SpecRepository {
       );
     if (source === "setup")
       return (
+        /^openspec\/specs\/[a-z0-9][a-z0-9-]{0,70}\/validation\.md$/.test(
+          path,
+        ) ||
         [
           ...agentInstructionPaths,
+          "CHANGELOG.md",
           "openspec/config.yaml",
           ".clinic/project.yaml",
           ...projectDocumentNames.map((name) => `openspec/project/${name}.md`),
@@ -266,7 +271,17 @@ export class SpecRepository {
           files.push({ path, after });
       }
     }
-    const maxFiles = source === "baseline" ? 200 : 100;
+    if (["setup", "baseline", "product"].includes(source)) {
+      const complete = await completeSetupDocuments(project.path, files);
+      files = complete.files.map((f) => ({
+        ...files.find((original) => original.path === f.path),
+        ...f,
+      }));
+      contextBases = [...(contextBases ?? []), ...complete.bases];
+    }
+    const maxFiles = ["setup", "baseline", "product"].includes(source)
+      ? 200
+      : 100;
     assert(
       files.length > 0 && files.length <= maxFiles,
       `A proposal must contain 1–${maxFiles} files.`,
@@ -389,6 +404,19 @@ export class SpecRepository {
           assert(
             file.hash === base.hash,
             `Context changed outside Clinic: ${base.path}. Regenerate the proposal.`,
+            409,
+          );
+        }
+        if (
+          proposal.files.some(
+            (f) => f.path === "CHANGELOG.md" && f.beforeHash === null,
+          )
+        ) {
+          assert(
+            !(await readdir(project.path)).some(
+              (n) => n.toLowerCase() === "changelog.md",
+            ),
+            "A changelog appeared during review. Regenerate the proposal.",
             409,
           );
         }

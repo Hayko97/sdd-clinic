@@ -470,7 +470,7 @@ export class SetupDrafts {
             const result = outputSchema.parse(
               parseJsonOutput(
                 await invoke(
-                  `CLINIC_PRODUCT_SYNTHESIZE\n${clarificationInstruction}\nCreate a new project's intended SDD baseline, not code. Return {"summary":"...","questions":[],"files":[{"path":"...","content":"complete Markdown","sourceIds":["supporting source IDs"]}]}. If product decisions block a reliable specification, return questions and no final files. Generate native openspec/specs/<capability>/spec.md with # title, ## Purpose, ## Requirements, ### Requirement: titles, SHALL behavior and #### Scenario: WHEN/THEN cases. Label intended behavior unimplemented/unverified. Only create missing project guidance; preserve existing customized documents. Include missing openspec/project/mission.md, tech-stack.md (leave unstated choices open), roadmap.md and ui-ux.md. Do not invent product decisions or tests. Preserve existing files. Overlapping existing intent must be refined in openspec/changes/product-${d.id.slice(0, 8)}/ with proposal/design/research/validation/tasks/.openspec.yaml and native delta specs; never overwrite accepted specs or duplicate intent. Cite source IDs in every spec. Include all generated scenarios in validation plans.\nExisting paths: ${JSON.stringify(inventory.files.map((f) => f.path))}\nAllowed source IDs: ${JSON.stringify(sourceIds)}\nClarification answers: ${answers}\nFindings:\n${findings.join("\n\n")}`,
+                  `CLINIC_PRODUCT_SYNTHESIZE\n${clarificationInstruction}\nCreate a new project's intended SDD baseline, not code. Return {"summary":"...","questions":[],"files":[{"path":"...","content":"complete Markdown","sourceIds":["supporting source IDs"]}]}. If product decisions block a reliable specification, return questions and no final files. Generate native openspec/specs/<capability>/spec.md with # title, ## Purpose, ## Requirements, ### Requirement: titles, SHALL behavior and #### Scenario: WHEN/THEN cases. Label intended behavior unimplemented/unverified. Only create missing project guidance; preserve existing customized documents. Include missing openspec/project/mission.md, tech-stack.md (leave unstated choices open), roadmap.md and ui-ux.md. Do not invent product decisions or tests. Preserve existing files. Overlapping existing intent must be refined in openspec/changes/product-${d.id.slice(0, 8)}/ with proposal/design/research/validation/tasks/.openspec.yaml and native delta specs; never overwrite accepted specs or duplicate intent. Cite source IDs in every spec. Clinic deterministically creates a validation.md companion beside each new capability spec from its scenarios; do not emit these companion files. For change bundles, include all generated scenarios in the change validation plan.\nExisting paths: ${JSON.stringify(inventory.files.map((f) => f.path))}\nAllowed source IDs: ${JSON.stringify(sourceIds)}\nClarification answers: ${answers}\nFindings:\n${findings.join("\n\n")}`,
                 ),
               ),
             );
@@ -580,6 +580,8 @@ export class SetupDrafts {
               "Review new project SDD package",
               files,
               "product",
+              undefined,
+              setup.bases,
             );
             this.store.put("proposal", {
               ...proposal,

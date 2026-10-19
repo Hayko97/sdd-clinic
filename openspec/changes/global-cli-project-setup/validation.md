@@ -64,3 +64,17 @@ Start specification-driven development without a full audit: large fixture produ
 Disclose excluded and unavailable content: fixture contains nested Pods and native build/cache directories whose files exceed tiny byte and entry limits. Inventory must skip whole subtrees, record exclusion reasons, and retain Swift/Kotlin source, Xcode project files, Podfile/Podfile.lock and Gradle configuration. Verify without Git and with tracked Pods. Dependency content changes must not change source fingerprint; authored-source edits must. Read-only real-project inventory is separate from live-provider inference.
 
 Native regression also verifies ignored oversized exports under Git different-owner test mode and the actual Docker mount. No global Git configuration changes.
+
+## 2026-10-20: Documentation completion and repair acceptance
+| Scenario | Check | Expected evidence |
+| --- | --- | --- |
+| Generate scenario validation plans | Initial/deep/rebuild and prompt/document fixtures | All generated scenarios mapped beside their own specs |
+| Repair spec-only capability folders | Terminal fixture with multiple existing capability specs and no provider; installed Docker repair smoke | Missing companions and kit added after review, no source analysis/inference |
+| Repeat repair without changing existing documents | Apply twice; snapshot custom docs and source | No duplicates or overwritten content |
+| Reject stale or unusable repair inputs | Invalid scenario and changed source/target fixtures | Actionable rejection, zero partial writes |
+| Repair does not invent product specifications | Empty-project repair fixture | Clear initial-setup instruction, no false readiness |
+| Create a complete new-project documentation package | Product setup fixture and browser acceptance | Specs, per-capability validation, shared guidance, templates, agents/skills and changelog |
+| Preserve an existing changelog | Upper/lower/mixed-case fixtures on case-sensitive paths | Existing bytes preserved, no second changelog |
+| Review documentation before applying | Decline/cancel snapshots | No new files or success claim |
+
+Run pnpm check then pnpm test:e2e, independent QA, actual packed CLI repair against a disposable project and public package/image checks. No live inference or reconstruction equivalence claim.

@@ -1,3 +1,4 @@
+import { completeSetupDocuments } from "./setup-documents.js";
 import { defaultSkills } from "./skills.js";
 import {
   agentInstructionContent,
@@ -21,6 +22,7 @@ import {
 import { Store } from "./store.js";
 import {
   assert,
+  hash,
   atomicWrite,
   command,
   id,
@@ -142,7 +144,7 @@ export class Projects {
     );
     return agent;
   }
-  async inspect(project: Project) {
+  async inspect(project: Project, documentsOnly = false) {
     const files = await readdir(project.path, { withFileTypes: true });
     const names = files.map((f) => f.name);
     const schemaFiles: { path: string; content: string }[] = [];
@@ -199,7 +201,7 @@ export class Projects {
         }
       }
     };
-    await inspectDirectory("", 0);
+    if (!documentsOnly) await inspectDirectory("", 0);
     const packageText = names.includes("package.json")
       ? await readOptional(await safePath(project.path, "package.json"))
       : null;
@@ -344,12 +346,16 @@ export class Projects {
           ],
     };
   }
-  async setupFiles(project: Project) {
-    const inspection = await this.inspect(project);
-    const additions: { path: string; after: string }[] = [];
+  async setupFiles(project: Project, documentsOnly = false) {
+    const inspection = await this.inspect(project, documentsOnly);
+    const additions: {
+      path: string;
+      after: string;
+      beforeHash: string | null;
+    }[] = [];
     const addMissing = async (path: string, after: string) => {
       if ((await readOptional(await safePath(project.path, path))) === null)
-        additions.push({ path, after });
+        additions.push({ path, after, beforeHash: null });
     };
     await addMissing(
       ".clinic/project.yaml",
@@ -384,7 +390,11 @@ export class Projects {
         existing === skill.previousContent ||
         existing === skill.priorDocumentationContent
       )
-        additions.push({ path, after: skill.content });
+        additions.push({
+          path,
+          after: skill.content,
+          beforeHash: existing === null ? null : hash(existing),
+        });
       for (const directory of [".agents/skills", ".claude/skills"])
         await addMissing(
           `${directory}/${skill.name}/SKILL.md`,
@@ -394,8 +404,16 @@ export class Projects {
     for (const path of agentInstructionPaths) {
       const original = await readOptional(await safePath(project.path, path));
       const after = agentInstructionContent(path, original);
-      if (after !== original) additions.push({ path, after });
+      if (after !== original)
+        additions.push({
+          path,
+          after,
+          beforeHash: original === null ? null : hash(original),
+        });
     }
-    return { inspection, files: additions };
+    return {
+      inspection,
+      ...(await completeSetupDocuments(project.path, additions)),
+    };
   }
 }

@@ -593,5 +593,7 @@ it("allows companions for the maximum baseline capability count", async () => {
     files,
     "baseline",
   );
-  expect(proposal.files).toHaveLength(120);
+  expect(
+    proposal.files.filter((f) => f.path.startsWith("openspec/specs/")),
+  ).toHaveLength(120);
 });

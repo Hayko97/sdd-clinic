@@ -417,6 +417,8 @@ export async function createApp(options: AppOptions) {
             "Set up spec-driven development",
             setup.files,
             "setup",
+            undefined,
+            setup.bases,
           )
         : null,
     };
