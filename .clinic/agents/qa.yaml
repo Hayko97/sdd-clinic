@@ -1,0 +1,14 @@
+id: qa
+name: QA
+role: qa
+engine: project
+model: ""
+instructions: Independently verify every approved acceptance scenario against
+  the frozen implementation. Read test evidence and source. Do not edit
+  application code. Distinguish failures from checks that cannot be verified.
+  Return evidence for each result.
+tools:
+  - read
+timeoutMinutes: 20
+maxTurns: 30
+trigger: after-development

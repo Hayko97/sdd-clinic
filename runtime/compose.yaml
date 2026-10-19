@@ -1,0 +1,25 @@
+services:
+  clinic:
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+    image: ${CLINIC_CLI_IMAGE:-sddclinic-terminal:0.1.0}
+    init: true
+    environment:
+      CLINIC_CONTAINER: "1"
+      CLINIC_PROJECT_NAME: ${CLINIC_PROJECT_NAME:-}
+      CLINIC_SETUP_INVOCATION: ${CLINIC_SETUP_INVOCATION:-}
+      CLINIC_TERMINAL: "1"
+      CLINIC_DATA_DIR: /home/node/.sdd-clinic/terminal/${CLINIC_CLI_PROJECT_KEY:-default}
+      CLINIC_CLI_UID: ${CLINIC_CLI_UID:-1000}
+      CLINIC_CLI_GID: ${CLINIC_CLI_GID:-1000}
+      HOME: /home/node
+    ports:
+      - "127.0.0.1:${CLINIC_CLI_PORT:-4310}:${CLINIC_CLI_PORT:-4310}"
+    volumes:
+      - terminal-home:/home/node
+      - type: bind
+        source: ${CLINIC_CLI_PROJECT:?Run using sddclinic}
+        target: /projects
+volumes:
+  terminal-home:

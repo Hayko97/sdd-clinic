@@ -1,0 +1,75 @@
+name: clinic-sdd
+version: 1
+description: Project guidance → research → proposal → requirements/design →
+  validation → tasks
+artifacts:
+  - id: research
+    generates: research.md
+    requires: []
+    description: Reviewable research for the feature
+    template: research.md
+    instruction: Read openspec/project/ and related accepted specs/active changes.
+      Follow the template, replace [CLINIC:DRAFT] with concrete project evidence
+      and keep only relevant detail. Do not invent completed checks or
+      approvals.
+  - id: proposal
+    generates: proposal.md
+    requires:
+      - research
+    description: Reviewable proposal for the feature
+    template: proposal.md
+    instruction: Read openspec/project/ and related accepted specs/active changes.
+      Follow the template, replace [CLINIC:DRAFT] with concrete project evidence
+      and keep only relevant detail. Do not invent completed checks or
+      approvals.
+  - id: specs
+    generates: specs/**/*.md
+    requires:
+      - proposal
+    description: Reviewable specs for the feature
+    template: spec.md
+    instruction: Read openspec/project/ and related accepted specs/active changes.
+      Follow the template, replace [CLINIC:DRAFT] with concrete project evidence
+      and keep only relevant detail. Use native OpenSpec ADDED/MODIFIED/REMOVED
+      Requirements and WHEN/THEN scenarios; include meaningful Purpose for new
+      capabilities. Preserve full modified requirements.
+  - id: design
+    generates: design.md
+    requires:
+      - research
+      - specs
+    description: Reviewable design for the feature
+    template: design.md
+    instruction: Read openspec/project/ and related accepted specs/active changes.
+      Follow the template, replace [CLINIC:DRAFT] with concrete project evidence
+      and keep only relevant detail. Do not invent completed checks or
+      approvals.
+  - id: validation
+    generates: validation.md
+    requires:
+      - specs
+      - design
+    description: Reviewable validation for the feature
+    template: validation.md
+    instruction: Read openspec/project/ and related accepted specs/active changes.
+      Follow the template, replace [CLINIC:DRAFT] with concrete project evidence
+      and keep only relevant detail. Do not invent completed checks or
+      approvals.
+  - id: tasks
+    generates: tasks.md
+    requires:
+      - validation
+      - design
+    description: Reviewable tasks for the feature
+    template: tasks.md
+    instruction: Read openspec/project/ and related accepted specs/active changes.
+      Follow the template, replace [CLINIC:DRAFT] with concrete project evidence
+      and keep only relevant detail. Do not invent completed checks or
+      approvals.
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md
+  instruction: Read project guidance and the complete feature bundle. Implement
+    scenario-linked tasks with tests. Report evidence separately from the
+    approved validation plan. Review changed intent before continuing.

@@ -1,0 +1,12 @@
+services:
+  clinic:
+    build: .
+    init: true
+    ports:
+      - "127.0.0.1:4310:4310"
+    volumes:
+      - clinic-home:/home/node
+      - ${CLINIC_PROJECTS_DIR:-.}:/projects
+    restart: unless-stopped
+volumes:
+  clinic-home:

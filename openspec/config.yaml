@@ -1,0 +1,18 @@
+schema: clinic-sdd
+context: |
+  SDD Clinic is a local single-user web application for multiple repositories.
+  Browse and set up projects before provider sign-in when needed. Use OpenSpec Markdown as the
+  source of truth. Developer and QA run in isolated Git workspaces. PO analyzes
+  read-only database and server evidence and manages an internal backlog.
+  The application uses its own SDD workflow: specify, design, tasks, implement,
+  verify, then archive. Read openspec/project/ for mission, stack, roadmap and
+  workflow guidance. TypeScript, React, Node 24, Fastify, SQLite.
+rules:
+  research:
+    - Record source references, dates, overlap decisions and uncertainty without inventing inaccessible evidence.
+  specs:
+    - Describe externally observable behavior and include failure scenarios.
+  tasks:
+    - Link implementation work to acceptance tests and distinguish live checks.
+  validation:
+    - Map each exact scenario title to a check and expected evidence; planned validation is not a passing result.

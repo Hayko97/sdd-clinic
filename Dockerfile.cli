@@ -1,0 +1,19 @@
+FROM node:24-bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client python3 ca-certificates util-linux && rm -rf /var/lib/apt/lists/*
+RUN npm install -g pnpm@11.25.0 @openai/codex@0.163.0
+WORKDIR /app
+COPY runtime/package.json ./package.json
+COPY pnpm-workspace.yaml ./
+COPY runtime/dependencies.lock.yaml ./pnpm-lock.yaml
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
+COPY LICENSE NOTICE ./
+COPY dist ./dist
+COPY runtime ./runtime
+COPY runtime/claude.sh /usr/local/bin/claude
+RUN chmod +x /usr/local/bin/claude
+RUN chmod +x runtime/entrypoint.sh && mkdir -p /home/node/.sdd-clinic && chown -R node:node /home/node
+ENV CLINIC_CONTAINER=1 CLINIC_LAZY_CLAUDE=1 HOME=/home/node
+ENTRYPOINT ["/app/runtime/entrypoint.sh"]
+CMD ["node", "dist/server/cli.js", "start", "--no-open"]
+
+LABEL org.opencontainers.image.source="https://github.com/Hayko97/sdd-clinic" org.opencontainers.image.licenses="MIT"

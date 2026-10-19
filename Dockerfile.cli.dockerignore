@@ -1,0 +1,11 @@
+*
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!dist
+!dist/**
+!runtime
+!runtime/**
+
+!LICENSE
+!NOTICE

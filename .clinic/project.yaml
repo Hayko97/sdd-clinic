@@ -1,0 +1,28 @@
+version: 1
+name: SDD Clinic
+engine: codex
+targetBranch: main
+context: A local, single-user SDD workspace. OpenSpec requirements define
+  behavior. React/Vite UI; Node 24/Fastify API; SQLite runtime state. Read
+  AGENTS.md and the selected OpenSpec change before development. Keep
+  credentials behind the broker and provider protocols behind engine adapters.
+commands:
+  - name: Install dependencies
+    command: pnpm
+    args:
+      - install
+      - --frozen-lockfile
+    cwd: .
+    phase: setup
+  - name: Typecheck, unit/integration tests, OpenSpec validation, and build
+    command: pnpm
+    args:
+      - check
+    cwd: .
+    phase: check
+  - name: Browser acceptance
+    command: pnpm
+    args:
+      - test:e2e
+    cwd: .
+    phase: check

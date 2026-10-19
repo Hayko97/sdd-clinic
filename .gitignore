@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+!.env.example
+coverage/
+playwright-report/
+test-results/
+.clinic/local/
+*.sqlite*
+releases/
+
+runtime/package.json
