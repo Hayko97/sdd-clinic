@@ -54,4 +54,4 @@ jobs:
             org.opencontainers.image.source=https://github.com/Hayko97/sdd-clinic
             org.opencontainers.image.licenses=MIT
       - name: Publish npm with configured trusted publisher
-        run: npm publish releases/*.tgz --access public --provenance
+        run: npm publish ./releases/*.tgz --access public --provenance

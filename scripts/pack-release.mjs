@@ -15,7 +15,11 @@ if (!/^[a-z0-9][a-z0-9./_-]+:[a-zA-Z0-9._-]+$/.test(image) || !image.endsWith(`:
 await mkdir(output, { recursive: true });
 const temp = await mkdtemp(join(tmpdir(), "clinic-public-pack-"));
 function run(cmd, args, cwd = root) {
-  const r = spawnSync(cmd, args, { cwd, stdio: "inherit" });
+  const r = spawnSync(cmd, args, {
+    cwd,
+    stdio: "inherit",
+    env: { ...process.env, COPYFILE_DISABLE: "1" },
+  });
   if (r.error) throw r.error;
   if (r.status !== 0) throw Error(`${cmd} failed (${r.status})`);
 }

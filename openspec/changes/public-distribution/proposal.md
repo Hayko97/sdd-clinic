@@ -15,4 +15,4 @@ None.
 - local-runtime: public installation and release artifacts.
 
 ## Impact
-Package metadata, public documentation, license, distribution scripts and GitHub Actions. The owner's explicit request authorizes creating the public repository, committing/pushing reviewed project files and publishing releases. It does not authorize publishing credentials, user data or unrelated projects. License and registry preferences are pending; no public source upload until license is resolved.
+Package metadata, public documentation, license, distribution scripts and GitHub Actions. The owner's explicit request authorizes creating the public repository, committing/pushing reviewed project files and publishing releases. It does not authorize publishing credentials, user data or unrelated projects. The owner selected MIT licensing and npm + Docker Hub publication.
