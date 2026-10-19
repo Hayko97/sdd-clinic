@@ -56,5 +56,5 @@
 - [x] 12.2 Add shared companion generation and repair for existing specs; test complete mapping, unusable inputs, custom preservation and stale reads.
 - [x] 12.3 Cover prompt/document setup and shared missing-kit/changelog generation; test new project, existing casing, decline and repeat behavior.
 - [x] 12.4 Expose --repair through CLI/runtime with honest summary and GUI registration; verify no provider calls or application-source audit.
-- [ ] 12.5 Run required checks, independent QA and packaged Docker/CLI smoke. Record actual outcomes.
+- [x] 12.5 Run required checks, independent QA and packaged Docker/CLI smoke. Record actual outcomes.
 - [ ] 12.6 Publish patch0.1.1 and verify clean install, existing-project repair and documented new-project commands.
