@@ -106,7 +106,11 @@ function response(prompt) {
     const existing = JSON.parse(
       prompt.split("EXISTING_SPEC_PATHS\n").at(-1).split("\nFINDINGS")[0],
     );
-    const sources = notes.flatMap((n) => n.sources);
+    const sources = notes.sources.map(([file, startLine, endLine]) => ({
+      path: notes.files[file],
+      startLine,
+      endLine,
+    }));
     return JSON.stringify({
       summary: sources.length
         ? "Catalog behavior inferred from existing source and documentation."

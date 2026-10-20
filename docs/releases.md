@@ -50,3 +50,15 @@ npx --yes --package=sdd-clinic@0.1.1 sddclinic setup --model gpt-6.1-sol --reaso
 Add `--rebuild` only when you want comprehensive source analysis and a reconstruction blueprint. For a new application with no source, run `npx --yes --package=sdd-clinic@0.1.1 sddclinic start` and use the new-project prompt/document flow; it creates specifications plus validation from your product requirements. Empty-code repair cannot invent product intent. Native proposal, research, design and tasks templates are installed for future actual changes, rather than fabricated implementation records.
 
 If `sddclinic` still behaves like an older version, inspect `type -a sddclinic`; an earlier local wrapper can precede the npm executable on PATH. The versioned npx commands above select the published version explicitly. Node.js24+ and Docker Compose are required.
+
+## Setup quality and large-project analysis (0.1.2)
+
+```sh
+npm install --global sdd-clinic@0.1.2
+# Use an explicit package to bypass any earlier local launcher:
+npx --yes --package=sdd-clinic@0.1.2 sddclinic setup /absolute/path/to/project --deep --engine codex --model gpt-6.1-sol --reasoning medium
+```
+
+Setup preserves accepted specifications and presents missing source-backed specifications and companion guidance for review. It reports defects and unmet requirements; it does not silently rewrite custom specifications or fix application code. Use the installed `analyze-request` → `refine-spec` → `implement-spec` skills for changes to existing intent and implementation. For missing SDD documents alone, use `setup /absolute/path/to/project --repair`.
+
+Deep analysis reviews all eligible source and can require many provider calls. Large finding sets now use a single consolidation pass with explicit output budgets and immutable source references; detailed original-evidence review is batched. Unsupported individual context sizes and generation defects stop the proposal without project writes. Semantic completeness and application test results remain unverified until separately reviewed and tested.

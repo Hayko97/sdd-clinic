@@ -1,6 +1,6 @@
 {
   "name": "sdd-clinic",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A local, spec-driven development workspace for Codex and Claude CLI",
   "type": "module",
   "bin": {

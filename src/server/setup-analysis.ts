@@ -1,4 +1,9 @@
 import {
+  compactFindings,
+  compactInstructions,
+  consolidateFindings,
+} from "./setup-consolidation.js";
+import {
   reconstructionPath,
   reconstructionMarker,
   reconstructionSchema,
@@ -254,53 +259,17 @@ export async function analyzeSetup(options: {
       reviewedChunks: batch.map((c) => c.id),
     });
   }
-  let rounds = 0;
-  while (JSON.stringify(notes).length > 90_000) {
-    canceled();
-    assert(
-      ++rounds <= 6,
-      "Analysis findings exceed the synthesis limit. Narrow the project and retry; no complete baseline was produced.",
-    );
-    const groups = boundedGroups(notes);
-    const reduced: Note[] = [];
-    for (const group of groups) {
-      const parsed = await validated(
-        "analyze-request",
-        `CLINIC_BASELINE_CONSOLIDATE\n${readOnlyContext}\nConsolidate these findings while retaining every distinct capability, failure behavior and evidence reference. ${rebuilding ? "Preserve all reconstruction contract details, exact field names/types/constraints, externally observable values, transitions, commands and unknowns; do not collapse detailed contracts into high-level summaries." : ""} Return {"notes":[{"text":"concise combined finding","sources":[{"path":"...","startLine":1,"endLine":2}]}],"questions":[]}. Do not invent sources or discard contradictory evidence.\nFINDINGS\n${JSON.stringify(group)}`,
-        (value) => {
-          const parsed = notesOutput.parse(value);
-          assert(
-            parsed.notes.length > 0,
-            "Consolidation omitted all supplied findings. Retry analysis.",
-          );
-          for (const n of parsed.notes) {
-            checkReferences(n.sources, inventory);
-            for (const source of n.sources)
-              assert(
-                group.some((g) =>
-                  g.sources.some(
-                    (s) =>
-                      s.path === source.path &&
-                      source.startLine >= s.startLine &&
-                      source.endLine <= s.endLine,
-                  ),
-                ),
-                "Consolidation cited evidence outside its findings.",
-              );
-          }
-
-          return parsed;
-        },
-      );
-      reduced.push(...parsed.notes);
-      questions.push(...parsed.questions);
-    }
-    assert(
-      JSON.stringify(reduced).length < JSON.stringify(notes).length,
-      "Analysis could not consolidate findings within its context limit. Narrow the project and retry.",
-    );
-    notes = reduced;
-  }
+  const consolidated = await consolidateFindings({
+    notes,
+    context: readOnlyContext,
+    rebuilding,
+    progress,
+    validated: (prompt, validate) =>
+      validated("analyze-request", prompt, validate),
+  });
+  notes = consolidated.notes;
+  questions.push(...consolidated.questions);
+  const findings = JSON.stringify(compactFindings(notes));
   canceled();
   const existing = inventory.files
     .filter((f) => /^openspec\/(?:specs|changes)\/.+\.md$/.test(f.path))
@@ -310,7 +279,7 @@ export async function analyzeSetup(options: {
   );
   const parsed = await validated(
     "create-spec",
-    `CLINIC_BASELINE_SYNTHESIZE\n${readOnlyContext}\n${initial ? "Create an initial SDD specification set from the selected project context below. Infer high-level supported user-facing capabilities for future spec-driven development. This is a bounded overview, not an exhaustive implementation audit; identify gaps and questions. Do not describe coverage as complete." : "This is a reviewed import of existing behavior, not a new-feature change."} Return {"summary":"baseline findings", "capabilities":[{"name":"capability-slug","purpose":"user outcome","requirements":[{"name":"Requirement title","statement":"The system SHALL ...","basis":"documented or inferred","sources":[{"path":"...","startLine":1,"endLine":2}],"scenarios":[{"name":"Scenario title","when":"trigger","then":"observable outcome"}]}]}],"reused":[{"path":"existing spec or active change path","reason":"matching intent or gap"}],"questions":["contradictions or uncertainty"]}. Create only missing capabilities, never duplicate accepted or pending intent. Use a meaningful purpose of at least 50 characters, coherent observable requirements and success/failure scenarios supported by the evidence. Existing bugs are questions, not intended requirements. Empty capabilities is correct if there is no inferable behavior or everything is already specified. All candidates remain inferred and unverified until human review. Cover supported UI/UX and domain invariants including errors, roles, transaction rollback, concurrency, retries and recovery; do not reduce behavior to a success-only overview. Preserve documented requirements even if unimplemented; flag implementation gaps separately from open product questions. An independent quality review will reject missing supported features, generic scenarios and import-only evidence. At most 60 capabilities.\nEXISTING_SPEC_PATHS\n${JSON.stringify(existing)}\nFINDINGS\n${JSON.stringify(notes)}`,
+    `CLINIC_BASELINE_SYNTHESIZE\n${readOnlyContext}\n${initial ? "Create an initial SDD specification set from the selected project context below. Infer high-level supported user-facing capabilities for future spec-driven development. This is a bounded overview, not an exhaustive implementation audit; identify gaps and questions. Do not describe coverage as complete." : "This is a reviewed import of existing behavior, not a new-feature change."} Return {"summary":"baseline findings", "capabilities":[{"name":"capability-slug","purpose":"user outcome","requirements":[{"name":"Requirement title","statement":"The system SHALL ...","basis":"documented or inferred","sources":[{"path":"...","startLine":1,"endLine":2}],"scenarios":[{"name":"Scenario title","when":"trigger","then":"observable outcome"}]}]}],"reused":[{"path":"existing spec or active change path","reason":"matching intent or gap"}],"questions":["contradictions or uncertainty"]}. Create only missing capabilities, never duplicate accepted or pending intent. Use a meaningful purpose of at least 50 characters, coherent observable requirements and success/failure scenarios supported by the evidence. Existing bugs are questions, not intended requirements. Empty capabilities is correct if there is no inferable behavior or everything is already specified. All candidates remain inferred and unverified until human review. Cover supported UI/UX and domain invariants including errors, roles, transaction rollback, concurrency, retries and recovery; do not reduce behavior to a success-only overview. Preserve documented requirements even if unimplemented; flag implementation gaps separately from open product questions. An independent quality review will reject missing supported features, generic scenarios and import-only evidence. At most 60 capabilities. ${compactInstructions}\nEXISTING_SPEC_PATHS\n${JSON.stringify(existing)}\nFINDINGS\n${findings}`,
     (value) => {
       const parsed = baselineOutput.parse(value);
       assert(
@@ -379,7 +348,7 @@ export async function analyzeSetup(options: {
   const reconstruction = rebuilding
     ? await validated(
         "create-spec",
-        `CLINIC_RECONSTRUCTION_SYNTHESIZE\n${readOnlyContext}\n${reconstructionInstructions}\nUse only source ranges provided in FINDINGS.\nFINDINGS\n${JSON.stringify(notes)}`,
+        `CLINIC_RECONSTRUCTION_SYNTHESIZE\n${readOnlyContext}\n${reconstructionInstructions}\nUse only source ranges provided in FINDINGS.\n${compactInstructions}\nFINDINGS\n${findings}`,
         (value) => {
           const result = reconstructionSchema.parse(value);
           for (const area of Object.values(result.areas)) {
@@ -443,23 +412,45 @@ export async function analyzeSetup(options: {
       invoke: (prompt) => invoke("analyze-request", prompt),
       progress,
     });
-  const originalEvidence = [
-    ...new Map(
-      notes
-        .flatMap((note) => note.sources)
-        .map((source) => [
-          `${source.path}:${source.startLine}-${source.endLine}`,
-          {
-            text: inventory.files
-              .find((file) => file.path === source.path)!
-              .content.split("\n")
-              .slice(source.startLine - 1, source.endLine)
-              .join("\n"),
-            sources: [source],
-          },
-        ]),
-    ).values(),
-  ];
+  // Union overlapping citations before reading original text, then keep excerpts
+  // small enough for bounded detailed reviews without dropping source lines.
+  const originalEvidence: Note[] = [];
+  for (const file of inventory.files) {
+    const ranges = notes
+      .flatMap((n) => n.sources)
+      .filter((s) => s.path === file.path)
+      .sort((a, b) => a.startLine - b.startLine);
+    const merged: Reference[] = [];
+    for (const range of ranges) {
+      const last = merged.at(-1);
+      if (last && range.startLine <= last.endLine + 1)
+        last.endLine = Math.max(last.endLine, range.endLine);
+      else merged.push({ ...range });
+    }
+    const lines = file.content.split("\n");
+    for (const range of merged) {
+      let start = range.startLine;
+      let text = "";
+      for (let line = range.startLine; line <= range.endLine; line++) {
+        const next = lines[line - 1];
+        if (text && text.length + next.length > 12000) {
+          originalEvidence.push({
+            text,
+            sources: [{ path: file.path, startLine: start, endLine: line - 1 }],
+          });
+          start = line;
+          text = "";
+        }
+        text += (line > start ? "\n" : "") + next;
+      }
+      originalEvidence.push({
+        text,
+        sources: [
+          { path: file.path, startLine: start, endLine: range.endLine },
+        ],
+      });
+    }
+  }
   const quality = reviewSpecifications.length
     ? await reviewSetup({
         files: reviewSpecifications,

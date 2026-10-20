@@ -140,7 +140,7 @@ async function fixture(engine: EngineKind = "codex") {
             notes: [
               {
                 text: "Consolidated catalog behavior.",
-                sources: group[0].sources,
+                findingIds: group.map((n: any) => n.id),
               },
             ],
             questions: [],
@@ -156,7 +156,7 @@ async function fixture(engine: EngineKind = "codex") {
             sessionId: "fixture",
             text: JSON.stringify({
               reviewedChunks: chunks.map((c: any) => c.id),
-              notes: Array.from({ length: 40 }, () => ({
+              notes: Array.from({ length: 80 }, () => ({
                 text: "Catalog behavior. ".repeat(160),
                 sources: [{ path: source, startLine: 1, endLine: 1 }],
               })),
@@ -183,7 +183,13 @@ async function fixture(engine: EngineKind = "codex") {
         };
       }
       const notes = JSON.parse(request.prompt.split("FINDINGS\n").at(-1)!);
-      const sources = notes.flatMap((n: any) => n.sources);
+      const sources = notes.sources.map(
+        ([file, startLine, endLine]: number[]) => ({
+          path: notes.files[file],
+          startLine,
+          endLine,
+        }),
+      );
       return {
         sessionId: "fixture",
         text: JSON.stringify({
@@ -725,4 +731,20 @@ it("reviews reused specification intent even when no implementation findings exi
       e.sources.some((s: any) => s.path === "openspec/specs/catalog/spec.md"),
     ),
   ).toBe(true);
+});
+
+it("retains leading blank lines and absolute ranges in original quality evidence", async () => {
+  const c = await fixture();
+  const content =
+    "\n\nexport const active = products => products.filter(product => product.active);\n";
+  await c.write(source, content);
+  const result = await c.analyze();
+  expect(result.proposal).toBeDefined();
+  const call = c.calls.find((call) =>
+    call.prompt.includes("CLINIC_SETUP_QUALITY"),
+  )!;
+  const input = JSON.parse(call.prompt.split("REVIEW_INPUT\n").at(-1)!);
+  const item = input.evidence.find((e: any) => e.sources[0].path === source);
+  expect(item.text).toBe(content);
+  expect(item.sources[0].startLine).toBe(1);
 });

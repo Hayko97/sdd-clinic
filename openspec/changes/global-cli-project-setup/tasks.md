@@ -68,3 +68,10 @@
 
 - [x] 13.6 Independently review the frozen correction, fix discovered source-review/Unicode/native-delta defects and rerun required checks.
 - [x] 13.7 Merge the verified revision into main as explicitly requested by the owner, install the local CLI and document concrete-project assessment/refinement commands. Public publishing and pushing are not included.
+
+## 14. Live bottleneck correction and release (owner requested 2026-10-20)
+- [x] 14.1 Record observed convergence, citation and downstream evidence-limit defects and review scoped correction against existing intent.
+- [x] 14.2 Implement bounded consolidation, immutable provenance and progress with negative regression cases.
+- [x] 14.3 Batch original-evidence quality review without dropping evidence or blockers.
+- [ ] 14.4 Run fixture checks, saved-evidence validation and independent QA; report live checks separately.
+- [ ] 14.5 Publish verified patch release, verify public artifacts and install updated CLI.

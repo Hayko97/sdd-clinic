@@ -1,0 +1,22 @@
+$ playwright test
+[WebServer] (node:9672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9682) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:9778) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/workspace.spec.ts:4:1 › project grid opens one workspace with agents, specs, schedules and a Developer prompt (4.0s)
+  ✓  2 tests/e2e/workspace.spec.ts:163:1 › a second project can be set up and browsed without a provider (482ms)
+  ✓  3 tests/e2e/workspace.spec.ts:199:1 › Developer prompt continues from reviewed specs to implementation and QA (3.9s)
+  ✓  4 tests/e2e/workspace.spec.ts:377:1 › Codex sign-in handles a waiting device challenge, cancellation and completion (3.3s)
+  ✓  5 tests/e2e/workspace.spec.ts:418:1 › connection credentials are saved in project chat without entering drafts or model history (1.2s)
+  ✓  6 tests/e2e/workspace.spec.ts:542:1 › project guidance and complete feature folders include related archived documents (934ms)
+  ✓  7 tests/e2e/workspace.spec.ts:651:1 › existing project setup analyzes nested code, retains review after reload, and creates capability specs with agent guidance (1.6s)
+  ✓  8 tests/e2e/workspace.spec.ts:753:1 › new project prompt and attachments clarify, survive reload, and apply a reviewed SDD package (3.4s)
+
+  8 passed (21.4s)

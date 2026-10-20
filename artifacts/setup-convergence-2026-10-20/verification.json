@@ -1,0 +1,8 @@
+{
+  "release": "0.1.2",
+  "fixtureChecks": {"pnpm check": "passed: 211 tests, 2 opt-in skips; typecheck, 12 OpenSpec validations and build passed", "pnpm test:e2e": "8 passed"},
+  "independentQA": "55 focused tests passed; corrected later-plan loss and leading blank-line loss; no remaining blocker found",
+  "fixes": ["LIVE-01: enforced single-pass consolidation budgets", "LIVE-02: immutable finding IDs carry exact provenance", "LIVE-03: group/output-budget/reduction progress", "Batch large original-evidence reviews and retain later plans, gaps and decisions"],
+  "live": "Targeted replay of saved original findings with fresh consolidation calls is in progress; initial overly restrictive budget check was stopped. Full end-to-end kpcru setup remains unverified.",
+  "limits": ["Large individual specification/evidence requests fail safely", "Semantic completeness is not guaranteed by fixtures or model review", "Existing custom kpcru specifications and application code remain unchanged", "Conflicting evidence-local validation procedures require owner reconciliation"]
+}

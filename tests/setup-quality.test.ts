@@ -502,3 +502,64 @@ it("reviews original chunks independently and refuses omitted features without r
   ).rejects.toThrow(/every supplied chunk/);
   expect(missing).toHaveBeenCalledTimes(3);
 });
+
+it("reviews all oversized evidence in bounded batches and preserves gaps and scenario mapping", async () => {
+  const large = Array.from({ length: 50 }, (_, id) => ({
+    text: `Evidence ${id}: ` + "behavior ".repeat(1000),
+    sources: [{ path: `src/${id}.ts`, startLine: 1, endLine: 1 }],
+  }));
+  const seen: string[] = [];
+  let batches = 0;
+  const result = await reviewSetup({
+    files,
+    evidence: large,
+    coverage: "deep",
+    signal: new AbortController().signal,
+    progress: () => {},
+    invoke: async (prompt) => {
+      const input = JSON.parse(prompt.split("REVIEW_INPUT\n").at(-1)!);
+      expect(JSON.stringify(input).length).toBeLessThan(350000);
+      seen.push(...input.evidence.map((e: any) => e.sources[0].path));
+      const review = qualityFixture(prompt);
+      review.areas.architecture.gaps.push(`Unique gap from batch ${++batches}`);
+      review.checks[0].fixture += ` Additional concrete fixture ID ${batches}.`;
+      return JSON.stringify(review);
+    },
+  });
+  expect(batches).toBeGreaterThan(1);
+  expect(seen).toEqual(large.map((e) => e.sources[0].path));
+  expect(result.checks[0].fixture).toContain(
+    `Additional concrete fixture ID ${batches}.`,
+  );
+  expect(result.areas.architecture.gaps).toContain(
+    `Unique gap from batch ${batches}`,
+  );
+  expect(result.checks.map((c) => c.scenarioId)).toEqual(
+    cases.map((c) => c.id),
+  );
+});
+
+it("rejects a generation blocker in a later evidence batch", async () => {
+  let calls = 0;
+  await expect(
+    reviewSetup({
+      files,
+      evidence: Array.from({ length: 50 }, (_, id) => ({
+        text: "source ".repeat(1500),
+        sources: [{ path: `${id}.ts`, startLine: 1, endLine: 1 }],
+      })),
+      coverage: "deep",
+      signal: new AbortController().signal,
+      progress: () => {},
+      invoke: async (prompt) => {
+        const result = qualityFixture(prompt);
+        if (++calls > 1)
+          result.blockingIssues = [
+            "The generated specification omits supported order cancellation.",
+          ];
+        return JSON.stringify(result);
+      },
+    }),
+  ).rejects.toThrow(/blocking generation defects/);
+  expect(calls).toBe(2);
+});

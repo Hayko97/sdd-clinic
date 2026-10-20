@@ -182,3 +182,11 @@ Clinic SHALL evaluate setup artifacts against supplied evidence before proposing
 #### Scenario: Label provider-free repair scaffolds
 - **WHEN** guidance-only setup or repair derives a companion without implementation evidence
 - **THEN** the companion is explicitly an incomplete draft requiring concrete fixtures, actions and assertions before implementation approval, and does not present generic steps as an executable validation plan.
+
+#### Scenario: Finish bounded large-project consolidation
+- **WHEN** deep analysis produces findings too large for synthesis
+- **THEN** setup consolidates them with an enforced total output budget, accounts for every input finding, preserves exact evidence references and reports group progress and measured reduction; invalid or over-budget responses receive bounded corrections and never an unbounded sequence of consolidation rounds.
+
+#### Scenario: Review large evidence without dropping source
+- **WHEN** original cited evidence exceeds a single quality-review request
+- **THEN** setup reviews bounded evidence batches against the proposed specifications, retains all review gaps and decisions, and rejects any blocking generation defect before offering an applicable proposal.

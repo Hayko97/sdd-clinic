@@ -47,3 +47,6 @@ Docker verification additionally reproduced Git dubious-ownership rejection on /
 
 ## 2026-10-20: Evidence quality correction
 Local audit evidence: /Users/ashugh/Documents/Github/kpcru/artifacts/sdd-audit-2026-10-20/CLINIC-SETUP-HANDOFF.md and issues.json (36 findings). Reproduced root causes: setup-overview slices early files; setup-analysis renders generic validation; setup-documents adds generic companions; projectDocuments emits scaffolds even for inferred baselines. Existing OpenSpec 1.14.2 is managed by Clinic, but portability metadata is absent. Reuse the active global-cli-project-setup change and accepted preservation/approval rules. This correction requires local code evidence, not new external research. Customer cancellation remains required; the app implementation gap is not repaired or canonized here.
+
+## 2026-10-20 live-run follow-up
+Local private saved provider responses confirm the consolidation plateau and citation widening recorded in artifacts/setup-quality-2026-10-20/live-verification.json. 744 findings contain 217,884 text characters and 1,218 distinct evidence ranges. Current detailed review would exceed its 350,000-character limit even if consolidation finished. No external research is needed for these deterministic defects. Raw kpcru source and provider transcripts remain outside public source and release artifacts.

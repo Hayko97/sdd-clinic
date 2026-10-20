@@ -99,3 +99,8 @@ Repeat terminal setup / Review all applicable quality areas: rerun after applyin
 - Unicode validation: Russian concrete fixture/actions pass; copying a Russian scenario still fails the restatement guard.
 - OpenSpec interoperability: removal-only/rename-only native deltas have no invented scenarios; mixed deltas retain added scenarios, and malformed additions still fail.
 - Run pnpm check, pnpm test:e2e sequentially and the disposable Docker browser setup/rerun smoke; record exact evidence separately from this plan. Live-provider validation remains opt-in.
+
+## Live bottleneck correction
+- Finish bounded large-project consolidation: synthetic heterogeneous findings must account for every ID, carry exact citations, fit computed synthesis budget and report group/reduction progress. Omitted/unknown/duplicate IDs and over-budget responses must fail after bounded corrections. Replay saved live analysis findings separately from fresh provider checks; never label replay a fresh end-to-end run.
+- Review large evidence without dropping source: overlapping/long ranges must retain all source lines in bounded requests; a blocker in any batch rejects setup; merged results retain gaps/decisions and exactly one concrete check per scenario.
+- Run pnpm check then pnpm test:e2e; independent QA on frozen revision, packaged isolated CLI/Docker smoke, public registry verification for release. Record limitations honestly; do not publish raw project evidence.

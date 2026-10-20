@@ -380,7 +380,7 @@ it("keeps the selected effort through consolidation as well as analysis and synt
         sessionId: "fixture",
         text: JSON.stringify({
           reviewedChunks: chunks.map((c: { id: string }) => c.id),
-          notes: Array.from({ length: 40 }, () => ({
+          notes: Array.from({ length: 80 }, () => ({
             text: "Catalog behavior. ".repeat(160),
             sources: [{ path: "app.ts", startLine: 1, endLine: 1 }],
           })),
@@ -395,7 +395,9 @@ it("keeps the selected effort through consolidation as well as analysis and synt
           notes: [
             {
               text: "Consolidated behavior.",
-              sources: [{ path: "app.ts", startLine: 1, endLine: 1 }],
+              findingIds: JSON.parse(r.prompt.split("FINDINGS\n").at(-1)!).map(
+                (n: { id: number }) => n.id,
+              ),
             },
           ],
           questions: [],

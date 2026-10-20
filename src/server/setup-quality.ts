@@ -161,6 +161,7 @@ export function validateQuality(
   value: unknown,
   cases: ScenarioCase[],
   evidence: Evidence[],
+  partial = false,
 ) {
   const result = qualitySchema.parse(value);
   const supported = (source: Source) => {
@@ -178,7 +179,7 @@ export function validateQuality(
     );
   };
   assert(
-    result.areas.purpose.status === "evidenced",
+    partial || result.areas.purpose.status === "evidenced",
     "A generated baseline needs an evidence-supported purpose; unknown intent must be clarified before proposing specifications.",
   );
   for (const [name, area] of Object.entries(result.areas)) {
@@ -253,7 +254,116 @@ export function validateQuality(
   return result;
 }
 
-export async function reviewSetup(options: {
+// Batch full evidence; no truncation or silent sampling of a deep audit.
+export async function reviewSetup(
+  options: Parameters<typeof reviewSetupBatch>[0],
+): Promise<SetupQuality> {
+  const fixed = JSON.stringify({
+    coverage: options.coverage,
+    scenarios: scenarioCases(options.files),
+    files: options.files,
+    evidence: [],
+  }).length;
+  const budget = 340_000 - fixed;
+  assert(
+    budget >= 20_000,
+    "Specifications exceed the detailed review budget. Split the project into independently reviewable components; no applicable proposal was produced.",
+  );
+  const batches: Evidence[][] = [[]];
+  let size = 0;
+  for (const item of options.evidence) {
+    assert(
+      JSON.stringify(item).length <= budget,
+      "An individual evidence excerpt exceeds the review budget; split the excerpt on source line boundaries.",
+    );
+    const length = JSON.stringify(item).length + 1;
+    if (size + length > budget) {
+      batches.push([]);
+      size = 0;
+    }
+    batches.at(-1)!.push(item);
+    size += length;
+  }
+  let merged: SetupQuality | undefined;
+  for (const [index, evidence] of batches.entries()) {
+    options.progress(
+      `Reviewing detailed evidence batch ${index + 1} of ${batches.length}.`,
+    );
+    const result = await reviewSetupBatch({
+      ...options,
+      evidence,
+      partial: batches.length > 1,
+      coverage: `${options.coverage} Detailed review batch ${index + 1}/${batches.length}; assess only this supplied evidence, retain unknowns for other evidence. Candidate specifications are complete. An area may be unknown in this batch.`,
+    });
+    if (!merged) {
+      merged = result;
+      continue;
+    }
+    for (const key of Object.keys(
+      qualityAreas,
+    ) as (keyof typeof qualityAreas)[]) {
+      const previous = merged.areas[key];
+      const next = result.areas[key];
+      previous.details += `\n\nEvidence batch ${index + 1}: ${next.details}`;
+      previous.sources = [
+        ...new Map(
+          [...previous.sources, ...next.sources].map((s) => [
+            JSON.stringify(s),
+            s,
+          ]),
+        ).values(),
+      ];
+      previous.gaps = [...new Set([...previous.gaps, ...next.gaps])];
+      previous.status =
+        previous.status === "evidenced" || next.status === "evidenced"
+          ? "evidenced"
+          : previous.status === "unknown" || next.status === "unknown"
+            ? "unknown"
+            : "not-applicable";
+    }
+    merged.decisions.push(...result.decisions);
+    merged.checks = merged.checks.map((check) => {
+      const next = result.checks.find(
+        (c) => c.scenarioId === check.scenarioId,
+      )!;
+      const fields = [
+        "prerequisites",
+        "fixture",
+        "action",
+        "assertions",
+        "evidence",
+      ] as const;
+      for (const field of fields) {
+        if (check[field] !== next[field])
+          check[field] +=
+            `\n\nAdditional evidence-local check (batch ${index + 1}; reconcile conflicting alternatives during owner review):\n${next[field]}`;
+      }
+      check.testSources = [
+        ...new Map(
+          [...check.testSources, ...next.testSources].map((source) => [
+            JSON.stringify(source),
+            source,
+          ]),
+        ).values(),
+      ];
+      check.kind =
+        check.kind === "proposed-test" || next.kind === "proposed-test"
+          ? "proposed-test"
+          : check.kind === "manual" || next.kind === "manual"
+            ? "manual"
+            : "existing-test";
+      return check;
+    });
+  }
+  assert(
+    merged!.areas.purpose.status === "evidenced",
+    "A generated baseline needs an evidence-supported purpose.",
+  );
+  return merged!;
+}
+
+async function reviewSetupBatch(options: {
+  partial?: boolean;
   files: Document[];
   evidence: Evidence[];
   coverage: string;
@@ -332,6 +442,7 @@ export async function reviewSetup(options: {
         parseJsonOutput(response),
         cases,
         options.evidence,
+        options.partial ?? false,
       );
     } catch (error) {
       // A semantic rejection cannot be repaired by asking the reviewer to approve

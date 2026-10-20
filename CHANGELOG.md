@@ -1,8 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.2
 
 ### Fixed
+- Bound large-project consolidation in one pass, retain exact citation provenance and report group budgets and measured reduction.
+- Review large original-evidence sets in bounded batches without dropping gaps, decisions or blocking defects.
 - Independently review original deep-analysis source batches, retaining pending specification changes; support non-Latin validation text and native removal/rename deltas.
 - Select representative source line ranges and report omitted evidence during initial setup.
 - Require a separate quality review, concrete scenario validation plans, substantive missing project guidance and portable provenance before applying inferred setup.
