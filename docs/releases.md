@@ -62,3 +62,7 @@ npx --yes --package=sdd-clinic@0.1.2 sddclinic setup /absolute/path/to/project -
 Setup preserves accepted specifications and presents missing source-backed specifications and companion guidance for review. It reports defects and unmet requirements; it does not silently rewrite custom specifications or fix application code. Use the installed `analyze-request` → `refine-spec` → `implement-spec` skills for changes to existing intent and implementation. For missing SDD documents alone, use `setup /absolute/path/to/project --repair`.
 
 Deep analysis reviews all eligible source and can require many provider calls. Large finding sets now use a single consolidation pass with explicit output budgets and immutable source references; detailed original-evidence review is batched. Unsupported individual context sizes and generation defects stop the proposal without project writes. Semantic completeness and application test results remain unverified until separately reviewed and tested.
+
+## Lossless compact synthesis (0.1.3)
+
+Use `npm install --global sdd-clinic@0.1.3`. The compact synthesis bound is now 300,000 characters, below the existing 350,000-character quality-request bound. The observed 744 findings fit losslessly in 264,888 characters, so setup needs no consolidation calls for that evidence set. Larger contexts still receive bounded consolidation and safe rejection if the provider cannot meet its budget. This is saved-evidence validation, not a completed live end-to-end project setup.

@@ -11,7 +11,7 @@
     "LIVE-03: group/output-budget/reduction progress",
     "Batch large original-evidence reviews and retain later plans, gaps and decisions"
   ],
-  "live": "Targeted replay of saved original findings with fresh consolidation calls is in progress; initial overly restrictive budget check was stopped. Full end-to-end kpcru setup remains unverified.",
+  "live": "Targeted 0.1.2 consolidation returned 44,876 then 41,858 characters against a 30,749-character group budget and was stopped. A concurrent smoke used a different volume UID on an earlier attempt; that infrastructure attempt was discarded. Follow-up 0.1.3 keeps all 744 original findings losslessly at 264,888 compact characters with zero consolidation calls. Host and packaged Docker saved-evidence replay passed. Full end-to-end live setup remains unverified.",
   "limits": [
     "Large individual specification/evidence requests fail safely",
     "Semantic completeness is not guaranteed by fixtures or model review",

@@ -50,7 +50,7 @@ export async function consolidateFindings(options: {
 }) {
   const input = compactFindings(options.notes);
   const inputSize = JSON.stringify(input).length;
-  if (inputSize <= 180_000)
+  if (inputSize <= 300_000)
     return { notes: options.notes, questions: [] as string[] };
   const groups = boundedGroups(
     options.notes.map((note, id) => ({ id, text: note.text })),
@@ -59,7 +59,7 @@ export async function consolidateFindings(options: {
   const overhead = JSON.stringify(
     compactFindings(options.notes.map((n) => ({ ...n, text: "" }))),
   ).length;
-  const budget = Math.floor((170_000 - overhead) / groups.length);
+  const budget = Math.floor((290_000 - overhead) / groups.length);
   assert(
     budget >= 1000,
     "Evidence references exceed the synthesis budget. No complete baseline was produced; split the project into independently reviewable components.",
@@ -127,7 +127,7 @@ export async function consolidateFindings(options: {
   }
   const outputSize = JSON.stringify(compactFindings(notes)).length;
   assert(
-    outputSize <= 180_000,
+    outputSize <= 300_000,
     "Consolidated findings exceed the synthesis budget. No complete baseline was produced.",
   );
   options.progress(

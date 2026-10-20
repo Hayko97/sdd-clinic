@@ -1,0 +1,2 @@
+PASS packaged CLI repaired external project, repeated idempotently and registered exactly one project visible in actual GUI.
+Disposable GUI cleanup: 0

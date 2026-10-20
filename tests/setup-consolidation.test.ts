@@ -8,7 +8,7 @@ import {
 const large = (): Finding[] =>
   Array.from({ length: 744 }, (_, id) => ({
     text: `Feature ${id} accepts item ${id}, rejects an invalid state and preserves its exact owner. `.repeat(
-      4,
+      6,
     ),
     sources: [
       { path: `src/module-${id % 239}.ts`, startLine: id + 1, endLine: id + 3 },
@@ -16,6 +16,7 @@ const large = (): Finding[] =>
   }));
 const run = (transform?: (result: any) => void) => {
   const notes = large();
+  expect(JSON.stringify(compactFindings(notes)).length).toBeGreaterThan(300000);
   const messages: string[] = [];
   let calls = 0;
   return {
@@ -57,8 +58,8 @@ it("converges heterogeneous findings in one bounded pass with lossless provenanc
   );
   expect(
     JSON.stringify(compactFindings(output.notes)).length,
-  ).toBeLessThanOrEqual(180000);
-  expect(execution.calls()).toBeLessThanOrEqual(6);
+  ).toBeLessThanOrEqual(300000);
+  expect(execution.calls()).toBeLessThanOrEqual(8);
   expect(execution.messages.some((m) => m.includes("single pass"))).toBe(true);
   expect(execution.messages.at(-1)).toContain(
     "exact source references retained",
@@ -107,6 +108,36 @@ it("shares paths/ranges without changing absolute citations or requesting small-
     progress: () => {},
     validated: async () => {
       throw Error("unexpected provider call");
+    },
+  });
+  expect(result.notes).toBe(notes);
+});
+
+it("keeps hundreds of distinct findings losslessly when the complete compact ledger fits", async () => {
+  const notes = Array.from({ length: 744 }, (_, id) => ({
+    text:
+      `Distinct feature ${id}: ` +
+      "Preserve observable state, authorization, exact values and failure behavior. ".repeat(
+        3,
+      ),
+    sources: [
+      {
+        path: `packages/application/module-${id % 239}.ts`,
+        startLine: id + 1,
+        endLine: id + 4,
+      },
+    ],
+  }));
+  const characters = JSON.stringify(compactFindings(notes)).length;
+  expect(characters).toBeGreaterThan(180000);
+  expect(characters).toBeLessThan(300000);
+  const result = await consolidateFindings({
+    notes,
+    context: "fixture",
+    rebuilding: false,
+    progress: () => {},
+    validated: async () => {
+      throw Error("Unnecessary provider consolidation");
     },
   });
   expect(result.notes).toBe(notes);

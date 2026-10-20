@@ -158,7 +158,13 @@ async function fixture(engine: EngineKind = "codex") {
               reviewedChunks: chunks.map((c: any) => c.id),
               notes: Array.from({ length: 80 }, () => ({
                 text: "Catalog behavior. ".repeat(160),
-                sources: [{ path: source, startLine: 1, endLine: 1 }],
+                sources: [
+                  {
+                    path: chunks[0].path,
+                    startLine: chunks[0].startLine,
+                    endLine: chunks[0].endLine,
+                  },
+                ],
               })),
               questions: [],
             }),
@@ -596,6 +602,7 @@ it("keeps provider-free and files-only setup explicit and requires the configure
 it("consolidates large findings before synthesis and keeps source references", async () => {
   const c = await fixture();
   c.setBehavior("bulk-notes");
+  await c.write("docs/large.md", "Observed catalog behavior.\n".repeat(3000));
   const { done, proposal } = await c.analyze();
   expect(done.status, done.error).toBe("completed");
   expect(
@@ -604,7 +611,7 @@ it("consolidates large findings before synthesis and keeps source references", a
   expect(
     proposal!.files.find((f) => f.path === "openspec/specs/catalog/spec.md")!
       .after,
-  ).toContain(source);
+  ).toContain("docs/large.md:");
 });
 
 it("preserves a custom baseline report and fails visibly when evidence cannot be read", async () => {

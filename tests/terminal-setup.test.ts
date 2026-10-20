@@ -357,6 +357,10 @@ it("host CLI rejects noninteractive setup before invoking Docker and exposes hel
 
 it("keeps the selected effort through consolidation as well as analysis and synthesis", async () => {
   const f = await fixture();
+  await writeFile(
+    join(f.path, "guide.md"),
+    "Observed catalog behavior.\n".repeat(3000),
+  );
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
     if (r.prompt.includes("CLINIC_SETUP_COVERAGE")) {
@@ -382,7 +386,13 @@ it("keeps the selected effort through consolidation as well as analysis and synt
           reviewedChunks: chunks.map((c: { id: string }) => c.id),
           notes: Array.from({ length: 80 }, () => ({
             text: "Catalog behavior. ".repeat(160),
-            sources: [{ path: "app.ts", startLine: 1, endLine: 1 }],
+            sources: [
+              {
+                path: chunks[0].path,
+                startLine: chunks[0].startLine,
+                endLine: chunks[0].endLine,
+              },
+            ],
           })),
           questions: [],
         }),

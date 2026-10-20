@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+### Fixed
+- Retain compact large-project findings losslessly up to a 300,000-character synthesis budget, avoiding unnecessary model consolidation for the observed 744-finding project.
+
 ## 0.1.2
 
 ### Fixed

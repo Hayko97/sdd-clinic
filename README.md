@@ -213,12 +213,12 @@ sddclinic setup --rebuild --model gpt-6.1-sol --reasoning medium
 This mode analyzes all eligible project text (still excluding dependencies/generated files), creates native specifications and validation companions, and adds `openspec/project/reconstruction.md`. The guide captures purpose, architecture, workflows, interfaces, data, presentation/assets, operations and verification. Unknown areas and missing assets remain explicit blockers. It requires more analysis than initial setup. All output is reviewed before writing; application code is preserved. A reconstruction guide is not evidence of equivalent behavior: implement in a separate empty repository and run the documented comparisons before claiming equivalence. Existing accepted specs are reused; gaps require refinement rather than overwrite.
 
 
-## Update and repair missing SDD documents (0.1.2)
+## Update and repair missing SDD documents (0.1.3)
 
 ```sh
-npm install --global sdd-clinic@0.1.2
+npm install --global sdd-clinic@0.1.3
 # Run from the existing project; this explicit package bypasses older local launchers:
-npx --yes --package=sdd-clinic@0.1.2 sddclinic setup --repair
+npx --yes --package=sdd-clinic@0.1.3 sddclinic setup --repair
 ```
 
 Review and accept the displayed diff. Repair creates missing per-capability validation plans, shared workflow documents, agent skills/instructions and a missing CHANGELOG.md. Existing custom specs, validation and changelog files are preserved. It does not call a model, audit application source or run application tests. Provider-free companion checks are marked **UNVERIFIED / INCOMPLETE** with draft markers. They require concrete fixtures, actions, assertions and prerequisites before implementation approval; repair cannot derive runnable checks from scenario headings alone. An existing root changelog with different capitalization is respected.
@@ -226,10 +226,10 @@ Review and accept the displayed diff. Repair creates missing per-capability vali
 For an existing application without specifications:
 
 ```sh
-npx --yes --package=sdd-clinic@0.1.2 sddclinic setup --model gpt-6.1-sol --reasoning medium
+npx --yes --package=sdd-clinic@0.1.3 sddclinic setup --model gpt-6.1-sol --reasoning medium
 ```
 
-Add `--rebuild` only when you want comprehensive source analysis and a reconstruction blueprint. For a new application with no source, run `npx --yes --package=sdd-clinic@0.1.2 sddclinic start` and use the new-project prompt/document flow; it creates specifications plus validation from your product requirements. Empty-code repair cannot invent product intent. Native proposal, research, design and tasks templates are installed for future actual changes, rather than fabricated implementation records.
+Add `--rebuild` only when you want comprehensive source analysis and a reconstruction blueprint. For a new application with no source, run `npx --yes --package=sdd-clinic@0.1.3 sddclinic start` and use the new-project prompt/document flow; it creates specifications plus validation from your product requirements. Empty-code repair cannot invent product intent. Native proposal, research, design and tasks templates are installed for future actual changes, rather than fabricated implementation records.
 
 If `sddclinic` still behaves like an older version, inspect `type -a sddclinic`; an earlier local wrapper can precede the npm executable on PATH. The versioned npx commands above select the published version explicitly. Node.js24+ and Docker Compose are required.
 
