@@ -5,6 +5,7 @@ import {
   qualityDocuments,
   qualityAreas,
   reviewSetup,
+  reviewSourceCoverage,
   scenarioCases,
   setupReviewPath,
   validateQuality,
@@ -409,4 +410,95 @@ it("reviews existing companions without overwriting them and fills a missing com
     missing.find((f) => f.path.endsWith("orders/validation.md"))?.after,
   ).toContain("stock becomes 5");
   expect(missing.some((f) => f.path.endsWith("orders/spec.md"))).toBe(false);
+});
+
+it("accepts concrete Cyrillic checks and still rejects a copied Cyrillic scenario", () => {
+  const q = reviewed();
+  q.checks[0].fixture = "Создайте неоплаченный заказ для пользователя Анна.";
+  q.checks[0].action =
+    "Откройте историю заказов и нажмите кнопку отмены заказа.";
+  expect(() => validateQuality(q, cases, evidence)).not.toThrow();
+  const translated = [
+    { ...cases[0], behavior: `WHEN ${q.checks[0].action}\nTHEN заказ отменён` },
+  ];
+  expect(() => validateQuality(q, translated, evidence)).toThrow(/restates/);
+});
+
+it("supports native removal and rename deltas without requiring invented scenarios", () => {
+  const path = "openspec/changes/retire-orders/specs/orders/spec.md";
+  const removed =
+    "## REMOVED Requirements\n### Requirement: Legacy order lookup\n**Reason**: Retired by owner.\n**Migration**: Use order history.\n";
+  expect(scenarioCases([{ path, after: removed }])).toEqual([]);
+  expect(
+    scenarioCases([
+      {
+        path,
+        after:
+          "## RENAMED Requirements\n- FROM: `Old lookup`\n- TO: `Order history`\n",
+      },
+    ]),
+  ).toEqual([]);
+  const added = files[0].after.replace(
+    "## Requirements",
+    "## ADDED Requirements",
+  );
+  expect(scenarioCases([{ path, after: removed + "\n" + added }])).toHaveLength(
+    1,
+  );
+  expect(() =>
+    scenarioCases([
+      {
+        path,
+        after:
+          "## ADDED Requirements\n### Requirement: Broken addition\nOrders SHALL work.\n",
+      },
+    ]),
+  ).toThrow(/no scenarios/);
+});
+
+it("reviews original chunks independently and refuses omitted features without retrying semantic rejection", async () => {
+  const chunks = [
+    {
+      id: "src/favorites.ts:1",
+      path: "src/favorites.ts",
+      startLine: 1,
+      endLine: 1,
+      content: "export function toggleFavorite(id) { favorites.toggle(id); }",
+    },
+  ];
+  const invoke = vi.fn(async (prompt: string) => {
+    expect(prompt).toContain(chunks[0].content);
+    expect(JSON.parse(prompt.split("COVERAGE_INPUT\n").at(-1)!).files).toEqual(
+      files,
+    );
+    return JSON.stringify({
+      reviewedChunks: [chunks[0].id],
+      blockingIssues: [
+        "Favorites are implemented but absent from the candidate specifications.",
+      ],
+    });
+  });
+  await expect(
+    reviewSourceCoverage({
+      files,
+      batches: [chunks],
+      signal: new AbortController().signal,
+      invoke,
+      progress: () => {},
+    }),
+  ).rejects.toThrow(/Favorites/);
+  expect(invoke).toHaveBeenCalledTimes(1);
+  const missing = vi.fn(async () =>
+    JSON.stringify({ reviewedChunks: [], blockingIssues: [] }),
+  );
+  await expect(
+    reviewSourceCoverage({
+      files,
+      batches: [chunks],
+      signal: new AbortController().signal,
+      invoke: missing,
+      progress: () => {},
+    }),
+  ).rejects.toThrow(/every supplied chunk/);
+  expect(missing).toHaveBeenCalledTimes(3);
 });

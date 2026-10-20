@@ -107,3 +107,7 @@ Render missing project documents from review details and a portable review repor
 All model work remains read-only with original source supplied as untrusted evidence. Do not execute suggested commands during setup. No new app data migration or public API is required. Existing stale-source/target validation, safe paths and atomic application remain mandatory. Regression tests exercise actual shared pipeline failures and preservation, plus required full checks and browser suite. Live model semantic quality and application equivalence remain separate, unverified evaluations.
 
 Reuse-only analysis also reviews accepted specifications. Existing companions are preserved and proposed checks are recorded in the quality report for refinement; missing companions receive concrete plans. Reuse is not a quality exemption.
+
+
+### Integration QA corrections (2026-10-20)
+Deep/rebuild review compares each original source batch against the complete candidate and preserved specification set before the detailed quality review. Every chunk must be acknowledged; substantive blockers stop immediately, and malformed responses have at most two corrections. Detailed review receives original cited line ranges rather than analyst summaries. Existing context limits remain enforced. Validation comparison retains Unicode letters/numbers, and native REMOVED/RENAMED delta sections do not invent scenario obligations. These corrections implement the existing evidence-quality and OpenSpec interoperability contract.

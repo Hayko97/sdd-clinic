@@ -199,4 +199,41 @@ Analyzed setup now requires a separate evidence-based quality review before offe
 
 Missing project guidance is rendered from that review. Existing custom documents remain authoritative and are listed for reconciliation. Exact previous Clinic design/validation templates may be upgraded; customized templates are preserved. `openspec/project/setup-review.md` records gaps/decisions, source hashes, generated OpenSpec artifact hashes and the exact managed CLI version. Source hashes describe inspected bytes, including dirty files; they do not contain a source backup or prove a commit, approval or test result. Actual execution evidence belongs in a separate verification report.
 
-Initial mode remains a bounded sample with omissions; `--deep` analyzes all eligible text. Structural validation and a bounded model review cannot prove semantic completeness. A blocking generation defect stops setup before project writes; refine the source intent or regenerate instead of treating a failed review as successful setup. Existing specs and custom files are never silently replaced. These changes are available on the implementation branch and are not yet part of the published 0.1.1 package.
+Initial mode remains a bounded sample with omissions; `--deep` analyzes all eligible text. Structural validation and a bounded model review cannot prove semantic completeness. A blocking generation defect stops setup before project writes; refine the source intent or regenerate instead of treating a failed review as successful setup. Existing specs and custom files are never silently replaced. Install these source changes locally using the commands below; the published 0.1.1 package does not contain them.
+
+
+## Assess and refine an existing project with the updated source
+
+Install the merged source package once (Node 24+ and Docker Compose required):
+
+```sh
+cd "/Users/ashugh/Documents/ChatGPT/Comnoc Clinic"
+pnpm install:global --no-path
+```
+
+Use the explicit local launcher to avoid an older npm executable on PATH:
+
+```sh
+"$HOME/.local/bin/sddclinic" setup "/Users/ashugh/Documents/Github/kpcru" --deep --engine codex --reasoning medium
+```
+
+Replace the project path for another repository. Deep mode analyzes all eligible text and independently compares the original chunks with the proposed/preserved specifications. This uses additional provider calls; it is still not a proof of semantic completeness. Source, tests, dependencies and exclusions are described in the resulting review. Review the displayed diff before applying.
+
+Existing specifications, validation plans and custom guidance are preserved. This command assesses coverage and adds missing documents; it does not rewrite existing requirements. A blocking generation defect stops without writes. `--repair` only fills missing scaffolds and cannot correct specification content. There is no `sddclinic refine` command.
+
+For existing spec content, open the GUI with `"$HOME/.local/bin/sddclinic" start`, select the project/specification and use **Refine this specification**, or give the project's coding agent this request:
+
+```text
+Follow .clinic/skills/analyze-request/SKILL.md and .clinic/skills/refine-spec/SKILL.md.
+Refine this project's existing specifications using openspec/project/setup-review.md
+when available and the audit files under artifacts/sdd-audit-2026-10-20/.
+Record a disposition for every finding. Preserve owner decisions and required intent;
+separate implementation gaps from specification defects. Reuse a matching active
+change or propose a named OpenSpec delta. Include concrete validation procedures,
+UI/UX, architecture and contracts where applicable. Validate the change with the
+pinned OpenSpec CLI and present it for review. Do not implement application code.
+```
+
+For kpcru, customer cancellation remains required; its missing implementation must
+not be rewritten as administrator-only behavior. Setup/refinement does not execute
+application tests or fix that application defect.

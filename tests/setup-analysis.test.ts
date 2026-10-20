@@ -92,6 +92,18 @@ async function fixture(engine: EngineKind = "codex") {
     probe: adapters.codex.probe,
     async run(_path, request) {
       calls.push(request);
+      if (request.prompt.includes("CLINIC_SETUP_COVERAGE")) {
+        const input = JSON.parse(
+          request.prompt.split("COVERAGE_INPUT\n").at(-1)!,
+        );
+        return {
+          sessionId: "coverage-fixture",
+          text: JSON.stringify({
+            reviewedChunks: input.chunks.map((c: { id: string }) => c.id),
+            blockingIssues: [],
+          }),
+        };
+      }
       if (request.prompt.includes("CLINIC_SETUP_QUALITY")) {
         const quality = qualityFixture(request.prompt);
         if (behavior === "quality-blocker")
@@ -259,6 +271,11 @@ it.each(["codex", "claude"] as const)(
       "docs/long-guide.md",
       "Reference details.\n".repeat(4000) + "TAIL_BEHAVIOR_MUST_BE_ANALYZED\n",
     );
+    const pendingPath =
+      "openspec/changes/add-favorites/specs/favorites/spec.md";
+    const pendingSpec =
+      "## ADDED Requirements\n### Requirement: Favorites\nUsers SHALL save favorites.\n#### Scenario: Save favorite\n- **WHEN** a customer saves a product\n- **THEN** it appears in their favorites\n";
+    await c.write(pendingPath, pendingSpec);
     const before = await inventoryProject(c.project);
     const { done, proposal } = await c.analyze();
     expect(done.status, done.error).toBe("completed");
@@ -279,6 +296,33 @@ it.each(["codex", "claude"] as const)(
         JSON.parse(call.prompt.split("SOURCE_CHUNKS\n").at(-1)!),
       );
     expect(batches).toHaveLength(sourceChunks(before.files).length);
+    const reviewedChunks = c.calls
+      .filter((call) => call.prompt.includes("CLINIC_SETUP_COVERAGE"))
+      .flatMap(
+        (call) =>
+          JSON.parse(call.prompt.split("COVERAGE_INPUT\n").at(-1)!).chunks,
+      );
+    expect(reviewedChunks).toEqual(batches);
+    for (const call of c.calls.filter((call) =>
+      call.prompt.includes("CLINIC_SETUP_COVERAGE"),
+    )) {
+      expect(
+        JSON.parse(call.prompt.split("COVERAGE_INPUT\n").at(-1)!).files,
+      ).toContainEqual({ path: pendingPath, after: pendingSpec });
+    }
+
+    const qualityInput = JSON.parse(
+      c.calls
+        .find((call) => call.prompt.includes("CLINIC_SETUP_QUALITY"))!
+        .prompt.split("REVIEW_INPUT\n")
+        .at(-1)!,
+    );
+    expect(
+      qualityInput.evidence.some((item: { text: string }) =>
+        item.text.includes("export"),
+      ),
+    ).toBe(true);
+
     expect(
       batches
         .filter((b: any) => b.path === "docs/long-guide.md")

@@ -36,6 +36,13 @@ const walk = (root) =>
         )
     : [];
 function response(prompt) {
+  if (prompt.includes("CLINIC_SETUP_COVERAGE")) {
+    const input = JSON.parse(prompt.split("COVERAGE_INPUT\n").at(-1));
+    return JSON.stringify({
+      reviewedChunks: input.chunks.map((c) => c.id),
+      blockingIssues: [],
+    });
+  }
   if (prompt.includes("CLINIC_SETUP_QUALITY"))
     return JSON.stringify(require("./setup-quality.cjs")(prompt));
   if (prompt.includes("IMAGE_PROTOCOL")) return "Image content received";

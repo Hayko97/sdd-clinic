@@ -38,6 +38,18 @@ async function fixture(invalid?: "missing" | "citation") {
     ],
     run: async (_path, request) => {
       prompts.push(request.prompt);
+      if (request.prompt.includes("CLINIC_SETUP_COVERAGE")) {
+        const input = JSON.parse(
+          request.prompt.split("COVERAGE_INPUT\n").at(-1)!,
+        );
+        return {
+          sessionId: "coverage-fixture",
+          text: JSON.stringify({
+            reviewedChunks: input.chunks.map((c: { id: string }) => c.id),
+            blockingIssues: [],
+          }),
+        };
+      }
       if (request.prompt.includes("CLINIC_SETUP_QUALITY"))
         return {
           sessionId: "quality-fixture",

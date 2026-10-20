@@ -40,3 +40,6 @@ Owner reports capability folders containing only spec.md after setup and request
 
 ## 2026-10-20: Evidence quality correction
 The owner approved fixing the setup process using the kpcru audit and CLINIC-SETUP-HANDOFF.md. Repair evidence selection, substantive project guidance, concrete validation, semantic coverage review and portable provenance across initial/deep/rebuild/product setup. Provider-free repair remains a clearly incomplete scaffold. Preserve application code and custom files. No release, install, merge, push or deployment is part of this correction.
+
+
+Integration authorization (2026-10-20): the owner explicitly requests fixing the remaining setup issues, merging into the target branch (configured main; no master exists) and providing concrete-project CLI usage. This authorizes local integration and CLI installation after current QA. Public publication and pushing remain outside this request.

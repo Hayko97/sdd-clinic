@@ -5,7 +5,11 @@ import {
   reconstructionInstructions,
   renderReconstruction,
 } from "./reconstruction.js";
-import { qualityDocuments, reviewSetup } from "./setup-quality.js";
+import {
+  qualityDocuments,
+  reviewSetup,
+  reviewSourceCoverage,
+} from "./setup-quality.js";
 import {
   setupOverview,
   overviewCoverage,
@@ -422,11 +426,45 @@ export async function analyzeSetup(options: {
       .filter((f) => /^openspec\/specs\/[^/]+\/spec\.md$/.test(f.path))
       .map((f) => ({ path: f.path, after: f.content })),
   ];
+  if (!initial && reviewSpecifications.length)
+    await reviewSourceCoverage({
+      files: [
+        ...reviewSpecifications,
+        ...inventory.files
+          .filter((file) =>
+            /^openspec\/changes\/(?!archive\/)[^/]+\/specs\/[^/]+\/spec\.md$/.test(
+              file.path,
+            ),
+          )
+          .map((file) => ({ path: file.path, after: file.content })),
+      ],
+      batches,
+      signal,
+      invoke: (prompt) => invoke("analyze-request", prompt),
+      progress,
+    });
+  const originalEvidence = [
+    ...new Map(
+      notes
+        .flatMap((note) => note.sources)
+        .map((source) => [
+          `${source.path}:${source.startLine}-${source.endLine}`,
+          {
+            text: inventory.files
+              .find((file) => file.path === source.path)!
+              .content.split("\n")
+              .slice(source.startLine - 1, source.endLine)
+              .join("\n"),
+            sources: [source],
+          },
+        ]),
+    ).values(),
+  ];
   const quality = reviewSpecifications.length
     ? await reviewSetup({
         files: reviewSpecifications,
         evidence: [
-          ...notes,
+          ...originalEvidence,
           // Accepted/pending intent remains evidence even when code analysis
           // finds no inferable behavior (for example a specification-first repo).
           ...chunks

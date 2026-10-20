@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Fixed
+- Independently review original deep-analysis source batches, retaining pending specification changes; support non-Latin validation text and native removal/rename deltas.
 - Select representative source line ranges and report omitted evidence during initial setup.
 - Require a separate quality review, concrete scenario validation plans, substantive missing project guidance and portable provenance before applying inferred setup.
 - Preserve unmet requirements as implementation gaps, reject generic checks and unsupported citations, and expose additional database/browser check prerequisites.

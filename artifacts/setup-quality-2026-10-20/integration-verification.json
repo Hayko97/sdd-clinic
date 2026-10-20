@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-20",
+  "base_commit": "3d12f4f",
+  "checks": {
+    "pnpm check": "202 passed; 2 opt-in live skipped; typecheck, 12 strict OpenSpec items and build passed",
+    "pnpm test:e2e": "8 passed",
+    "Docker browser setup and repeat": "passed; source preserved; disposable service/volume cleaned",
+    "independent QA": "All findings resolved; final focused recheck 46 tests passed"
+  },
+  "live_provider": "not run; explicit opt-in requested but not received",
+  "limitations": [
+    "Initial evidence remains sampled.",
+    "Semantic model accuracy against kpcru is unverified.",
+    "Existing kpcru specs and application code unchanged; refinement still requires a reviewed change."
+  ],
+  "tested_file_sha256": {
+    "openspec/changes/global-cli-project-setup/design.md": "589043920333589b77c1c25beb1e05a02550ec71b6e5e4f59890dfe10236f5e5",
+    "openspec/changes/global-cli-project-setup/proposal.md": "73bf5619d086e156f5d57f0c9ad22b3e408320631ab7eca59e1e1d08e654c496",
+    "openspec/changes/global-cli-project-setup/research.md": "93fdde1f31085c491535c299c3c5ebcc8108596743198e360f74bc1bc3e1d91d",
+    "openspec/changes/global-cli-project-setup/specs/spec-workspace/spec.md": "95a4367188ad7eb8b9edacbed34ed6c4cc7dd5c61e2f1a6445d24483b26337d9",
+    "openspec/changes/global-cli-project-setup/tasks.md": "131d094cf3fffdd7028fd15b504d0abc2feb6b2100cb036ad086a1dc583223ef",
+    "openspec/changes/global-cli-project-setup/validation.md": "9e189906fdc7d3ee4181c54b652e190b4dc825c3ef2ad68639e355191ca67de7",
+    "openspec/changes/global-cli-project-setup/verification.md": "e6bf15acfaa7376fe5439742631037de58b9c14f60f858fe94a9842a0b4b0cf4",
+    "src/server/documentation.ts": "6749e71444f9af6ebad2e3806ef5eed7f760a398055db72ef9c904c87a704562",
+    "src/server/project-inventory.ts": "f38d54d35d6acd218234b6c50c762233e7ed4de1be2c8df85318e79ee0147a58",
+    "src/server/projects.ts": "3b286ef40e92d3d2b48806d15f20867a8177aa42a89757aac876f7c7236861b0",
+    "src/server/setup-analysis.ts": "e6934332a55965c26831646956d3a397aba46d370ca4b7bf7131c0a715a52a65",
+    "src/server/setup-documents.ts": "c31820defaf20559ff3d12f629305327d5436650d845b2c6d6d8edf432e27bb4",
+    "src/server/setup-drafts.ts": "09f93112ea7d1d3baac15a584e7fd176bc36b4e2978a07babf9679fc3db7abc6",
+    "src/server/setup-overview.ts": "8a67343ae7c80153734d6e141b4e7e3a3b99cb56b510a6de58bea509c19f2966",
+    "src/server/setup-quality.ts": "d0e3f0dd2543f6d1111c7415f483c031253c409fcca499d4b1b8a14e9aa5f066",
+    "src/server/specs.ts": "27c417f0351fa40e088c361ab6f0f1961d02bb62de661859419faf2332ebbfe4",
+    "src/server/terminal-setup.ts": "6992bd44f2f6372d737edbe629ce953046c41195ce51ef3db893da711bf061cb",
+    "tests/documentation.test.ts": "f2c3008c0feec05a42c0251f0bd1ba561519e82a7a3e9cb16b456190b2f2f9cf",
+    "tests/e2e/workspace.spec.ts": "eaa84187026e8f4f3a0ffb1ec1080dad10211f804ec3b0e3e6a82f859dce0f51",
+    "tests/fixtures/engine.cjs": "0c3dc87ea5e8790dd57cce06d8ce82ac9b0d5274feaad41e5e2e7e109fe3c89a",
+    "tests/fixtures/setup-quality.cjs": "dd7381f1fa1f2f2000e1d60dc70e891fcc166986f507b892bc5f011855a5214b",
+    "tests/helpers.ts": "d3ed7619ac8aaefece5cad337d3e3994c60f6971d7742767eb3e1514c4afc4cf",
+    "tests/reconstruction.test.ts": "93ebf039f8101c7a3d8ed4e6ca55fbe65cb43e42690663c423692166d794d584",
+    "tests/setup-analysis.test.ts": "ce4692750e787cdd1f1434b9c0f618909dba950c92893bc235737d542832533c",
+    "tests/setup-drafts.test.ts": "3883e7be1fdde20553434231279fa1f6095ea731a7079e6712d76d453d63fe47",
+    "tests/setup-overview.test.ts": "e399a278da8b8bdb59095a5b18b1f7171c0d2d83e1ed34a4912175497e9b74ea",
+    "tests/setup-quality-fixture.ts": "790555439f83fd97c4a3c2c7f383f60b49f07be274902da09eba77b644cb9268",
+    "tests/setup-quality.test.ts": "df6f87d74d5a59b21a60adc240230b1681d6186ccdf6ddeff034a73e8466653e",
+    "tests/terminal-setup.test.ts": "f352d3789ee2db41bdf3c94e7abad014b115609c6bed29c04b54c45fe687da9e"
+  }
+}

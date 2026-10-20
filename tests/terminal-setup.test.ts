@@ -65,6 +65,16 @@ async function fixture() {
     ],
     run: async (_path, r) => {
       calls.push(r);
+      if (r.prompt.includes("CLINIC_SETUP_COVERAGE")) {
+        const input = JSON.parse(r.prompt.split("COVERAGE_INPUT\n").at(-1)!);
+        return {
+          sessionId: "coverage-fixture",
+          text: JSON.stringify({
+            reviewedChunks: input.chunks.map((c: { id: string }) => c.id),
+            blockingIssues: [],
+          }),
+        };
+      }
       if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
         return {
           sessionId: "quality-fixture",
@@ -349,6 +359,16 @@ it("keeps the selected effort through consolidation as well as analysis and synt
   const f = await fixture();
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
+    if (r.prompt.includes("CLINIC_SETUP_COVERAGE")) {
+      const input = JSON.parse(r.prompt.split("COVERAGE_INPUT\n").at(-1)!);
+      return {
+        sessionId: "coverage-fixture",
+        text: JSON.stringify({
+          reviewedChunks: input.chunks.map((c: { id: string }) => c.id),
+          blockingIssues: [],
+        }),
+      };
+    }
     if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
       return {
         sessionId: "quality-fixture",
@@ -489,6 +509,16 @@ it("full setup writes source-backed nested catalog specs after review", async ()
   await rm(join(f.path, "app.ts"));
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
+    if (r.prompt.includes("CLINIC_SETUP_COVERAGE")) {
+      const input = JSON.parse(r.prompt.split("COVERAGE_INPUT\n").at(-1)!);
+      return {
+        sessionId: "coverage-fixture",
+        text: JSON.stringify({
+          reviewedChunks: input.chunks.map((c: { id: string }) => c.id),
+          blockingIssues: [],
+        }),
+      };
+    }
     if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
       return {
         sessionId: "quality-fixture",
@@ -636,6 +666,16 @@ it("fails explicitly when full setup produces no specifications and writes no gu
   const f = await fixture();
   f.provider.run = async (_path, r) => {
     f.calls.push(r);
+    if (r.prompt.includes("CLINIC_SETUP_COVERAGE")) {
+      const input = JSON.parse(r.prompt.split("COVERAGE_INPUT\n").at(-1)!);
+      return {
+        sessionId: "coverage-fixture",
+        text: JSON.stringify({
+          reviewedChunks: input.chunks.map((c: { id: string }) => c.id),
+          blockingIssues: [],
+        }),
+      };
+    }
     if (r.prompt.includes("CLINIC_SETUP_QUALITY"))
       return {
         sessionId: "quality-fixture",

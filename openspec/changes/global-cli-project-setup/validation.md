@@ -91,3 +91,11 @@ These checks supersede the earlier one-call/generic-plan expectations for inferr
 - Label provider-free repair scaffolds: use disposable multi-stack repositories and scripted provider responses; assert source/target snapshots, exact review fields and rejection before proposal creation. Add focused tests in setup-overview, setup-quality, setup-analysis, setup-drafts and setup-repair suites. Record actual commands and outcomes separately.
 
 Repeat terminal setup / Review all applicable quality areas: rerun after applying a baseline; assert the quality review is invoked for reused accepted specs, custom companions are unchanged, missing companions receive concrete checks, and follow-up plans appear in the quality report.
+
+
+## Integration QA regressions (2026-10-20)
+- Deep/rebuild original-source review: every analysis chunk reaches independent coverage review alongside accepted, generated and active delta specifications; missing chunk acknowledgments exhaust bounded correction, semantic omission fails immediately without proposal writes.
+- Detailed review receives the actual cited implementation text rather than summarized claims.
+- Unicode validation: Russian concrete fixture/actions pass; copying a Russian scenario still fails the restatement guard.
+- OpenSpec interoperability: removal-only/rename-only native deltas have no invented scenarios; mixed deltas retain added scenarios, and malformed additions still fail.
+- Run pnpm check, pnpm test:e2e sequentially and the disposable Docker browser setup/rerun smoke; record exact evidence separately from this plan. Live-provider validation remains opt-in.

@@ -1,0 +1,89 @@
+ Image clinic-setup-quality-clinic Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 590B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 684B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#3 ...
+
+#4 [auth] library/node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#3 DONE 1.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 125B done
+#5 DONE 0.0s
+
+#6 [1/9] FROM docker.io/library/node:24-bookworm-slim@sha256:a5f4366e834695d5f363b920c104953a535d3a9864d1bdf74566a0ebe01daee5
+#6 resolve docker.io/library/node:24-bookworm-slim@sha256:a5f4366e834695d5f363b920c104953a535d3a9864d1bdf74566a0ebe01daee5 done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 916.06kB 0.0s done
+#7 DONE 0.0s
+
+#8 [2/9] RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client python3 ca-certificates && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/9] WORKDIR /app
+#9 CACHED
+
+#10 [3/9] RUN npm install -g pnpm@11.25.0 @openai/codex@0.163.0 @anthropic-ai/claude-code@2.1.302
+#10 CACHED
+
+#11 [5/9] COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+#11 CACHED
+
+#12 [6/9] RUN pnpm install --frozen-lockfile
+#12 CACHED
+
+#13 [7/9] COPY . .
+#13 DONE 0.1s
+
+#14 [8/9] RUN pnpm build
+#14 0.378 $ tsc -p tsconfig.server.json && vite build
+#14 1.922 vite v7.3.7 building client environment for production...
+#14 1.952 transforming...
+#14 2.737 ✓ 1749 modules transformed.
+#14 2.844 rendering chunks...
+#14 2.850 computing gzip size...
+#14 2.858 dist/web/index.html                   0.40 kB │ gzip:   0.28 kB
+#14 2.858 dist/web/assets/index-CHA72i-t.css   47.85 kB │ gzip:  11.02 kB
+#14 2.858 dist/web/assets/index-DhVAb3go.js   438.03 kB │ gzip: 134.54 kB
+#14 2.858 ✓ built in 924ms
+#14 DONE 2.9s
+
+#15 [9/9] RUN mkdir -p /home/node/.sdd-clinic /home/node/.codex /home/node/.claude && chown -R node:node /home/node
+#15 DONE 0.1s
+
+#16 exporting to image
+#16 exporting layers 0.1s done
+#16 exporting manifest sha256:677d8d6303f515ab96219b4679abab2422fd07ac9b26bbdef195d0649032d996 done
+#16 exporting config sha256:d53ffe0969f0725a9c49a88c225a17cd44ea35bde326c50dd719cf3e0ec9892a done
+#16 exporting attestation manifest sha256:5b892a140986f522918d45c95e55b09b5d2dd6d89b361382bd97731fc8d9a642 done
+#16 exporting manifest list sha256:ab7f2bfc1d6acbad63bd7b988d2bcec67a17054f77edb74a81ec47f67c6c94de done
+#16 naming to docker.io/library/clinic-setup-quality-clinic:latest done
+#16 unpacking to docker.io/library/clinic-setup-quality-clinic:latest 0.1s done
+#16 DONE 0.2s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ Image clinic-setup-quality-clinic Built 
+ Network clinic-setup-quality_default Creating 
+ Volume clinic-setup-quality_quality-home Creating 
+ Volume clinic-setup-quality_quality-home Creating 
+ Network clinic-setup-quality_default Creating 
+ Volume clinic-setup-quality_quality-home Created 
+ Volume clinic-setup-quality_quality-home Created 
+ Network clinic-setup-quality_default Created 
+ Network clinic-setup-quality_default Created 
+ Container clinic-setup-quality-clinic-1 Creating 
+ Container clinic-setup-quality-clinic-1 Created 
+ Container clinic-setup-quality-clinic-1 Starting 
+ Container clinic-setup-quality-clinic-1 Started 
