@@ -213,12 +213,12 @@ sddclinic setup --rebuild --model gpt-6.1-sol --reasoning medium
 This mode analyzes all eligible project text (still excluding dependencies/generated files), creates native specifications and validation companions, and adds `openspec/project/reconstruction.md`. The guide captures purpose, architecture, workflows, interfaces, data, presentation/assets, operations and verification. Unknown areas and missing assets remain explicit blockers. It requires more analysis than initial setup. All output is reviewed before writing; application code is preserved. A reconstruction guide is not evidence of equivalent behavior: implement in a separate empty repository and run the documented comparisons before claiming equivalence. Existing accepted specs are reused; gaps require refinement rather than overwrite.
 
 
-## Update and repair missing SDD documents (0.1.1)
+## Update and repair missing SDD documents (0.1.2)
 
 ```sh
-npm install --global sdd-clinic@0.1.1
+npm install --global sdd-clinic@0.1.2
 # Run from the existing project; this explicit package bypasses older local launchers:
-npx --yes --package=sdd-clinic@0.1.1 sddclinic setup --repair
+npx --yes --package=sdd-clinic@0.1.2 sddclinic setup --repair
 ```
 
 Review and accept the displayed diff. Repair creates missing per-capability validation plans, shared workflow documents, agent skills/instructions and a missing CHANGELOG.md. Existing custom specs, validation and changelog files are preserved. It does not call a model, audit application source or run application tests. Provider-free companion checks are marked **UNVERIFIED / INCOMPLETE** with draft markers. They require concrete fixtures, actions, assertions and prerequisites before implementation approval; repair cannot derive runnable checks from scenario headings alone. An existing root changelog with different capitalization is respected.
@@ -226,10 +226,10 @@ Review and accept the displayed diff. Repair creates missing per-capability vali
 For an existing application without specifications:
 
 ```sh
-npx --yes --package=sdd-clinic@0.1.1 sddclinic setup --model gpt-6.1-sol --reasoning medium
+npx --yes --package=sdd-clinic@0.1.2 sddclinic setup --model gpt-6.1-sol --reasoning medium
 ```
 
-Add `--rebuild` only when you want comprehensive source analysis and a reconstruction blueprint. For a new application with no source, run `npx --yes --package=sdd-clinic@0.1.1 sddclinic start` and use the new-project prompt/document flow; it creates specifications plus validation from your product requirements. Empty-code repair cannot invent product intent. Native proposal, research, design and tasks templates are installed for future actual changes, rather than fabricated implementation records.
+Add `--rebuild` only when you want comprehensive source analysis and a reconstruction blueprint. For a new application with no source, run `npx --yes --package=sdd-clinic@0.1.2 sddclinic start` and use the new-project prompt/document flow; it creates specifications plus validation from your product requirements. Empty-code repair cannot invent product intent. Native proposal, research, design and tasks templates are installed for future actual changes, rather than fabricated implementation records.
 
 If `sddclinic` still behaves like an older version, inspect `type -a sddclinic`; an earlier local wrapper can precede the npm executable on PATH. The versioned npx commands above select the published version explicitly. Node.js24+ and Docker Compose are required.
 
@@ -239,4 +239,4 @@ Analyzed setup now requires a separate evidence-based quality review before offe
 
 Missing project guidance is rendered from that review. Existing custom documents remain authoritative and are listed for reconciliation. Exact previous Clinic design/validation templates may be upgraded; customized templates are preserved. `openspec/project/setup-review.md` records gaps/decisions, source hashes, generated OpenSpec artifact hashes and the exact managed CLI version. Source hashes describe inspected bytes, including dirty files; they do not contain a source backup or prove a commit, approval or test result. Actual execution evidence belongs in a separate verification report.
 
-Initial mode remains a bounded sample with omissions; `--deep` analyzes all eligible text. Structural validation and a bounded model review cannot prove semantic completeness. A blocking generation defect stops setup before project writes; refine the source intent or regenerate instead of treating a failed review as successful setup. Existing specs and custom files are never silently replaced. These changes are available on the implementation branch and are not yet part of the published 0.1.1 package.
+Initial mode remains a bounded sample with omissions; `--deep` analyzes all eligible text. Structural validation and a bounded model review cannot prove semantic completeness. A blocking generation defect stops setup before project writes; refine the source intent or regenerate instead of treating a failed review as successful setup. Existing specs and custom files are never silently replaced. These changes are included in release 0.1.2, together with bounded consolidation, exact citation provenance and batched original-evidence review.
