@@ -64,7 +64,7 @@
 - [x] 13.2 Add shared quality review, concrete scenario plans, evidence checks and preservation of required intent.
 - [x] 13.3 Generate substantive missing project guidance, decision records and portable tool/source/artifact provenance; label provider-free scaffolds honestly.
 - [x] 13.4 Cover baseline and product pipelines, preservation, bounded rejection and heterogeneous fixtures; run pnpm check and pnpm test:e2e plus isolated Docker smoke.
-- [x] 13.5 Record exact revision evidence, all audit dispositions and remaining semantic/live-provider limitations. Independent QA and owner integration remain pending.
+- [x] 13.5 Record exact revision evidence, all audit dispositions and remaining semantic/live-provider limitations. Independent QA and owner integration were completed by tasks 13.6–13.7; live-provider accuracy remains unverified.
 
 - [x] 13.6 Independently review the frozen correction, fix discovered source-review/Unicode/native-delta defects and rerun required checks.
-- [ ] 13.7 Merge the verified revision into main as explicitly requested by the owner, install the local CLI and document concrete-project assessment/refinement commands. Public publishing and pushing are not included.
+- [x] 13.7 Merge the verified revision into main as explicitly requested by the owner, install the local CLI and document concrete-project assessment/refinement commands. Public publishing and pushing are not included.

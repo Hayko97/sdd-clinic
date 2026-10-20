@@ -103,3 +103,8 @@ Implemented in isolated branch `codex/setup-evidence-quality`, based on `3d12f4f
 - `git diff --check`: passed. The current agent reviewed the diff. No separate independent QA, target-branch integration, global installation, publication or deployment is claimed. The active change remains unarchived.
 
 Live semantic completeness, exact application reconstruction and customer cancellation implementation remain unverified. Source hashes identify inspected bytes, not committed customer code. See the report for limitations and preserved custom-document behavior.
+
+
+## 2026-10-20: Independent QA and local integration
+
+Owner explicitly requested fixes and merge. Independent QA cleared source coverage, Unicode, native delta and pending-intent regressions. pnpm check passed 202 tests with two opt-in live skips, typecheck, 12 strict OpenSpec items and build; pnpm test:e2e passed eight. Disposable Docker setup/reuse browser smoke passed. Main fast-forwarded to f1da1a2; the local CLI package installed successfully. Exact tested hashes and logs: ../../../artifacts/setup-quality-2026-10-20/integration-verification.json and INTEGRATION.md. No live-provider inference, kpcru refinement, public publication, remote push or running-GUI restart is claimed. The broader change remains unarchived; unrelated publication checks remain open.
