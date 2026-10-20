@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-20",
+  "source_revision": "7bb1cdc",
+  "implementation_revision": "f1da1a2",
+  "installed_package": "0.1.1-332df08007de",
+  "authorization": "Owner explicitly opted into live Codex analysis of an isolated kpcru copy.",
+  "mode": "deep",
+  "provider": "codex",
+  "model": "gpt-6.1-sol",
+  "reasoning": "medium",
+  "snapshot": {
+    "eligible_files": 239,
+    "characters": 1325886,
+    "excluded_entries": 92,
+    "original_project": "/Users/ashugh/Documents/Github/kpcru"
+  },
+  "result": "stopped by test operator after observed consolidation bottleneck; not a successful end-to-end setup",
+  "exit_code": 130,
+  "first_event_utc": "2026-10-20T00:40:33.163Z",
+  "last_captured_event_utc": "2026-10-20T02:06:29.018Z",
+  "elapsed_minutes_approximately": 86,
+  "provider_calls_started": 48,
+  "analysis_batches_completed": 27,
+  "analysis_batches_total": 27,
+  "analysis_notes": 744,
+  "batch_local_questions": 168,
+  "consolidation_citation_rejections": 4,
+  "completed_correction_recoveries": 4,
+  "consolidation_round_note_json_characters": [
+    249813,
+    231028,
+    229486
+  ],
+  "third_round_reduction_percent_approximately": 0.67,
+  "findings": [
+    {
+      "id": "LIVE-01",
+      "priority": "high",
+      "finding": "Consolidation makes insufficient progress toward the 90000-character synthesis limit. Three completed passes left approximately 229486 characters; the third reduced size by only 0.67 percent. A fourth-pass response grew from about 59353 to 59610 characters.",
+      "next_step": "Use an explicit output budget and compact provenance identifiers or another bounded representation that preserves distinct requirements; test convergence using captured findings without repeating all source analysis."
+    },
+    {
+      "id": "LIVE-02",
+      "priority": "high",
+      "finding": "Four consolidation responses widened citations beyond supplied finding ranges. All four were rejected and recovered after a correction call, increasing runtime. Error messages omit the offending reference.",
+      "next_step": "Preserve exact citation identifiers and return actionable invalid-reference details; do not weaken evidence validation."
+    },
+    {
+      "id": "LIVE-03",
+      "priority": "medium",
+      "finding": "Consolidation progress gives elapsed time but no round/group or reduction counts, making long runs hard to assess.",
+      "next_step": "Expose round, group, input/output size and lack of progress; retain an honest incomplete outcome."
+    }
+  ],
+  "not_reached": [
+    "specification synthesis",
+    "original-source coverage review",
+    "concrete validation and project-guidance quality review",
+    "proposal/apply"
+  ],
+  "audit_comparison": "No generated proposal was produced; the 36 original audit findings cannot be marked resolved by this run.",
+  "preservation": {
+    "originalFingerprintUnchanged": true,
+    "originalFiles": 239,
+    "copyFiles": 239,
+    "copyMatchesRedactedSource": true
+  },
+  "raw_local_evidence": "/var/folders/j7/4vm4llc924g0_fv5zp0btxdm0000gn/T/clinic-kpcru-live-33kvNO",
+  "raw_evidence_note": "Provider prompts/responses contain project content and are retained only in the isolated temporary workspace, not committed into the Clinic repository."
+}
