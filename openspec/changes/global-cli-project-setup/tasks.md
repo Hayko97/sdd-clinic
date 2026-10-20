@@ -75,4 +75,4 @@
 - [x] 14.3 Batch original-evidence quality review without dropping evidence or blockers.
 - [x] 14.4 Run fixture checks, saved-evidence validation and independent QA; report live checks separately.
 - [x] 14.5 Publish verified patch release, verify public artifacts and install updated CLI.
-- [ ] 14.6 Correct overly restrictive synthesis budget using lossless compact findings; verify all 744 saved findings bypass model consolidation, rerun checks and independent QA, publish superseding 0.1.3.
+- [x] 14.6 Correct overly restrictive synthesis budget using lossless compact findings; verify all 744 saved findings bypass model consolidation, rerun checks and independent QA, publish superseding 0.1.3.

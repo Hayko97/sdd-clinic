@@ -1,0 +1,19 @@
+{
+  "version": "0.1.3",
+  "codeRevision": "9c66a48",
+  "github": "https://github.com/Hayko97/sdd-clinic/releases/tag/v0.1.3",
+  "npm": "https://www.npmjs.com/package/sdd-clinic/v/0.1.3",
+  "npmLatest": "0.1.3",
+  "tarballSha256": "97f4da4b35daecdf78d8696f72e42d8203d086393785d0e2155a112c5b8bcdf9",
+  "registryTarballMatchesTestedArchive": true,
+  "cleanRegistryInstall": "passed; help works; runtime image pinned to0.1.3",
+  "dockerIndex": "sha256:08f3f2952d5eca397827cc045df9e2a4000f4d30217d4c6547bda279e9c1ea92",
+  "dockerPlatforms": [
+    "linux/amd64",
+    "linux/arm64"
+  ],
+  "anonymousImageAccess": "verified",
+  "localLauncher": "updated to exact release archive",
+  "providerRuns": "stopped; no ongoing live check",
+  "liveEndToEndKpcru": "unverified"
+}
