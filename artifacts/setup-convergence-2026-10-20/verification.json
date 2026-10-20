@@ -1,8 +1,36 @@
 {
   "release": "0.1.2",
-  "fixtureChecks": {"pnpm check": "passed: 211 tests, 2 opt-in skips; typecheck, 12 OpenSpec validations and build passed", "pnpm test:e2e": "8 passed"},
+  "fixtureChecks": {
+    "pnpm check": "passed: 211 tests, 2 opt-in skips; typecheck, 12 OpenSpec validations and build passed",
+    "pnpm test:e2e": "8 passed"
+  },
   "independentQA": "55 focused tests passed; corrected later-plan loss and leading blank-line loss; no remaining blocker found",
-  "fixes": ["LIVE-01: enforced single-pass consolidation budgets", "LIVE-02: immutable finding IDs carry exact provenance", "LIVE-03: group/output-budget/reduction progress", "Batch large original-evidence reviews and retain later plans, gaps and decisions"],
+  "fixes": [
+    "LIVE-01: enforced single-pass consolidation budgets",
+    "LIVE-02: immutable finding IDs carry exact provenance",
+    "LIVE-03: group/output-budget/reduction progress",
+    "Batch large original-evidence reviews and retain later plans, gaps and decisions"
+  ],
   "live": "Targeted replay of saved original findings with fresh consolidation calls is in progress; initial overly restrictive budget check was stopped. Full end-to-end kpcru setup remains unverified.",
-  "limits": ["Large individual specification/evidence requests fail safely", "Semantic completeness is not guaranteed by fixtures or model review", "Existing custom kpcru specifications and application code remain unchanged", "Conflicting evidence-local validation procedures require owner reconciliation"]
+  "limits": [
+    "Large individual specification/evidence requests fail safely",
+    "Semantic completeness is not guaranteed by fixtures or model review",
+    "Existing custom kpcru specifications and application code remain unchanged",
+    "Conflicting evidence-local validation procedures require owner reconciliation"
+  ],
+  "releaseVerification": {
+    "codeRevision": "2f3e8c6",
+    "github": "https://github.com/Hayko97/sdd-clinic/releases/tag/v0.1.2",
+    "npm": "https://www.npmjs.com/package/sdd-clinic/v/0.1.2",
+    "npmTarballMatchesTestedArchive": true,
+    "tarballSha256": "5edf13a3db7430c6c0c8172dc0b0421a643c3e531dd0a0bff6c96ffd4656ace0",
+    "dockerIndex": "sha256:8e1147d6275fce08a5a8a0d6ab19f45eb33a066beaeb356a21d93c15adc5af5b",
+    "dockerPlatforms": [
+      "linux/amd64",
+      "linux/arm64"
+    ],
+    "anonymousRegistryAccess": true,
+    "registryInstalledCliSmoke": "passed external-project repair, idempotent repeat, preserved spec and actual GUI registration; disposable runtime removed",
+    "localLauncherUpdated": true
+  }
 }

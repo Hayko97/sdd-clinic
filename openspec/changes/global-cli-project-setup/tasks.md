@@ -74,4 +74,4 @@
 - [x] 14.2 Implement bounded consolidation, immutable provenance and progress with negative regression cases.
 - [x] 14.3 Batch original-evidence quality review without dropping evidence or blockers.
 - [ ] 14.4 Run fixture checks, saved-evidence validation and independent QA; report live checks separately.
-- [ ] 14.5 Publish verified patch release, verify public artifacts and install updated CLI.
+- [x] 14.5 Publish verified patch release, verify public artifacts and install updated CLI.
